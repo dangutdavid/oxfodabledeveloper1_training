@@ -76,7 +76,7 @@
 <li><span class="step">1.4</span> Git installed and a GitHub account.</li>
 <li><span class="step">1.5</span> In the org: Setup → search <b>Deliverability</b> → set Access level to <b>All Email</b> (needed for the welcome email in Section 6).</li>
 </ol>
-<div class="tip"><b>Get the finished source:</b> <code>git clone https://github.com/dangutdavid/oxfodabledeveloper1_training.git</code></div>
+<div class="tip"><b>Two ways to use this guide:</b> build every component by hand following Sections 2–11, or reproduce the whole project with your own repo, your own org and an AI assistant using the copy-and-paste runbook in <b>Appendix B</b>. The reference source lives at github.com/dangutdavid/oxfodabledeveloper1_training.</div>
 
 <h2>2 · The Course object (Lab 1)</h2>
 <h3>2.1 Create the object</h3>
@@ -356,98 +356,147 @@ sf project deploy start --source-dir force-app --target-org targetorg --test-lev
 <tr><td>Security</td><td>Enrolment_Console_User permission set (assigned to maren.dangut@gmail.com)</td></tr>
 <tr><td>Scripts</td><td>scripts/apex/seed.apex · manifest/package.xml</td></tr>
 </table>
-<h2 class="pagebreak">Appendix B · Exact reproduction — every command used</h2>
-<p>This is the complete, ordered command sequence used to build, test, publish and deploy this
-project. Replace <code>lse-demo</code> with your own org alias and the GitHub URL with your own
-repository to reproduce the whole exercise end to end.</p>
-
-<h3>B.1 Environment checks</h3>
-<pre>sf --version                     # confirm the Salesforce CLI is installed
-git --version                    # confirm Git
-gh auth status                   # confirm GitHub CLI is authenticated (or use git credentials)
-sf org list                      # confirm the target org is authorised
-# if the org is not yet authorised:
-sf org login web --alias lse-demo</pre>
-
-<h3>B.2 Create the project and write the source</h3>
-<pre>cd "&lt;your working folder&gt;"
-sf project generate --name careerlaunch --template standard
-cd careerlaunch</pre>
-<p>Then create every file under <code>force-app/main/default</code> exactly as in the GitHub repo:</p>
+<h2 class="pagebreak">Appendix B · Reproduce this project yourself — with your own repo, org and AI assistant</h2>
+<p>This appendix is the <b>exact, copy-and-paste runbook</b> used to produce this project. You will
+<b>not</b> clone this repository — you will create your <b>own</b> repository and your <b>own</b> org,
+use Claude (or another AI coding assistant) to <b>generate all the code</b>, and then add, commit,
+push, deploy and test it yourself. Wherever you see a placeholder in
+<code>&lt;angle-brackets&gt;</code>, replace it with your own value before running the command.</p>
 <table>
-<tr><th>Folder</th><th>Files</th></tr>
-<tr><td>objects/</td><td>Course__c, Cohort__c, Enrolment__c (object + fields + validationRules folders), Contact/fields/Total_Enrolments__c</td></tr>
-<tr><td>tabs/</td><td>Course__c, Cohort__c, Enrolment__c tab-meta.xml</td></tr>
-<tr><td>classes/</td><td>9 Apex classes + their .cls-meta.xml files</td></tr>
-<tr><td>triggers/</td><td>EnrolmentTrigger.trigger + meta</td></tr>
-<tr><td>lwc/</td><td>cohortExplorer, enrolmentPanel, enrolmentConsole (html + js + js-meta.xml each)</td></tr>
-<tr><td>flows/</td><td>Enrolment_Confirmed_Actions, Quick_Enrol_Student, Cohort_Start_Reminder flow-meta.xml</td></tr>
-<tr><td>flexipages/</td><td>Enrolment_Console.flexipage-meta.xml</td></tr>
-<tr><td>permissionsets/</td><td>Enrolment_Console_User.permissionset-meta.xml</td></tr>
-<tr><td>manifest/ + scripts/apex/</td><td>package.xml · seed.apex</td></tr>
+<tr><th>Placeholder</th><th>Replace with</th><th>Example used in this build</th></tr>
+<tr><td><code>&lt;your-github-username&gt;</code></td><td>Your GitHub username</td><td>dangutdavid</td></tr>
+<tr><td><code>&lt;your-repo-name&gt;</code></td><td>Your new repository name</td><td>oxfodabledeveloper1_training</td></tr>
+<tr><td><code>&lt;your-org-username&gt;</code></td><td>Your Developer Edition org username</td><td>maren.dangut@gmail.com</td></tr>
+<tr><td><code>&lt;your-org-alias&gt;</code></td><td>A short nickname for the org</td><td>devorg</td></tr>
 </table>
-<div class="tip">Fastest route: clone the finished repo instead of typing —
-<code>git clone https://github.com/dangutdavid/oxfodabledeveloper1_training.git</code></div>
 
-<h3>B.3 Deploy to the org</h3>
-<pre># full deploy of all 49 components
-sf project deploy start --source-dir force-app --target-org lse-demo --wait 15
+<h3>B.1 One-time setup — install and sign in (copy &amp; paste)</h3>
+<pre># check the tools are installed
+sf --version
+git --version
+gh --version          # GitHub CLI - install from cli.github.com if missing
 
-# assign the permission set to yourself (required BEFORE running tests -
-# WITH SECURITY_ENFORCED needs field-level security on the new fields)
-sf org assign permset --name Enrolment_Console_User --target-org lse-demo</pre>
+# sign in to GitHub (one time)
+gh auth login
 
-<h3>B.4 Run the tests</h3>
-<pre>sf apex run test --target-org lse-demo \
-  --tests EnrolmentTriggerTest --tests CohortServicesTest \
-  --code-coverage --result-format human --wait 10
-# expected: 10/10 Pass, class coverage 79-100%</pre>
+# authorise your Salesforce org (opens a browser - log in as your org user)
+sf org login web --alias &lt;your-org-alias&gt;
 
-<h3>B.5 Seed the sample data</h3>
-<pre>sf apex run --file scripts/apex/seed.apex --target-org lse-demo
-# creates 2 courses, 2 open cohorts (capacity 3 and 10), 3 student contacts</pre>
+# confirm the org is connected
+sf org list</pre>
 
-<h3>B.6 Publish to GitHub</h3>
-<pre>git init
-git add .
-git commit -m "CareerLaunch v1: data model, automation, Apex, LWC, flows, permission set"
-git branch -M main
-git remote add origin https://github.com/dangutdavid/oxfodabledeveloper1_training.git
-git push -u origin main</pre>
+<h3>B.2 Create YOUR OWN empty GitHub repository (copy &amp; paste)</h3>
+<pre>gh repo create &lt;your-github-username&gt;/&lt;your-repo-name&gt; --public
+# verify it exists (it should be empty)
+gh repo view &lt;your-github-username&gt;/&lt;your-repo-name&gt;</pre>
 
-<h3>B.7 Useful everyday commands</h3>
-<pre>sf org open --target-org lse-demo                                   # open the org in a browser
-sf project retrieve start --manifest manifest/package.xml \
-  --target-org lse-demo                                             # pull org changes back to source
-sf project deploy start --source-dir force-app/main/default/classes \
-  --target-org lse-demo                                             # redeploy just the Apex
-sf apex run --file scripts/apex/seed.apex --target-org lse-demo     # run anonymous Apex
-sf apex tail log --target-org lse-demo                              # stream debug logs
-sf project deploy start --source-dir force-app --target-org &lt;other&gt; \
-  --test-level RunLocalTests --dry-run                              # validate-only against a 2nd org</pre>
-
-<h3>B.8 The original build prompt (AI-assisted reproduction)</h3>
-<p>This project was built with an AI coding assistant (Claude Code) from the three participant
-workbooks and the programme handbook. The exact instruction given was:</p>
+<h3>B.3 The prompt — have Claude generate ALL the code</h3>
+<p>Open Claude Code (or Claude with file attachments) in your working folder. <b>Attach these four
+course documents</b> to the conversation first:</p>
+<ol>
+<li>Oxfordable_Salesforce_Participant_Workbook_Week1.pdf</li>
+<li>Oxfordable_Salesforce_Participant_Workbook_Week2.pdf</li>
+<li>Oxfordable_Salesforce_Participant_Workbook_Week3.pdf</li>
+<li>Oxfordable_Salesforce_3Week_Programme_Handbook.pdf</li>
+</ol>
+<p>Then paste this prompt <b>exactly</b>, with your own placeholders filled in:</p>
 <pre>i want you to read this attached materials - create salesforce project and write all
 the code - creating the objects and fields needed, validation rules, pages, flows,
 apex, agents, etc
 commit and push to
-https://github.com/dangutdavid/oxfodabledeveloper1_training
-deploy to salesforce org username - maren.dangut@gmail.com
-after that create a pdf document with step by step for user to follow to create each.</pre>
-<p>To reproduce with your own AI assistant: attach the Week 1-3 participant workbook PDFs and
-the 3-Week Programme Handbook, swap in your own repo URL and org username, and use the same
-prompt. Review every generated file against Sections 2-11 of this guide before deploying.</p>
+https://github.com/&lt;your-github-username&gt;/&lt;your-repo-name&gt;
 
-<h3>B.9 Fixes discovered during the real deployment (learn from these)</h3>
+deploy to salesforce org  username -	&lt;your-org-username&gt;
+
+after that create a pdf document with step by step for user to flow to create each.</pre>
+<p class="small">That is the verbatim prompt that produced this project (typos and all — AI assistants
+cope fine). A cleaned-up version you can use instead:</p>
+<pre>Read the four attached Oxfordable workbooks/handbook. Build the complete CareerLaunch
+Salesforce project as an SFDX source project: the Course__c, Cohort__c and Enrolment__c
+objects with every field from the solution design (including the roll-up summary,
+formula fields and unique external ID), both validation rules, the three flows
+(Enrolment_Confirmed_Actions record-triggered, Quick_Enrol_Student screen flow,
+Cohort_Start_Reminder scheduled), all Apex (EnrolmentTrigger + handler,
+StudentSummaryQueueable, CohortAvailabilityService, EnrolmentStatusService,
+CohortController, EnrolmentController, TestDataFactory + the two test classes),
+the three LWCs and the Enrolment Console app page, the Enrolment_Console_User
+permission set, a package.xml manifest and a seed.apex sample-data script.
+
+Then: commit and push everything to https://github.com/&lt;your-github-username&gt;/&lt;your-repo-name&gt;,
+deploy to my org &lt;your-org-username&gt;, assign the permission set to me, run all the
+Apex tests and fix anything that fails, run the seed script, and finish with a
+step-by-step PDF guide covering how to build each component by hand.</pre>
+<div class="tip"><b>What to expect:</b> Claude will scaffold the project with
+<code>sf project generate --name careerlaunch</code>, write every file under
+<code>force-app/main/default</code>, deploy, run the tests, fix failures (see B.9), push to your
+repo and produce the PDF. Stay in the loop: read what it deploys, and compare the generated files
+against Sections 2–11 of this guide — reviewing generated code is the skill being trained.</div>
+
+<h3>B.4 What must exist afterwards — review checklist</h3>
 <table>
-<tr><th>Symptom</th><th>Root cause</th><th>Fix applied</th></tr>
-<tr><td>Contact inserts failed in tests with DUPLICATES_DETECTED</td><td>The org has an active Contact duplicate rule</td><td>TestDataFactory inserts contacts with <code>Database.DMLOptions.DuplicateRuleHeader.allowSave = true</code></td></tr>
-<tr><td>QueryException "secure query included inaccessible field"</td><td><code>WITH SECURITY_ENFORCED</code> enforces the running user's FLS; API-created fields grant FLS to nobody</td><td>Assign the Enrolment_Console_User permission set before running tests</td></tr>
-<tr><td>CANNOT_EXECUTE_FLOW_TRIGGER on confirmed enrolments in tests</td><td>The flow's Send Email action failed (deliverability/limits) and killed the save</td><td>Fault path on the email action so a failed email never blocks the enrolment</td></tr>
-<tr><td>Bulk test expected exactly 150 successes, got fewer</td><td>Partial-save retries + the unique key make "exactly capacity" non-deterministic in one 200-record batch</td><td>Assert the true invariant instead: the cohort can never exceed capacity, and the 50 overflow records are always blocked</td></tr>
+<tr><th>Folder (under force-app/main/default)</th><th>Expected files</th></tr>
+<tr><td>objects/</td><td>Course__c, Cohort__c, Enrolment__c (object + fields + validationRules), Contact/fields/Total_Enrolments__c</td></tr>
+<tr><td>classes/</td><td>9 classes: trigger handler, queueable, 2 invocable services, 2 controllers, TestDataFactory, 2 test classes (+ .cls-meta.xml each)</td></tr>
+<tr><td>triggers/</td><td>EnrolmentTrigger.trigger + meta</td></tr>
+<tr><td>flows/</td><td>Enrolment_Confirmed_Actions, Quick_Enrol_Student, Cohort_Start_Reminder</td></tr>
+<tr><td>lwc/</td><td>cohortExplorer, enrolmentPanel, enrolmentConsole</td></tr>
+<tr><td>flexipages/ · permissionsets/ · tabs/</td><td>Enrolment_Console · Enrolment_Console_User · 3 custom tabs</td></tr>
+<tr><td>manifest/ · scripts/apex/</td><td>package.xml · seed.apex</td></tr>
 </table>
+
+<h3>B.5 Deploy to your org (copy &amp; paste)</h3>
+<pre>cd careerlaunch
+
+# deploy all components
+sf project deploy start --source-dir force-app --target-org &lt;your-org-alias&gt; --wait 15
+
+# assign the permission set to yourself BEFORE running tests
+# (WITH SECURITY_ENFORCED needs field-level security on the new fields)
+sf org assign permset --name Enrolment_Console_User --target-org &lt;your-org-alias&gt;</pre>
+
+<h3>B.6 Run the tests (copy &amp; paste)</h3>
+<pre>sf apex run test --target-org &lt;your-org-alias&gt; \
+  --tests EnrolmentTriggerTest --tests CohortServicesTest \
+  --code-coverage --result-format human --wait 10
+# expected: 10/10 Pass, class coverage 79-100%</pre>
+
+<h3>B.7 Seed the sample data (copy &amp; paste)</h3>
+<pre>sf apex run --file scripts/apex/seed.apex --target-org &lt;your-org-alias&gt;
+# creates 2 courses, 2 open cohorts (capacity 3 and 10), 3 student contacts</pre>
+
+<h3>B.8 Add, commit and push to YOUR repository (copy &amp; paste)</h3>
+<pre>git init
+git add .
+git commit -m "CareerLaunch v1: data model, automation, Apex, LWC, flows, permission set"
+git branch -M main
+git remote add origin https://github.com/&lt;your-github-username&gt;/&lt;your-repo-name&gt;.git
+git push -u origin main
+
+# later changes follow the same rhythm:
+git add .
+git commit -m "describe your change"
+git push</pre>
+
+<h3>B.9 Fixes discovered during the real deployment (expect these, learn from these)</h3>
+<table>
+<tr><th>Symptom</th><th>Root cause</th><th>Fix</th></tr>
+<tr><td>Contact inserts fail in tests with DUPLICATES_DETECTED</td><td>The org has an active Contact duplicate rule</td><td>TestDataFactory inserts contacts with <code>Database.DMLOptions.DuplicateRuleHeader.allowSave = true</code></td></tr>
+<tr><td>QueryException “secure query included inaccessible field”</td><td><code>WITH SECURITY_ENFORCED</code> enforces the running user’s FLS; API-created fields grant FLS to nobody</td><td>Assign the Enrolment_Console_User permission set before running tests (step B.5)</td></tr>
+<tr><td>CANNOT_EXECUTE_FLOW_TRIGGER on confirmed enrolments in tests</td><td>The flow’s Send Email action failed (deliverability/limits) and killed the save</td><td>Fault path on the email action so a failed email never blocks the enrolment</td></tr>
+<tr><td>Bulk test expected exactly 150 successes, got fewer</td><td>Partial-save retries + the unique key make “exactly capacity” non-deterministic in one 200-record batch</td><td>Assert the true invariant: the cohort can never exceed capacity, and the overflow records are always blocked</td></tr>
+</table>
+
+<h3>B.10 Everyday commands you will keep using (copy &amp; paste)</h3>
+<pre>sf org open --target-org &lt;your-org-alias&gt;                            # open the org in a browser
+sf project retrieve start --manifest manifest/package.xml \
+  --target-org &lt;your-org-alias&gt;                                      # pull clicks-built changes into source
+sf project deploy start --source-dir force-app/main/default/classes \
+  --target-org &lt;your-org-alias&gt;                                      # redeploy just the Apex
+sf apex tail log --target-org &lt;your-org-alias&gt;                       # stream debug logs
+sf project deploy start --source-dir force-app --target-org &lt;second-org&gt; \
+  --test-level RunLocalTests --dry-run                               # validate-only against a 2nd org
+git status ; git diff                                                # see what changed
+git tag v1.0 &amp;&amp; git push --tags                                      # tag a release</pre>
 
 <p class="small">Oxfordable Careers — Salesforce Developer Introductory Programme · CareerLaunch Step-by-Step Build Guide v1.0 ·
 Repo: github.com/dangutdavid/oxfodabledeveloper1_training · Org: maren.dangut@gmail.com</p>
