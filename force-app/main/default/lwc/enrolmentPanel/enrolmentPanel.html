@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="Enrol a Student" icon-name="standard:contact">
+        <div class="slds-var-m-around_medium">
+
+            <template lwc:if={hasCohort}>
+                <p class="slds-var-m-bottom_small">
+                    <strong>Cohort:</strong> {cohort.Name} &nbsp;
+                    <lightning-badge label={seatsLabel}></lightning-badge>
+                </p>
+
+                <lightning-record-picker
+                    label="Student"
+                    placeholder="Search contacts..."
+                    object-api-name="Contact"
+                    value={studentId}
+                    onchange={handleStudentChange}>
+                </lightning-record-picker>
+
+                <div class="slds-var-m-top_medium">
+                    <lightning-button
+                        variant="brand"
+                        label="Enrol student"
+                        disabled={enrolDisabled}
+                        onclick={handleEnrol}>
+                    </lightning-button>
+                </div>
+
+                <template lwc:if={isWorking}>
+                    <lightning-spinner alternative-text="Saving"></lightning-spinner>
+                </template>
+            </template>
+
+            <template lwc:else>
+                <p class="slds-text-color_weak">Select a cohort on the left to begin.</p>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

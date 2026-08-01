@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Open Cohorts" icon-name="standard:education">
+
+        <div class="slds-var-m-horizontal_medium">
+            <lightning-combobox
+                label="Filter by course"
+                placeholder="All courses"
+                options={courseOptions}
+                value={selectedCourseId}
+                onchange={handleCourseChange}>
+            </lightning-combobox>
+        </div>
+
+        <div class="slds-var-m-around_medium">
+            <template lwc:if={hasCohorts}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={rows}
+                    columns={columns}
+                    max-row-selection="1"
+                    onrowselection={handleRowSelection}>
+                </lightning-datatable>
+            </template>
+
+            <template lwc:else>
+                <p class="slds-text-color_weak">No open cohorts with seats available.</p>
+            </template>
+        </div>
+
+    </lightning-card>
+</template>

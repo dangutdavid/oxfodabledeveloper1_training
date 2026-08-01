@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Not_Above_Fee</fullName>
+    <active>true</active>
+    <errorConditionFormula>Amount_Paid__c &gt; Cohort__r.Course__r.Fee__c</errorConditionFormula>
+    <errorMessage>Amount Paid cannot exceed the course fee.</errorMessage>
+</ValidationRule>

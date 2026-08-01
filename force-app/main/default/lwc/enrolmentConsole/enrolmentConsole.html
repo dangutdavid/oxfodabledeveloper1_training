@@ -1,0 +1,10 @@
+<template>
+    <div class="slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-3">
+            <c-cohort-explorer oncohortselected={handleCohortSelected}></c-cohort-explorer>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+            <c-enrolment-panel cohort={selectedCohort} onenrolled={handleEnrolled}></c-enrolment-panel>
+        </div>
+    </div>
+</template>
