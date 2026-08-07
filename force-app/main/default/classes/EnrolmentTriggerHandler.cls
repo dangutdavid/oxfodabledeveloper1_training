@@ -19,6 +19,9 @@ public with sharing class EnrolmentTriggerHandler {
 
     public static void onAfterChange(List<Enrolment__c> newEnrolments) {
         enqueueStudentSummary(newEnrolments);
+        // Confirmed enrolments get an invoice; the service skips any that
+        // already hold a live one, so re-fires on unrelated edits are no-ops.
+        InvoiceService.createForConfirmedEnrolments(newEnrolments);
     }
 
     // ---------- US-02: sensible defaults ----------

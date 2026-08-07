@@ -1,0 +1,38 @@
+<apex:page controller="CertificateController" renderAs="pdf" showHeader="false"
+           standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <html>
+        <head>
+            <style type="text/css">
+                @page { size: A4 landscape; margin: 18mm; }
+                body  { font-family: Georgia, 'Times New Roman', serif; color: #1a2b4a; text-align: center; }
+                .frame        { border: 6px double #b08d2f; padding: 40px 60px; height: 100%; }
+                .academy      { letter-spacing: 4px; text-transform: uppercase; font-size: 14px; color: #b08d2f; }
+                h1            { font-size: 40px; margin: 24px 0 8px 0; font-weight: normal; }
+                .rule         { width: 180px; border-top: 2px solid #b08d2f; margin: 18px auto; }
+                .awarded-to   { font-size: 16px; font-style: italic; color: #555; }
+                .student      { font-size: 32px; margin: 14px 0; }
+                .course       { font-size: 22px; margin: 10px 0; }
+                .cohort       { font-size: 14px; color: #555; }
+                .footer       { margin-top: 40px; font-size: 12px; color: #777; }
+                .cert-number  { margin-top: 6px; font-size: 10px; color: #999; letter-spacing: 2px; }
+            </style>
+        </head>
+        <body>
+            <div class="frame">
+                <div class="academy">Oxfordable CareerLaunch Academy</div>
+                <h1>{!$Label.Certificate_Title}</h1>
+                <div class="rule"/>
+                <div class="awarded-to">{!$Label.Certificate_Awarded_To}</div>
+                <div class="student">{!enrolment.Student__r.Name}</div>
+                <div class="awarded-to">{!$Label.Certificate_Completion_Text}</div>
+                <div class="course">{!enrolment.Cohort__r.Course__r.Name}
+                    ({!enrolment.Cohort__r.Course__r.Course_Level__c})</div>
+                <div class="cohort">{!enrolment.Cohort__r.Cohort_Label__c}</div>
+                <div class="footer">
+                    {!$Label.Certificate_Issued_On} {!issuedOn}
+                </div>
+                <div class="cert-number">{!enrolment.Name}</div>
+            </div>
+        </body>
+    </html>
+</apex:page>

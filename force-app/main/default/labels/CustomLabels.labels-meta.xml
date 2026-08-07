@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Certificate_Title</fullName>
+        <categories>CareerLaunch</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Certificate title</shortDescription>
+        <value>Certificate of Completion</value>
+    </labels>
+    <labels>
+        <fullName>Certificate_Awarded_To</fullName>
+        <categories>CareerLaunch</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Certificate awarded-to line</shortDescription>
+        <value>This certificate is proudly awarded to</value>
+    </labels>
+    <labels>
+        <fullName>Certificate_Completion_Text</fullName>
+        <categories>CareerLaunch</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Certificate completion line</shortDescription>
+        <value>for successfully completing</value>
+    </labels>
+    <labels>
+        <fullName>Certificate_Issued_On</fullName>
+        <categories>CareerLaunch</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Certificate issued-on line</shortDescription>
+        <value>Issued on</value>
+    </labels>
+    <labels>
+        <fullName>Portal_My_Enrolments</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal enrolments card title</shortDescription>
+        <value>My Enrolments</value>
+    </labels>
+    <labels>
+        <fullName>Portal_My_Invoices</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal invoices card title</shortDescription>
+        <value>My Invoices</value>
+    </labels>
+    <labels>
+        <fullName>Portal_Pay_Now</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Pay now button</shortDescription>
+        <value>Pay now</value>
+    </labels>
+    <labels>
+        <fullName>Portal_No_Records</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal empty-state message</shortDescription>
+        <value>Nothing to show here yet.</value>
+    </labels>
+    <labels>
+        <fullName>Portal_Payment_Success</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Payment success toast</shortDescription>
+        <value>Payment received - thank you!</value>
+    </labels>
+    <labels>
+        <fullName>Portal_Download_Certificate</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Certificate download link</shortDescription>
+        <value>Download certificate</value>
+    </labels>
+</CustomLabels>

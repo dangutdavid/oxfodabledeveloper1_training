@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title={labels.title} icon-name="standard:education">
+        <div class="slds-var-p-horizontal_medium">
+
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-var-p-vertical_small">{error}</div>
+            </template>
+
+            <template if:true={isEmpty}>
+                <div class="slds-text-color_weak slds-var-p-vertical_small">{labels.empty}</div>
+            </template>
+
+            <template if:true={hasEnrolments}>
+                <ul class="slds-has-dividers_bottom-space">
+                    <template for:each={enrolments} for:item="enrolment">
+                        <li key={enrolment.id} class="slds-item">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                <div>
+                                    <p class="slds-text-heading_small">{enrolment.courseName}</p>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        {enrolment.cohortLabel} &middot; starts
+                                        <lightning-formatted-date-time value={enrolment.startDate}>
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                    <template if:true={enrolment.certificateUrl}>
+                                        <a href={enrolment.certificateUrl} target="_blank" rel="noopener">
+                                            {labels.download}
+                                        </a>
+                                    </template>
+                                </div>
+                                <lightning-badge label={enrolment.status}></lightning-badge>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

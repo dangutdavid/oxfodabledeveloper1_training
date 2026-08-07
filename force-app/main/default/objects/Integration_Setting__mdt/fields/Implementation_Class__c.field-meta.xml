@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Implementation_Class__c</fullName>
+    <description>Apex class instantiated by the factory for this integration. Point it at the stub in training orgs and at the HTTP client in orgs where the real endpoint exists.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Implementation Class</label>
+    <length>255</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

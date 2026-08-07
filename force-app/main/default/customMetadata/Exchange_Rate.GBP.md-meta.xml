@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>GBP</label>
+    <protected>false</protected>
+    <values>
+        <field>Rate_From_GBP__c</field>
+        <value xsi:type="xsd:double" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">1.0</value>
+    </values>
+    <values>
+        <field>Symbol__c</field>
+        <value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">£</value>
+    </values>
+</CustomMetadata>

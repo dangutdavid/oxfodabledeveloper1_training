@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>Certificat de réussite</label>
+        <name>Certificate_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Ce certificat est fièrement décerné à</label>
+        <name>Certificate_Awarded_To</name>
+    </customLabels>
+    <customLabels>
+        <label>pour avoir terminé avec succès</label>
+        <name>Certificate_Completion_Text</name>
+    </customLabels>
+    <customLabels>
+        <label>Délivré le</label>
+        <name>Certificate_Issued_On</name>
+    </customLabels>
+    <customLabels>
+        <label>Mes inscriptions</label>
+        <name>Portal_My_Enrolments</name>
+    </customLabels>
+    <customLabels>
+        <label>Mes factures</label>
+        <name>Portal_My_Invoices</name>
+    </customLabels>
+    <customLabels>
+        <label>Payer maintenant</label>
+        <name>Portal_Pay_Now</name>
+    </customLabels>
+    <customLabels>
+        <label>Rien à afficher pour le moment.</label>
+        <name>Portal_No_Records</name>
+    </customLabels>
+    <customLabels>
+        <label>Paiement reçu - merci !</label>
+        <name>Portal_Payment_Success</name>
+    </customLabels>
+    <customLabels>
+        <label>Télécharger le certificat</label>
+        <name>Portal_Download_Certificate</name>
+    </customLabels>
+</Translations>

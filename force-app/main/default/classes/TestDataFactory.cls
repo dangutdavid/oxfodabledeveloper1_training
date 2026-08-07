@@ -43,6 +43,18 @@ public class TestDataFactory {
         return students;
     }
 
+    public static Contact createStudent(String email) {
+        Contact student = new Contact(
+            FirstName = 'Test',
+            LastName  = 'Student',
+            Email     = email
+        );
+        Database.DMLOptions dml = new Database.DMLOptions();
+        dml.DuplicateRuleHeader.allowSave = true;
+        Database.insert(student, dml);
+        return student;
+    }
+
     public static List<Enrolment__c> buildEnrolments(Id cohortId, List<Contact> students, String status) {
         List<Enrolment__c> enrolments = new List<Enrolment__c>();
         for (Contact student : students) {
