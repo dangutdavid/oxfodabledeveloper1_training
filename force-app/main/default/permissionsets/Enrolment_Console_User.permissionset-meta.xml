@@ -209,4 +209,8 @@
         <tab>Invoice__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <tabSettings>
+        <tab>Enrolment_Console</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
