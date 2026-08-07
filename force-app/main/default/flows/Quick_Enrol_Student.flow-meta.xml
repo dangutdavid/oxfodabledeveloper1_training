@@ -11,7 +11,7 @@
             <targetReference>Seats_Available</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Screen_Error</targetReference>
+            <targetReference>Log_Flow_Error</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -22,6 +22,31 @@
         </inputParameters>
         <nameSegment>CohortAvailabilityService</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Log_Flow_Error</name>
+        <label>Log Flow Error</label>
+        <locationX>440</locationX>
+        <locationY>527</locationY>
+        <actionName>ErrorLogger</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Screen_Error</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>flowName</name>
+            <value>
+                <stringValue>Quick_Enrol_Student</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>errorMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ErrorLogger</nameSegment>
     </actionCalls>
     <apiVersion>62.0</apiVersion>
     <decisions>
@@ -115,7 +140,7 @@
             <targetReference>Screen_Success</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Screen_Error</targetReference>
+            <targetReference>Log_Flow_Error</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Cohort__c</field>
@@ -148,7 +173,7 @@
             <targetReference>Check_Seats</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Screen_Error</targetReference>
+            <targetReference>Log_Flow_Error</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>

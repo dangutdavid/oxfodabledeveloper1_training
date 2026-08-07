@@ -69,6 +69,52 @@ Database.DMLOptions dml = new Database.DMLOptions();
 dml.DuplicateRuleHeader.allowSave = true;
 Database.insert(newContacts, dml);
 
+// ---- Spare students F and G (used by E2E-24 and E2E-35 as "any spare contact") ----
+Map<String, String> spareEmails = new Map<String, String>{
+    'F' => 'e2e.student.f@oxfordable.test',
+    'G' => 'e2e.student.g@oxfordable.test'
+};
+List<Contact> spares = new List<Contact>();
+for (String lastName : spareEmails.keySet()) {
+    if (!existingEmails.contains(spareEmails.get(lastName))
+        && [SELECT COUNT() FROM Contact WHERE Email = :spareEmails.get(lastName)] == 0) {
+        spares.add(new Contact(FirstName = 'Student', LastName = lastName,
+            Email = spareEmails.get(lastName), AccountId = acc.Id));
+    }
+}
+Database.insert(spares, dml);
+
+// ---- E2E-14 fixture: reminder cohort (starts today+3) with one Confirmed + one Applied ----
+List<Cohort__c> remCohorts = [
+    SELECT Id FROM Cohort__c
+    WHERE Course__c = :devCourseId AND Start_Date__c = :Date.today().addDays(3) LIMIT 1];
+Cohort__c remCohort = remCohorts.isEmpty()
+    ? new Cohort__c(Course__c = devCourseId, Start_Date__c = Date.today().addDays(3),
+        End_Date__c = Date.today().addDays(38), Delivery_Mode__c = 'Online',
+        Capacity__c = 5, Status__c = 'Open')
+    : remCohorts[0];
+if (remCohort.Id == null) insert remCohort;
+
+Map<String, Contact> remContacts = new Map<String, Contact>();
+for (String lastName : new List<String>{'Reminder-Confirmed', 'Reminder-Applied'}) {
+    String email = 'e2e.' + lastName.toLowerCase() + '@oxfordable.test';
+    List<Contact> found = [SELECT Id, LastName FROM Contact WHERE Email = :email LIMIT 1];
+    Contact c = found.isEmpty()
+        ? new Contact(FirstName = 'Student', LastName = lastName, Email = email, AccountId = acc.Id)
+        : found[0];
+    if (c.Id == null) { Database.insert(c, dml); }
+    remContacts.put(lastName, c);
+}
+if ([SELECT COUNT() FROM Enrolment__c WHERE Cohort__c = :remCohort.Id] == 0) {
+    insert new List<Enrolment__c>{
+        new Enrolment__c(Cohort__c = remCohort.Id,
+            Student__c = remContacts.get('Reminder-Confirmed').Id, Status__c = 'Confirmed'),
+        new Enrolment__c(Cohort__c = remCohort.Id,
+            Student__c = remContacts.get('Reminder-Applied').Id, Status__c = 'Applied')
+    };
+}
+
 System.debug('SEED OK. Courses=' + [SELECT COUNT() FROM Course__c WHERE Name LIKE 'E2E %']
     + ' Cohorts=' + [SELECT COUNT() FROM Cohort__c WHERE Course__r.Name LIKE 'E2E %']
-    + ' Contacts=' + [SELECT COUNT() FROM Contact WHERE Email LIKE 'e2e.%@oxfordable.test']);
+    + ' Contacts=' + [SELECT COUNT() FROM Contact WHERE Email LIKE 'e2e.%@oxfordable.test']
+    + ' ReminderEnrolments=' + [SELECT COUNT() FROM Enrolment__c WHERE Cohort__c = :remCohort.Id]);
