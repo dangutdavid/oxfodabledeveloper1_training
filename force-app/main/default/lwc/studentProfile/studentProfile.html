@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title={labels.title} icon-name="standard:user">
+        <div class="slds-var-p-horizontal_medium body">
+
+            <template if:true={error}>
+                <p class="error">{error}</p>
+            </template>
+
+            <template if:true={profile}>
+                <div class="grid">
+                    <div class="cell">
+                        <span class="k">Name</span>
+                        <span class="v">{profile.name}</span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Email</span>
+                        <span class="v">{profile.email}</span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Username</span>
+                        <span class="v">{profile.username}</span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Organisation</span>
+                        <span class="v">{profile.accountName}</span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Member since</span>
+                        <span class="v"><lightning-formatted-date-time value={profile.memberSince}></lightning-formatted-date-time></span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Active enrolments</span>
+                        <span class="v">{profile.totalEnrolments}</span>
+                    </div>
+                    <div class="cell">
+                        <span class="k">Certificates earned</span>
+                        <span class="v">{profile.certificates}</span>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

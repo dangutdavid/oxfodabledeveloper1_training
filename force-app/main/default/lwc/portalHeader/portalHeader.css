@@ -1,0 +1,59 @@
+/* LWR includes no SLDS - the header is fully self-styled. */
+.hero {
+    background: linear-gradient(120deg, #16324f 0%, #1b5e63 60%, #1c8b74 100%);
+    border-radius: 14px;
+    color: #ffffff;
+    padding: 22px 28px 30px 28px;
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.hero-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 20px;
+}
+.name {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+}
+.accent { color: #7fd1bd; }
+.auth-link {
+    padding: 8px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+}
+.auth-link:hover { background: rgba(255, 255, 255, 0.12); }
+.hero-copy { margin-top: 26px; max-width: 640px; }
+.hero-copy h1 {
+    margin: 0 0 6px 0;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+.hero-copy p {
+    margin: 0;
+    color: #d7e6ef;
+    font-size: 15px;
+    line-height: 1.5;
+}
+@media (max-width: 640px) {
+    .hero-copy h1 { font-size: 24px; }
+}

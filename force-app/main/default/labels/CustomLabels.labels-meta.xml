@@ -73,6 +73,14 @@
         <value>Payment received - thank you!</value>
     </labels>
     <labels>
+        <fullName>Portal_My_Profile</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal profile card title</shortDescription>
+        <value>My Profile</value>
+    </labels>
+    <labels>
         <fullName>Portal_Log_Out</fullName>
         <categories>CareerLaunch,Portal</categories>
         <language>en_US</language>

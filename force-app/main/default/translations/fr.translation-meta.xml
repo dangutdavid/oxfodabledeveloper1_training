@@ -41,6 +41,10 @@
         <name>Portal_Download_Certificate</name>
     </customLabels>
     <customLabels>
+        <label>Mon profil</label>
+        <name>Portal_My_Profile</name>
+    </customLabels>
+    <customLabels>
         <label>Se déconnecter</label>
         <name>Portal_Log_Out</name>
     </customLabels>

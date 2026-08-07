@@ -37,6 +37,44 @@ public without sharing class StudentPortalController {
         @AuraEnabled public Boolean payable      { get; set; }
     }
 
+    public class ProfileView {
+        @AuraEnabled public String  name            { get; set; }
+        @AuraEnabled public String  email           { get; set; }
+        @AuraEnabled public String  username        { get; set; }
+        @AuraEnabled public String  accountName     { get; set; }
+        @AuraEnabled public Integer totalEnrolments { get; set; }
+        @AuraEnabled public Integer certificates    { get; set; }
+        @AuraEnabled public Date    memberSince     { get; set; }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static ProfileView getMyProfile() {
+        Id contactId = resolveContactId();
+
+        Contact me = [
+            SELECT Name, Email, Account.Name, CreatedDate,
+                   (SELECT Id, Certificate_Issued__c FROM Enrolments__r
+                    WHERE Status__c != 'Cancelled')
+            FROM Contact
+            WHERE Id = :contactId
+            LIMIT 1
+        ];
+
+        ProfileView view     = new ProfileView();
+        view.name            = me.Name;
+        view.email           = me.Email;
+        view.username        = UserInfo.getUserName();
+        view.accountName     = me.Account == null ? null : me.Account.Name;
+        view.totalEnrolments = me.Enrolments__r.size();
+        view.memberSince     = me.CreatedDate.date();
+        Integer certs = 0;
+        for (Enrolment__c enr : me.Enrolments__r) {
+            if (enr.Certificate_Issued__c) certs++;
+        }
+        view.certificates = certs;
+        return view;
+    }
+
     @AuraEnabled(cacheable=true)
     public static List<EnrolmentView> getMyEnrolments() {
         Id contactId = resolveContactId();

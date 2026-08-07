@@ -1,0 +1,15 @@
+.body { padding-bottom: 12px; }
+.error { color: #b3261e; }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px 20px;
+}
+.cell { display: flex; flex-direction: column; }
+.k {
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #5a6b82;
+}
+.v { font-weight: 600; color: #16324f; word-break: break-all; }

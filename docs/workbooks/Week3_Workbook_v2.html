@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oxfordable — Week 3 Participant Workbook · Design &amp; Build Part 1</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: 'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; color:#22324a; font-size:10pt; line-height:1.5; }
+  .page { page-break-after: always; }
+  /* dark cover */
+  .coverwrap { background:#152238; color:#e8eef5; border-radius:10px; padding:34mm 16mm 14mm 16mm; min-height:255mm; position:relative; }
+  .cov-kicker { letter-spacing:4px; font-size:9pt; color:#9fb3cc; font-weight:700; }
+  .cov-week { letter-spacing:3px; font-size:9.5pt; color:#7fd1bd; font-weight:700; margin-top:46mm; }
+  h1.cov { font-size:30pt; font-weight:800; color:#ffffff; margin:8px 0 6px 0; line-height:1.15; }
+  .cov-sub { font-size:13pt; color:#b9c7d9; }
+  .cov-rule { width:52px; border-top:3px solid #2bbf9c; margin:22mm 0 10mm 0; }
+  .cov-fields { font-size:10.5pt; color:#dfe7f1; line-height:2.1; }
+  .cov-fields b { color:#fff; }
+  .cov-foot { position:absolute; bottom:12mm; left:16mm; right:16mm; border-top:1px solid #2c3d58; padding-top:8px; font-size:8.5pt; color:#9fb3cc; }
+  .rev { display:inline-block; background:#2bbf9c; color:#0d1b2e; font-weight:800; border-radius:4px; padding:1px 8px; font-size:8.5pt; margin-left:8px; }
+  /* headings */
+  h2.sec { font-size:18pt; font-weight:800; color:#152238; border-bottom:2px solid #2bbf9c; padding-bottom:6px; margin:4px 0 10px 0; break-before:page; page-break-after:avoid; }
+  h2.first { break-before:auto; }
+  h3 { font-size:12pt; color:#0f6b5c; margin:14px 0 6px 0; page-break-after:avoid; }
+  h4 { font-size:10.5pt; color:#152238; margin:10px 0 4px 0; page-break-after:avoid; }
+  p { margin:5px 0; }
+  ul, ol { margin:5px 0 5px 20px; } li { margin:3px 0; }
+  code { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.5pt; background:#f1f4f8; border:1px solid #e3e9f0; border-radius:4px; padding:1px 5px; color:#1f3a56; }
+  pre { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:7.9pt; background:#f7f9fb; border:1px solid #e3e9f0; border-radius:8px; padding:10px 12px; margin:8px 0; white-space:pre-wrap; line-height:1.42; }
+  pre.code { page-break-inside:auto; }
+  table { width:100%; border-collapse:collapse; margin:8px 0 12px 0; font-size:9.1pt; }
+  th { text-align:left; font-size:7.8pt; letter-spacing:1px; text-transform:uppercase; color:#fff; background:#152238; padding:6px 9px; }
+  td { padding:6px 9px; border-bottom:1px solid #e9eef4; vertical-align:top; }
+  tr { page-break-inside:avoid; }
+  tr:nth-child(even) td { background:#f8fafc; }
+  .callout { border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid; border-left:4px solid; }
+  .callout .ct { font-size:7.8pt; letter-spacing:1.5px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+  .info { background:#eef2fb; border-color:#4c63b6; } .info .ct{color:#4c63b6}
+  .warn { background:#fdf1ec; border-color:#c0392b; } .warn .ct{color:#c0392b}
+  .amber{ background:#fdf6e7; border-color:#b7791f; } .amber .ct{color:#b7791f}
+  .dark { background:#152238; color:#e8eef5; border-color:#2bbf9c; } .dark .ct{color:#7fd1bd} .dark code{background:#24385a;border-color:#314970;color:#cfe3f5}
+  .new  { background:#ebf7f1; border-color:#0f8a6d; } .new .ct{color:#0f8a6d}
+  .steps { counter-reset: step; margin:8px 0; }
+  .step { position:relative; padding-left:32px; margin:8px 0; page-break-inside:avoid; }
+  .step::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:1px; width:21px;height:21px;border-radius:50%; background:#152238; color:#7fd1bd; font-weight:800; font-size:9.5pt; display:flex;align-items:center;justify-content:center; }
+  .lab { background:#152238; color:#fff; border-radius:8px; padding:12px 16px; margin:4px 0 12px 0; page-break-inside:avoid; }
+  .lab .lk { letter-spacing:2px; font-size:8pt; color:#7fd1bd; font-weight:800; }
+  .lab .lt { font-size:15pt; font-weight:800; }
+  .lab .ld { color:#b9c7d9; font-size:9.3pt; margin-top:2px; }
+  .tick { color:#8494a8; font-size:9pt; margin:4px 0 10px 0; } .tick::before{content:'☐ ';}
+  .footer-note { color:#8494a8; font-size:8.5pt; border-top:1px solid #e3e9f0; margin-top:20px; padding-top:6px; }
+</style>
+</head>
+<body>
+
+<!-- WEEK 3 COVER -->
+<div class="page">
+<div class="coverwrap">
+  <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
+  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
+  <h1 class="cov">Build, Test,<br>Deploy &amp; Demo</h1>
+  <div class="cov-sub">User Interface, AI, Testing and Release</div>
+  <div class="cov-rule"></div>
+  <div class="cov-fields">
+    <b>Name:</b> ______________________________________<br>
+    <b>Cohort:</b> ____________________________________<br>
+    <b>Date:</b> ______________________________________<br>
+    <b>My GitHub repository:</b> _______________________
+  </div>
+  <div class="cov-foot">
+    Salesforce Developer Introductory Programme · Labs 5, 6, 7 and 8 · UAT and demo ·
+    <b>Version 2.0 — Extension Pack update + complete AI Build Prompt series</b><br>
+    This is the workbook you keep. It contains your acceptance test script, your deployment commands and your portfolio write-up.
+  </div>
+</div>
+</div>
+
+<!-- WELCOME -->
+<h2 class="sec first">Welcome to Week 3</h2>
+<p><b>Today you finish the application, prove it works, ship it to another org, and demonstrate it.</b>
+By the end of this session you have something real to show an employer.</p>
+
+<div class="callout new"><div class="ct">What changed in version 2.0 of this workbook</div>
+Week 3 is no longer the end. The same project continues into the <b>CareerLaunch Extension Pack</b> —
+invoicing and payments, certificate PDFs (filed <i>and</i> emailed), org-wide error logging,
+multi-currency and multi-language, and an Experience Cloud student portal with automatic login
+provisioning — documented in the <b>Complete Build Guide</b>, the Extension Workbooks (Parts A–C) and
+the E2E Test Document. Appendix E of this workbook carries the full AI Build Prompt series (P1–P12)
+that can reproduce everything, in order, including seed data.</div>
+
+<h3>Before you arrive — checklist</h3>
+<div class="tick">My org contains Course, Cohort and Enrolment with all the fields, the roll-up, both formulas and both validation rules.</div>
+<div class="tick"><code>EnrolmentTrigger</code> and <code>EnrolmentTriggerHandler</code> are deployed and active.</div>
+<div class="tick"><code>StudentSummaryQueueable</code> and <code>CohortAvailabilityService</code> are saved without compile errors.</div>
+<div class="tick">The record-triggered flow <code>Enrolment_Confirmed_Actions</code> is <b>activated</b>.</div>
+<div class="tick">I have sample data: at least three Contacts <b>with email addresses</b>, and two open Cohorts with seats free.</div>
+<div class="tick">I attempted Homework 2 task 5 — a test method, however rough.</div>
+<div class="tick">VS Code, Salesforce CLI and Git all work on my machine.</div>
+<div class="callout warn"><div class="ct">Anything not ticked?</div>
+Post in the group <b>before</b> the session. Today has four labs back to back and we cannot rebuild
+Week 2 in the room. If your Apex will not compile, send the error message — it is almost always a
+field API name spelling.</div>
+
+<h3>What today covers</h3>
+<table>
+<tr><th>Time</th><th>Block</th><th>What you will do</th></tr>
+<tr><td>0:00–0:10</td><td>Recap &amp; homework review</td><td>We look at two of your test attempts on screen</td></tr>
+<tr><td>0:10–0:50</td><td><b>Lab 5 — Lightning Web Components</b></td><td>Apex controllers, two LWCs, the Enrolment Console page</td></tr>
+<tr><td>0:50–1:20</td><td><b>Lab 6 — Agentforce agent</b></td><td>Actions, agent, topic, instructions, testing in preview</td></tr>
+<tr><td>1:20–1:30</td><td>Break</td><td>—</td></tr>
+<tr><td>1:30–2:00</td><td><b>Lab 7 — Testing &amp; debugging</b></td><td>Test data factory, test classes, coverage, debug logs</td></tr>
+<tr><td>2:00–2:30</td><td><b>Lab 8 — Security &amp; deployment</b></td><td>Permission set, CLI deployment to a second org, Git</td></tr>
+<tr><td>2:30–2:50</td><td>UAT &amp; demo round</td><td>Run the acceptance script; two-minute demos</td></tr>
+<tr><td>2:50–3:00</td><td>PD1 map, career support, close</td><td>Where this leads next</td></tr>
+</table>
+
+<h3>The three stories we deliver today</h3>
+<table>
+<tr><th>ID</th><th>User story</th><th>Acceptance criteria</th></tr>
+<tr><td><b>US-10</b></td><td>As an admissions officer, I want a single console showing open cohorts with seats remaining and an enrol button, so that I can work from one screen.</td><td>A Lightning page lists open cohorts, filterable by course, showing seats remaining; selecting one allows enrolling a student and shows a success toast.</td></tr>
+<tr><td><b>US-11</b></td><td>As a prospective student, I want to ask an assistant which cohorts have seats available, so that I get an instant answer.</td><td>An Agentforce agent answers “which Advanced cohorts have seats?” using live org data.</td></tr>
+<tr><td><b>US-12</b></td><td>As a student, I want to ask the assistant about the status of my enrolment, so that I do not have to email the team.</td><td>The agent returns the student's cohort, start date and enrolment status when given their email address.</td></tr>
+<tr><td><b>US-14</b></td><td>As the delivery team, I want the solution covered by automated tests and deployable to another org, so that we can release safely.</td><td>75% Apex coverage or better with meaningful assertions; a documented CLI deployment succeeds against a clean org.</td></tr>
+</table>
+<!-- LAB 5 -->
+<h2 class="sec">Lab 5 — Lightning Web Components</h2>
+<div class="lab"><div class="lk">LAB 5 · 40 MINUTES · HANDS-ON</div><div class="lt">Lightning Web Components</div>
+<div class="ld">Build the Enrolment Console: two custom components, two Apex controllers, one Lightning page.</div></div>
+<p><b>The concept, in one paragraph.</b> A Lightning Web Component is <b>three files</b>: an HTML template
+(what it looks like), a JavaScript class (what it does), and a metadata XML file (where it is allowed to
+be used). Data comes from Apex in one of two ways — through the <b>wire service</b> (reactive,
+cacheable, for reading) or <b>imperatively</b> (on demand, for writing).</p>
+<h3>Build order</h3>
+<div class="steps">
+<div class="step"><b>The Apex controllers.</b> Create <code>CohortController</code> and <code>EnrolmentController</code> (Appendix A.1 and A.2). <code>@AuraEnabled(cacheable=true)</code> for the reads — this is what makes <code>@wire</code> possible. Plain <code>@AuraEnabled</code> for the write: a cacheable method is not allowed to perform DML.</div>
+<div class="step"><code>cohortExplorer</code> (Appendix B.1) — a combobox of courses and a <code>lightning-datatable</code> of open cohorts, populated by the wire adapter. Selecting a row dispatches a <code>cohortselected</code> custom event.</div>
+<div class="step"><code>enrolmentPanel</code> (Appendix B.2) — receives the selected cohort through <code>@api</code>, shows a contact picker, calls Apex imperatively, fires a toast, navigates to the new record, and tells the parent to refresh.</div>
+<div class="step"><code>enrolmentConsole</code> (Appendix B.3) — the small wrapper that listens for <code>cohortselected</code>, passes the record down, and refreshes the explorer when an enrolment is created.</div>
+<div class="step"><b>The Lightning page.</b> Setup → Lightning App Builder → New → App Page → two-column layout. Drop <code>enrolmentConsole</code> on, name it <b>Enrolment Console</b>, then Save → <b>Activate</b> → add it to your app's navigation.</div>
+</div>
+<h3>Teaching beats — the things to actually remember</h3>
+<table>
+<tr><th>Beat</th><th>The point</th></tr>
+<tr><td><code>@wire</code> versus imperative</td><td>Reads versus writes. Wired data is cached and refreshes reactively; <code>refreshApex</code> forces a reload.</td></tr>
+<tr><td><code>@api</code></td><td>A public property — how a parent passes data <i>down</i> to a child.</td></tr>
+<tr><td><code>CustomEvent</code></td><td>How a child talks <i>up</i>. Memorise: <b>data down, events up</b>.</td></tr>
+<tr><td><code>ShowToastEvent</code> / <code>NavigationMixin</code></td><td>Standard user feedback / navigation.</td></tr>
+<tr><td>try/catch + <code>AuraHandledException</code></td><td>NFR-04 in practice: users see a sentence, not a stack trace.</td></tr>
+</table>
+<div class="callout amber"><div class="ct">Checkpoint — the whole architecture proven in one action</div>
+Enrol a student from the console: a <b>toast</b> appears, the datatable's <b>seat count drops</b>, and an
+attempted overbook is <b>still blocked by the Week 2 trigger</b> — your message, surfaced through the new
+UI. The console is just another channel on the same protected service layer. <i>(In the Extension Pack
+the same principle carries a whole student portal — see Appendix E, prompt P10.)</i></div>
+
+<!-- LAB 6 -->
+<h2 class="sec">Lab 6 — Agentforce Agent</h2>
+<div class="lab"><div class="lk">LAB 6 · 30 MINUTES · HANDS-ON</div><div class="lt">Agentforce Agent</div>
+<div class="ld">Give the Apex you wrote in Week 2 to an AI agent, and watch it answer real questions from live org data.</div></div>
+<p><b>The concept, in one paragraph.</b> An agent is made of <b>topics</b> (what it can help with),
+<b>instructions</b> (how it should behave), and <b>actions</b> (what it can actually do). Your
+<code>CohortAvailabilityService</code> from Lab 4 becomes an agent action <b>with no rewriting whatsoever</b>.</p>
+<h3>Prerequisites — check these first</h3>
+<div class="tick">Agentforce / Einstein Setup is enabled (Setup → Einstein Setup → turn on).</div>
+<div class="tick"><code>CohortAvailabilityService</code> and <code>EnrolmentStatusService</code> are deployed and compile.</div>
+<div class="tick">Sample Courses and Cohorts exist with genuinely available seats.</div>
+<div class="tick">My user has the required Agentforce permission set assigned.</div>
+<div class="callout info"><div class="ct">If Agentforce is unavailable in your org</div>
+Some Developer Edition orgs do not offer it. That is not a failure on your part: the instructor
+demonstrates from the reference org, you follow the build sheet as written homework, and the learning
+objective survives — the important idea is the <code>@InvocableMethod</code> bridge, and you already own that.</div>
+<h3>Build sheet</h3>
+<div class="steps">
+<div class="step"><b>Create the second action class.</b> <code>EnrolmentStatusService</code> (Appendix A.3) returns a student's enrolment status from an email address.</div>
+<div class="step"><b>Create the agent.</b> Setup → Agentforce → Agents → New Agent. Name <code>Oxfordable Student Assistant</code>; type Employee/internal; role “Answers questions about our courses, cohort availability and a student's own enrolment status”; company “Oxfordable Careers, a technology training provider”; tone “Warm, concise, professional. Never invent dates, prices or seat numbers.”</div>
+<div class="step"><b>Create two agent actions</b> from your invocables: <b>Find Available Cohorts</b> (input Course Name; outputs Answer, Available Cohorts, Seats Available) and <b>Check Enrolment Status</b> (input Student Email; outputs Answer, Found).</div>
+<div class="step"><b>Write the descriptions properly.</b> Every input and output needs a clear description — the agent reads these to decide what to pass and how to answer. Write them <b>for a colleague who has never seen your org</b>: thin descriptions are the number one reason agents misbehave.</div>
+<div class="step"><b>Create the topic</b> <code>Course Enrolment Enquiries</code>. Classification: “Use this topic when someone asks about our courses, when a cohort starts, whether seats are available, how to join, or the status of an enrolment they already hold.” Scope: answer only from the assigned actions; never speculate. Instructions: ask which course if unclear; always state start date and seats; offer the next cohort if none; ask for the booking email for status questions; never share one student's details with another; pass anything else to the team. Assign both actions.</div>
+<div class="step"><b>Test in the conversation preview</b> — the five scripted questions in the UAT table (availability, start dates, status flow, out-of-scope), then <b>read the reasoning trace</b> after each: which topic fired, which action ran. An agent that answers badly is nearly always choosing the wrong action, and the trace tells you so.</div>
+<div class="step"><b>Activate</b> the agent.</div>
+</div>
+<div class="callout dark"><div class="ct">The point of this lab</div>
+The agent is not magic. It is a language model given <b>your</b> topic definition and <b>your</b> Apex.
+Everything it can truthfully say about seat availability comes from the SOQL query you wrote last week.
+That is the honest, sellable version of “I have built with AI”.</div>
+
+<!-- LAB 7 -->
+<h2 class="sec">Lab 7 — Testing and Debugging</h2>
+<div class="lab"><div class="lk">LAB 7 · 30 MINUTES · HANDS-ON</div><div class="lt">Testing and Debugging</div>
+<div class="ld">Prove the capacity rule works — and that it will keep working after somebody else edits your code.</div></div>
+<div class="callout info"><div class="ct">Why we test</div>
+Salesforce will not let you deploy Apex to production below <b>75% coverage</b>. But coverage is the
+floor, not the goal. Tests exist so the next person to change this code finds out <i>immediately</i> if
+they broke your capacity rule. That person is often you, three months later.</div>
+<h3>Build</h3>
+<div class="steps">
+<div class="step"><code>TestDataFactory</code> (Appendix A.4) — reusable creation of a course, a cohort, contacts and enrolments. Two rules while we build it: hard-coded record IDs are forbidden, and <code>SeeAllData=false</code> (the default) means every test creates its own world.</div>
+<div class="step"><code>EnrolmentTriggerTest</code> (Appendix A.5) — five methods: defaults (US-02) · overbooking blocked, a negative test using <code>Database.insert(record, false)</code> (US-04) · 200-record bulk (NFR-01) · duplicate blocked (US-05) · the queueable, forced to run by <code>Test.startTest()/stopTest()</code> (US-13).</div>
+<div class="step"><code>CohortServicesTest</code> (Appendix A.6) — covers both controllers and both invocable services, including the error paths.</div>
+</div>
+<pre>sf apex run test --target-org devorg --code-coverage --result-format human --wait 10</pre>
+<h3>Our test standards</h3>
+<ol>
+<li>One test class per class under test, named <code>&lt;ClassName&gt;Test</code>.</li>
+<li>All data created inside the test — never rely on org data.</li>
+<li>Shared setup via <code>TestDataFactory</code> and <code>@testSetup</code>.</li>
+<li>Every method contains at least one meaningful <code>Assert</code>.</li>
+<li>Test the <b>unhappy</b> path, not just the happy one.</li>
+<li>Bulk test with 200 records for anything a trigger touches.</li>
+<li>Coverage floor 75%; our project target is 90%.</li>
+</ol>
+<h3>Debugging toolkit</h3>
+<table>
+<tr><th>Symptom</th><th>First place to look</th></tr>
+<tr><td>“An unexpected error occurred” in the UI</td><td>Debug Logs → most recent → search <code>FATAL_ERROR</code></td></tr>
+<tr><td>Apex not firing</td><td>Is the trigger active? Does the record meet the entry criteria?</td></tr>
+<tr><td>Flow not firing</td><td>Not activated, or wrong entry conditions. Check Paused and Failed Flow Interviews.</td></tr>
+<tr><td>LWC renders blank</td><td>Browser console (F12); the <code>.js-meta.xml</code> targets; Apex class access on the permission set</td></tr>
+<tr><td>Agent gives a vague answer</td><td>The reasoning trace — wrong topic, or thin action descriptions</td></tr>
+<tr><td>Test fails only in bulk</td><td>SOQL or DML inside a loop</td></tr>
+</table>
+<div class="callout amber"><div class="ct">Target</div>
+☐ A green test run, with overall code coverage of <b>75% or higher</b>. Write your number here: ________ %</div>
+
+<!-- LAB 8 -->
+<h2 class="sec">Lab 8 — Security and Deployment</h2>
+<div class="lab"><div class="lk">LAB 8 · 30 MINUTES · HANDS-ON</div><div class="lt">Security and Deployment</div>
+<div class="ld">Grant access properly, get your source onto your machine and into GitHub, and deploy the whole application to a second org.</div></div>
+<h3>Step 1 — Permission set (NFR-05)</h3>
+<p>Setup → Permission Sets → New → label <code>Enrolment Console User</code>. Object Settings: Course,
+Cohort, Enrolment → Read, Create, Edit; Contact → Read. Field permissions for all custom fields. Apex
+Class Access: CohortController, EnrolmentController, CohortAvailabilityService,
+EnrolmentStatusService. Tab settings: Courses, Cohorts, Enrolments → Visible. Assign it to yourself,
+and to a second test user if you have one.</p>
+<div class="callout info"><div class="ct">Why not just edit the profile?</div>
+Profiles are shared by many users and painful to deploy and audit. Permission sets are additive,
+granular and portable. Editing the System Administrator profile to “make it work” is the classic
+beginner mistake, and explicitly against NFR-05.</div>
+<h3>Step 2 — Get the source onto your machine</h3>
+<pre>sf org login web --alias devorg
+sf project generate --name careerlaunch
+cd careerlaunch
+sf project retrieve start --manifest manifest/package.xml --target-org devorg</pre>
+<p>Use the <code>package.xml</code> in Appendix C. Everything you built with clicks is now text on disk.</p>
+<h3>Step 3 — Version control</h3>
+<pre>git init
+git add .
+git commit -m "CareerLaunch v1: data model, automation, Apex, LWC, agent"
+git branch -M main
+git remote add origin https://github.com/&lt;username&gt;/careerlaunch.git
+git push -u origin main</pre>
+<div class="callout dark"><div class="ct">This repository is a portfolio asset</div>
+It goes on your CV and in your LinkedIn Featured section. Write the repository URL on the cover of this
+workbook now, before you forget it.</div>
+<h3>Step 4 — Deploy to a second org</h3>
+<pre>sf org login web --alias targetorg
+# Validate first - deploys nothing, but runs every check
+sf project deploy start --manifest manifest/package.xml --target-org targetorg \
+    --test-level RunLocalTests --dry-run
+# Then deploy for real
+sf project deploy start --manifest manifest/package.xml --target-org targetorg \
+    --test-level RunLocalTests</pre>
+<h3>Step 5 — Post-deployment checklist</h3>
+<table>
+<tr><th>#</th><th>Action — deployment is never finished at “the deploy succeeded”</th></tr>
+<tr><td>1</td><td>Confirm all Flows are <b>Active</b> in the target org — they can deploy inactive</td></tr>
+<tr><td>2</td><td>Assign the <code>Enrolment Console User</code> permission set to test users (fresh deploys grant no FLS)</td></tr>
+<tr><td>3</td><td>Add the Enrolment Console page and the tabs to the app navigation</td></tr>
+<tr><td>4</td><td>Activate the Agentforce agent and re-test one question</td></tr>
+<tr><td>5</td><td>Check org-wide email deliverability is <b>All Email</b></td></tr>
+<tr><td>6</td><td>Load reference data (Courses, Cohorts) — <b>records are not deployed</b></td></tr>
+<tr><td>7</td><td>Run smoke tests UAT-03, UAT-04 and UAT-10 in the target org</td></tr>
+<tr><td>8</td><td>Tag the release: <code>git tag v1.0 &amp;&amp; git push --tags</code></td></tr>
+</table>
+<div class="callout amber"><div class="ct">Discussion — be ready with an answer</div>
+It is Friday afternoon. The deployment succeeded, and the capacity rule is now blocking every save.
+<b>What do you do?</b> Think about: deactivating the trigger, reverting the Git commit and redeploying,
+and — best of all — why the validate-only run in Step 4 exists at all.</div>
+<!-- UAT -->
+<h2 class="sec">User Acceptance Testing</h2>
+<p>Run this script against your own org and record the result. It is the evidence that your application
+does what the client asked for — and a genuinely impressive thing to show at interview. <i>(The full
+platform, including the Extension Pack, has its own 46-case script: the E2E Test Document.)</i></p>
+<table>
+<tr><th>ID</th><th>Story</th><th>Test step</th><th>Expected result</th><th>✓</th></tr>
+<tr><td>UAT-01</td><td>US-01</td><td>Create a Course and a Cohort linked to it</td><td>Both save; the Cohort shows the Course</td><td>☐</td></tr>
+<tr><td>UAT-02</td><td>US-01</td><td>Set the Cohort End Date before the Start Date</td><td>Validation error shown</td><td>☐</td></tr>
+<tr><td>UAT-03</td><td>US-03</td><td>Create one enrolment on a cohort with capacity 3</td><td>Enrolled Count = 1, Seats Remaining = 2</td><td>☐</td></tr>
+<tr><td>UAT-04</td><td>US-04</td><td>Enrol a fourth student on a capacity-3 cohort</td><td>Save blocked with the custom capacity message</td><td>☐</td></tr>
+<tr><td>UAT-05</td><td>US-05</td><td>Enrol the same student on the same cohort twice</td><td>Save blocked (duplicate key)</td><td>☐</td></tr>
+<tr><td>UAT-06</td><td>US-06</td><td>Change an enrolment status to Confirmed</td><td>Email sent to the student; follow-up Task created</td><td>☐</td></tr>
+<tr><td>UAT-07</td><td>US-07</td><td>Fill the final seat on a cohort</td><td>Cohort Status changes to Full automatically</td><td>☐</td></tr>
+<tr><td>UAT-08</td><td>US-08</td><td>Run the Quick Enrol screen flow end to end</td><td>Enrolment created; confirmation shows the record number</td><td>☐</td></tr>
+<tr><td>UAT-09</td><td>US-09</td><td>Set a cohort start date to today + 3 and run the scheduled flow</td><td>Reminder generated for confirmed enrolments only</td><td>☐</td></tr>
+<tr><td>UAT-10</td><td>US-10</td><td>Open the Enrolment Console, filter, select a cohort, enrol a student</td><td>Toast shown; seat count refreshes; record created</td><td>☐</td></tr>
+<tr><td>UAT-11</td><td>US-11</td><td>Ask the agent “which Advanced cohorts have seats?”</td><td>Live cohorts with dates and seats remaining</td><td>☐</td></tr>
+<tr><td>UAT-12</td><td>US-12</td><td>Ask the agent for enrolment status with a known email</td><td>Cohort, start date and status returned</td><td>☐</td></tr>
+<tr><td>UAT-13</td><td>US-13</td><td>Check the student's Contact record</td><td>Total Enrolments reflects active enrolments</td><td>☐</td></tr>
+<tr><td>UAT-14</td><td>US-14</td><td>Run all tests</td><td>All pass; overall coverage 75% or higher</td><td>☐</td></tr>
+<tr><td>UAT-15</td><td>US-14</td><td>Deploy to a second org; repeat UAT-03 and UAT-10 there</td><td>Both behave identically</td><td>☐</td></tr>
+</table>
+
+<h3>Your two-minute demo</h3>
+<table>
+<tr><th>Seconds</th><th>Cover</th><th>Say something like</th></tr>
+<tr><td>0–20</td><td>The problem</td><td>“Oxfordable ran cohorts in spreadsheets and could not answer how many seats were left.”</td></tr>
+<tr><td>20–50</td><td>The data model</td><td>“Three objects. Master-detail from Enrolment to Cohort so I could roll up the seat count.”</td></tr>
+<tr><td>50–1:20</td><td>One automation</td><td>“The capacity rule is an Apex trigger, because a validation rule cannot count sibling records.”</td></tr>
+<tr><td>1:20–1:45</td><td>The console</td><td>Enrol somebody live; show the toast and the seat count updating.</td></tr>
+<tr><td>1:45–2:00</td><td>The agent</td><td>Ask it a question and show the answer came from your own SOQL.</td></tr>
+</table>
+<div class="callout info"><div class="ct">Record it</div>
+A two-minute video of your own working application is one of the strongest things a career changer can
+attach to a job application.</div>
+
+<!-- COMPLETION -->
+<h2 class="sec">Completion, Portfolio &amp; What Comes Next</h2>
+<h3>Completion criteria</h3>
+<table>
+<tr><th>#</th><th>Evidence</th><th>✓</th></tr>
+<tr><td>1</td><td>A Developer org containing the CareerLaunch data model with sample data</td><td>☐</td></tr>
+<tr><td>2</td><td>At least two working Flows — one record-triggered, one screen</td><td>☐</td></tr>
+<tr><td>3</td><td>An active <code>EnrolmentTrigger</code> that blocks overbooking and duplicates</td><td>☐</td></tr>
+<tr><td>4</td><td>A working Enrolment Console page built from your own LWCs</td><td>☐</td></tr>
+<tr><td>5</td><td>An Agentforce agent that answers an availability question from live data</td><td>☐</td></tr>
+<tr><td>6</td><td>A passing test run with 75% coverage or better</td><td>☐</td></tr>
+<tr><td>7</td><td>A completed UAT script</td><td>☐</td></tr>
+<tr><td>8</td><td>A public GitHub repository containing the source</td><td>☐</td></tr>
+<tr><td>9</td><td>A two-minute recorded or live demo</td><td>☐</td></tr>
+</table>
+<p style="color:#5a6b82;font-size:9pt">Meeting criteria 1 to 7 earns the Oxfordable Careers Certificate of Completion — a statement of
+attendance and demonstrated practical work, not a Salesforce credential. <b>PD1 is the credential that
+counts</b>, and it is what the Advanced Course prepares you for.</p>
+
+<h3>Write it up as a portfolio piece</h3>
+<div class="callout dark"><div class="ct">CareerLaunch — Salesforce cohort enrolment &amp; student success app</div>
+Designed and built a Salesforce application managing course cohorts and student enrolments. Modelled the
+schema (custom objects, master-detail and lookup relationships, roll-up summaries). Automated
+confirmation and reminder processes with record-triggered, screen and scheduled Flows. Wrote bulkified
+Apex triggers with a handler pattern to enforce seat capacity and prevent duplicate enrolments, plus a
+Queueable job for asynchronous aggregation. Built a two-component Lightning Web Component console with
+wire and imperative Apex. Exposed Apex as invocable actions powering an Agentforce agent answering
+availability questions from live data. Achieved 90% Apex coverage and deployed via Salesforce CLI with
+a validated, test-gated release. <i>Extension: payment layer behind an interface + custom-metadata
+factory (stub and production HTTP client with named credential and idempotency key), automatic
+invoicing with frozen exchange rates, PDF certificates generated asynchronously and emailed to
+students, a rollback-proof platform-event error-logging framework, custom-label internationalisation
+(EN/FR), and an Experience Cloud portal with contact-scoped self-service payments and automatic login
+provisioning.</i> (GitHub link)</div>
+
+<h3>Ten interview questions this project prepares you to answer</h3>
+<ol>
+<li>When would you use a Flow instead of an Apex trigger?</li>
+<li>What is the difference between a lookup and a master-detail relationship?</li>
+<li>What does it mean to “bulkify” Apex, and how do you do it?</li>
+<li>How would you prevent duplicate records without writing complex code?</li>
+<li>What is a governor limit? Name three.</li>
+<li>Before-save versus after-save flows — what is the difference and why does it matter?</li>
+<li>How do you pass data from a parent LWC to a child, and back again?</li>
+<li>Why is 75% coverage not the same as good testing?</li>
+<li>Walk me through how you would deploy this to production safely.</li>
+<li>How did you expose your Apex logic to an AI agent?</li>
+</ol>
+
+<h3>Where this leads</h3>
+<table>
+<tr><th>Step</th><th>What</th><th>When</th></tr>
+<tr><td>1</td><td><b>The Extension Pack</b> — the same project, professional depth: payments &amp; invoicing, certificates by portal and email, error logging, i18n, the student portal. Extension Workbooks A–C + the Complete Build Guide + the E2E Test Document.</td><td>The weeks after this session</td></tr>
+<tr><td>2</td><td><b>The Advanced Salesforce Developer Course</b> — trigger frameworks, integration patterns in anger, CI/CD, and PD1 exam preparation.</td><td>Reserve a place — WhatsApp +44 7448 717334 · +234 704 916 5925</td></tr>
+<tr><td>3</td><td><b>Career clinics</b> — CV, LinkedIn (this project in your Featured section), interview preparation.</td><td>Book after the programme</td></tr>
+</table>
+<p><b>Score yourself again:</b> go back to the skills map in your Week 1 workbook and fill in the Week 3
+column. The difference is three weeks of work, and it is the honest measure of what you have gained.</p>
+<!-- APPENDIX A -->
+<h2 class="sec">Appendix A — Apex Source Code</h2>
+<div class="callout warn"><div class="ct">Use this to catch up, not to read ahead</div>
+We type this code together in the labs. If you fall behind, copy from here and rejoin the group — do
+not sit stuck in silence. All classes use the British spelling <code>Enrolment__c</code>. Copy exactly.
+<i>(v2.0 note: this appendix is generated from the live repository, so it always matches the reference
+build — including <code>TestDataFactory.createStudent</code>, which the Extension Pack tests use.)</i></div>
+
+<h3>A.1 &nbsp;CohortController — LWC read controller</h3>
+<pre class="code">public with sharing class CohortController {
+
+    @AuraEnabled(cacheable=true)
+    public static List&lt;Course__c&gt; getActiveCourses() {
+        return [
+            SELECT Id, Name, Course_Level__c, Fee__c
+            FROM Course__c
+            WHERE Active__c = true
+            WITH SECURITY_ENFORCED
+            ORDER BY Name ASC
+            LIMIT 200
+        ];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List&lt;Cohort__c&gt; getOpenCohorts(Id courseId) {
+        String status = &#x27;Open&#x27;;
+        List&lt;Cohort__c&gt; cohorts = (courseId == null)
+            ? [SELECT Id, Name, Cohort_Label__c, Course__r.Name, Start_Date__c, Delivery_Mode__c,
+                      Capacity__c, Enrolled_Count__c, Seats_Remaining__c, Status__c
+               FROM Cohort__c
+               WHERE Status__c = :status AND Start_Date__c &gt;= TODAY
+               WITH SECURITY_ENFORCED
+               ORDER BY Start_Date__c ASC LIMIT 100]
+            : [SELECT Id, Name, Cohort_Label__c, Course__r.Name, Start_Date__c, Delivery_Mode__c,
+                      Capacity__c, Enrolled_Count__c, Seats_Remaining__c, Status__c
+               FROM Cohort__c
+               WHERE Status__c = :status AND Start_Date__c &gt;= TODAY AND Course__c = :courseId
+               WITH SECURITY_ENFORCED
+               ORDER BY Start_Date__c ASC LIMIT 100];
+        return cohorts;
+    }
+}
+</pre>
+
+<h3>A.2 &nbsp;EnrolmentController — LWC write controller</h3>
+<pre class="code">public with sharing class EnrolmentController {
+
+    @AuraEnabled
+    public static Enrolment__c createEnrolment(Id cohortId, Id studentId, String status) {
+
+        if (cohortId == null || studentId == null) {
+            throw new AuraHandledException(&#x27;Please choose both a cohort and a student.&#x27;);
+        }
+
+        Enrolment__c enrolment = new Enrolment__c(
+            Cohort__c  = cohortId,
+            Student__c = studentId,
+            Status__c  = String.isBlank(status) ? &#x27;Confirmed&#x27; : status
+        );
+
+        try {
+            insert enrolment;
+        } catch (DmlException e) {
+            // Surfaces the trigger message (capacity) or the unique-key message (duplicate)
+            // as a readable sentence rather than a stack trace. See NFR-04.
+            throw new AuraHandledException(friendlyMessage(e));
+        }
+
+        return [
+            SELECT Id, Name, Status__c, Cohort__r.Cohort_Label__c, Student__r.Name
+            FROM Enrolment__c
+            WHERE Id = :enrolment.Id
+            LIMIT 1
+        ];
+    }
+
+    @TestVisible
+    private static String friendlyMessage(DmlException e) {
+        String raw = e.getDmlMessage(0);
+        if (raw != null &amp;&amp; raw.containsIgnoreCase(&#x27;duplicate value found&#x27;)) {
+            return &#x27;That student is already enrolled on this cohort.&#x27;;
+        }
+        return String.isBlank(raw) ? e.getMessage() : raw;
+    }
+}
+</pre>
+
+<h3>A.3 &nbsp;EnrolmentStatusService — second agent action (US-12)</h3>
+<pre class="code">public with sharing class EnrolmentStatusService {
+
+    public class Request {
+        @InvocableVariable(
+            label=&#x27;Student Email&#x27;
+            description=&#x27;The email address the student used when booking.&#x27;
+            required=true)
+        public String studentEmail;
+    }
+
+    public class Result {
+        @InvocableVariable(label=&#x27;Answer&#x27; description=&#x27;A summary of the student current enrolments.&#x27;)
+        public String answer;
+
+        @InvocableVariable(label=&#x27;Found&#x27; description=&#x27;True if any enrolment was found for that email.&#x27;)
+        public Boolean found;
+    }
+
+    @InvocableMethod(
+        label=&#x27;Check Enrolment Status&#x27;
+        description=&#x27;Returns the cohorts and enrolment statuses held by the student with the given email address.&#x27;
+        category=&#x27;Oxfordable CareerLaunch&#x27;)
+    public static List&lt;Result&gt; checkStatus(List&lt;Request&gt; requests) {
+
+        List&lt;Result&gt; results = new List&lt;Result&gt;();
+
+        for (Request req : requests) {
+            Result res   = new Result();
+            String email = String.isBlank(req.studentEmail) ? &#x27;&#x27; : req.studentEmail.trim();
+
+            List&lt;Enrolment__c&gt; enrolments = [
+                SELECT Id, Name, Status__c, Enrolment_Date__c,
+                       Cohort__r.Cohort_Label__c, Cohort__r.Start_Date__c,
+                       Cohort__r.Delivery_Mode__c, Student__r.FirstName
+                FROM Enrolment__c
+                WHERE Student__r.Email = :email
+                ORDER BY Cohort__r.Start_Date__c ASC
+                LIMIT 10
+            ];
+
+            res.found = !enrolments.isEmpty();
+
+            if (enrolments.isEmpty()) {
+                res.answer = &#x27;I could not find an enrolment for &#x27; + email
+                    + &#x27;. Please check the address used at booking, or I can pass this to the team.&#x27;;
+            } else {
+                List&lt;String&gt; lines = new List&lt;String&gt;();
+                for (Enrolment__c e : enrolments) {
+                    lines.add(e.Cohort__r.Cohort_Label__c
+                            + &#x27; starting &#x27; + e.Cohort__r.Start_Date__c.format()
+                            + &#x27; - status: &#x27; + e.Status__c);
+                }
+                res.answer = &#x27;Enrolments found: &#x27; + String.join(lines, &#x27;; &#x27;) + &#x27;.&#x27;;
+            }
+            results.add(res);
+        }
+        return results;
+    }
+}
+</pre>
+
+<h3>A.4 &nbsp;TestDataFactory</h3>
+<pre class="code">@isTest
+public class TestDataFactory {
+
+    public static Course__c createCourse(String name, String level, Decimal fee) {
+        Course__c course = new Course__c(
+            Name              = name,
+            Course_Level__c   = level,
+            Duration_Weeks__c = 5,
+            Fee__c            = fee,
+            Active__c         = true
+        );
+        insert course;
+        return course;
+    }
+
+    public static Cohort__c createCohort(Id courseId, Integer capacity, Integer daysFromToday) {
+        Cohort__c cohort = new Cohort__c(
+            Course__c        = courseId,
+            Start_Date__c    = Date.today().addDays(daysFromToday),
+            End_Date__c      = Date.today().addDays(daysFromToday + 35),
+            Delivery_Mode__c = &#x27;Online&#x27;,
+            Capacity__c      = capacity,
+            Status__c        = &#x27;Open&#x27;
+        );
+        insert cohort;
+        return cohort;
+    }
+
+    public static List&lt;Contact&gt; createStudents(Integer howMany) {
+        List&lt;Contact&gt; students = new List&lt;Contact&gt;();
+        for (Integer i = 0; i &lt; howMany; i++) {
+            students.add(new Contact(
+                FirstName = &#x27;Test&#x27;,
+                LastName  = &#x27;Student &#x27; + i,
+                Email     = &#x27;student&#x27; + i + &#x27;@oxfordable.test&#x27;
+            ));
+        }
+        // Bypass any active duplicate rules in the org so bulk tests are deterministic.
+        Database.DMLOptions dml = new Database.DMLOptions();
+        dml.DuplicateRuleHeader.allowSave = true;
+        dml.optAllOrNone = true;
+        Database.insert(students, dml);
+        return students;
+    }
+
+    public static Contact createStudent(String email) {
+        Contact student = new Contact(
+            FirstName = &#x27;Test&#x27;,
+            LastName  = &#x27;Student&#x27;,
+            Email     = email
+        );
+        Database.DMLOptions dml = new Database.DMLOptions();
+        dml.DuplicateRuleHeader.allowSave = true;
+        Database.insert(student, dml);
+        return student;
+    }
+
+    public static List&lt;Enrolment__c&gt; buildEnrolments(Id cohortId, List&lt;Contact&gt; students, String status) {
+        List&lt;Enrolment__c&gt; enrolments = new List&lt;Enrolment__c&gt;();
+        for (Contact student : students) {
+            enrolments.add(new Enrolment__c(
+                Cohort__c  = cohortId,
+                Student__c = student.Id,
+                Status__c  = status
+            ));
+        }
+        return enrolments;   // deliberately NOT inserted - the caller decides
+    }
+}
+</pre>
+
+<h3>A.5 &nbsp;EnrolmentTriggerTest</h3>
+<pre class="code">@isTest
+private class EnrolmentTriggerTest {
+
+    @testSetup
+    static void makeData() {
+        Course__c course = TestDataFactory.createCourse(
+            &#x27;Salesforce Developer Introductory&#x27;, &#x27;Introductory&#x27;, 500);
+        TestDataFactory.createCohort(course.Id, 3, 14);
+        TestDataFactory.createStudents(5);
+    }
+
+    private static Cohort__c getCohort() {
+        return [SELECT Id, Capacity__c, Enrolled_Count__c, Seats_Remaining__c FROM Cohort__c LIMIT 1];
+    }
+
+    @isTest
+    static void testDefaultsApplied() {
+        Cohort__c cohort = getCohort();
+        Contact student  = [SELECT Id FROM Contact LIMIT 1];
+
+        Enrolment__c enrolment = new Enrolment__c(Cohort__c = cohort.Id, Student__c = student.Id);
+
+        Test.startTest();
+        insert enrolment;
+        Test.stopTest();
+
+        Enrolment__c saved = [
+            SELECT Status__c, Enrolment_Date__c, Amount_Paid__c, Enrolment_Key__c
+            FROM Enrolment__c WHERE Id = :enrolment.Id
+        ];
+        Assert.areEqual(&#x27;Applied&#x27;, saved.Status__c, &#x27;Status should default to Applied&#x27;);
+        Assert.areEqual(Date.today(), saved.Enrolment_Date__c, &#x27;Enrolment date should default to today&#x27;);
+        Assert.areEqual(0, saved.Amount_Paid__c, &#x27;Amount paid should default to zero&#x27;);
+        Assert.isNotNull(saved.Enrolment_Key__c, &#x27;Unique key should be populated&#x27;);
+    }
+
+    @isTest
+    static void testOverbookingBlocked() {
+        Cohort__c cohort = getCohort();                          // capacity 3
+        List&lt;Contact&gt; students = [SELECT Id FROM Contact LIMIT 4];
+
+        List&lt;Enrolment__c&gt; firstThree = TestDataFactory.buildEnrolments(
+            cohort.Id, new List&lt;Contact&gt;{ students[0], students[1], students[2] }, &#x27;Confirmed&#x27;);
+        insert firstThree;
+
+        Enrolment__c fourth = new Enrolment__c(
+            Cohort__c = cohort.Id, Student__c = students[3].Id, Status__c = &#x27;Confirmed&#x27;);
+
+        Test.startTest();
+        Database.SaveResult result = Database.insert(fourth, false);
+        Test.stopTest();
+
+        Assert.isFalse(result.isSuccess(), &#x27;The fourth enrolment must be rejected&#x27;);
+        Assert.isTrue(result.getErrors()[0].getMessage().contains(&#x27;full&#x27;),
+                      &#x27;The error should explain that the cohort is full&#x27;);
+        Assert.areEqual(3, [SELECT COUNT() FROM Enrolment__c WHERE Cohort__c = :cohort.Id],
+                        &#x27;Only three enrolments should exist&#x27;);
+    }
+
+    @isTest
+    static void testBulkInsertRespectsCapacity() {
+        Course__c course     = [SELECT Id FROM Course__c LIMIT 1];
+        Cohort__c bigCohort  = TestDataFactory.createCohort(course.Id, 150, 21);
+        List&lt;Contact&gt; students = TestDataFactory.createStudents(200);
+
+        // Bulk loads arrive as &#x27;Applied&#x27; (confirmation is an individual action that
+        // triggers the welcome flow). Applied still consumes a seat, so the capacity
+        // rule is exercised for the full 200-record batch.
+        List&lt;Enrolment__c&gt; enrolments =
+            TestDataFactory.buildEnrolments(bigCohort.Id, students, &#x27;Applied&#x27;);
+
+        Test.startTest();
+        List&lt;Database.SaveResult&gt; results = Database.insert(enrolments, false);
+        Test.stopTest();
+
+        Integer succeeded = 0;
+        Integer blockedAsFull = 0;
+        for (Database.SaveResult r : results) {
+            if (r.isSuccess()) {
+                succeeded++;
+            } else if (r.getErrors()[0].getMessage().contains(&#x27;full&#x27;)) {
+                blockedAsFull++;
+            }
+        }
+        Integer committed = [SELECT COUNT() FROM Enrolment__c WHERE Cohort__c = :bigCohort.Id];
+
+        // US-04 / NFR-01: the cohort must NEVER be oversold, even for a 200-record load.
+        // (Partial-save retries plus the unique key can commit fewer than capacity in a
+        // single mixed batch, but the capacity ceiling must always hold.)
+        Assert.isTrue(committed &lt;= 150, &#x27;The cohort must never exceed its capacity of 150&#x27;);
+        Assert.areEqual(succeeded, committed, &#x27;Save results must match what was committed&#x27;);
+        Assert.isTrue(blockedAsFull &gt;= 50, &#x27;At least the 50 overflow records must be blocked as full&#x27;);
+        Assert.isTrue(succeeded &gt; 0, &#x27;Records within capacity should be accepted&#x27;);
+    }
+
+    @isTest
+    static void testDuplicateEnrolmentBlocked() {
+        Cohort__c cohort = getCohort();
+        Contact student  = [SELECT Id FROM Contact LIMIT 1];
+
+        insert new Enrolment__c(Cohort__c = cohort.Id, Student__c = student.Id, Status__c = &#x27;Confirmed&#x27;);
+
+        Enrolment__c duplicate = new Enrolment__c(
+            Cohort__c = cohort.Id, Student__c = student.Id, Status__c = &#x27;Confirmed&#x27;);
+
+        Test.startTest();
+        Database.SaveResult result = Database.insert(duplicate, false);
+        Test.stopTest();
+
+        Assert.isFalse(result.isSuccess(), &#x27;A duplicate enrolment must be rejected&#x27;);
+    }
+
+    @isTest
+    static void testQueueableUpdatesContact() {
+        Cohort__c cohort = getCohort();
+        Contact student  = [SELECT Id FROM Contact LIMIT 1];
+
+        Test.startTest();
+        insert new Enrolment__c(Cohort__c = cohort.Id, Student__c = student.Id, Status__c = &#x27;Confirmed&#x27;);
+        Test.stopTest();                                         // forces the queueable job to run
+
+        Contact refreshed = [SELECT Total_Enrolments__c FROM Contact WHERE Id = :student.Id];
+        Assert.areEqual(1, refreshed.Total_Enrolments__c, &#x27;Contact should show one active enrolment&#x27;);
+    }
+}
+</pre>
+
+<h3>A.6 &nbsp;CohortServicesTest</h3>
+<pre class="code">@isTest
+private class CohortServicesTest {
+
+    @testSetup
+    static void makeData() {
+        Course__c course = TestDataFactory.createCourse(
+            &#x27;Salesforce Developer Advanced&#x27;, &#x27;Advanced&#x27;, 1500);
+        TestDataFactory.createCohort(course.Id, 10, 30);
+        TestDataFactory.createStudents(2);
+    }
+
+    @isTest
+    static void testGetActiveCoursesAndOpenCohorts() {
+        Test.startTest();
+        List&lt;Course__c&gt; courses = CohortController.getActiveCourses();
+        List&lt;Cohort__c&gt; cohorts = CohortController.getOpenCohorts(courses[0].Id);
+        List&lt;Cohort__c&gt; all     = CohortController.getOpenCohorts(null);
+        Test.stopTest();
+
+        Assert.areEqual(1, courses.size(), &#x27;One active course expected&#x27;);
+        Assert.areEqual(1, cohorts.size(), &#x27;One open cohort expected for that course&#x27;);
+        Assert.isFalse(all.isEmpty(), &#x27;Unfiltered query should also return cohorts&#x27;);
+    }
+
+    @isTest
+    static void testFindAvailableCohorts() {
+        CohortAvailabilityService.Request req = new CohortAvailabilityService.Request();
+        req.courseName = &#x27;Advanced&#x27;;
+
+        Test.startTest();
+        List&lt;CohortAvailabilityService.Result&gt; results =
+            CohortAvailabilityService.findAvailableCohorts(
+                new List&lt;CohortAvailabilityService.Request&gt;{ req });
+        Test.stopTest();
+
+        Assert.isTrue(results[0].seatsAvailable, &#x27;Seats should be available&#x27;);
+        Assert.areEqual(1, results[0].cohorts.size(), &#x27;One matching cohort expected&#x27;);
+        Assert.isTrue(results[0].answer.contains(&#x27;Advanced&#x27;), &#x27;Answer should name the course&#x27;);
+    }
+
+    @isTest
+    static void testFindAvailableCohortsNoMatch() {
+        CohortAvailabilityService.Request req = new CohortAvailabilityService.Request();
+        req.courseName = &#x27;Nonexistent Course&#x27;;
+
+        Test.startTest();
+        List&lt;CohortAvailabilityService.Result&gt; results =
+            CohortAvailabilityService.findAvailableCohorts(
+                new List&lt;CohortAvailabilityService.Request&gt;{ req });
+        Test.stopTest();
+
+        Assert.isFalse(results[0].seatsAvailable, &#x27;No seats should be reported&#x27;);
+        Assert.isTrue(results[0].answer.contains(&#x27;no cohorts&#x27;), &#x27;Answer should say none were found&#x27;);
+    }
+
+    @isTest
+    static void testCreateEnrolmentAndDuplicateError() {
+        Cohort__c cohort = [SELECT Id FROM Cohort__c LIMIT 1];
+        Contact student  = [SELECT Id FROM Contact LIMIT 1];
+
+        Test.startTest();
+        Enrolment__c created = EnrolmentController.createEnrolment(cohort.Id, student.Id, &#x27;Confirmed&#x27;);
+
+        Boolean secondAttemptFailed = false;
+        try {
+            EnrolmentController.createEnrolment(cohort.Id, student.Id, &#x27;Confirmed&#x27;);
+        } catch (Exception e) {
+            secondAttemptFailed = true;
+        }
+        Test.stopTest();
+
+        Assert.isNotNull(created.Id, &#x27;The enrolment should be created&#x27;);
+        Assert.isTrue(secondAttemptFailed, &#x27;A duplicate enrolment should raise a handled exception&#x27;);
+    }
+
+    @isTest
+    static void testEnrolmentStatusService() {
+        Cohort__c cohort = [SELECT Id FROM Cohort__c LIMIT 1];
+        Contact student  = [SELECT Id, Email FROM Contact LIMIT 1];
+        insert new Enrolment__c(Cohort__c = cohort.Id, Student__c = student.Id, Status__c = &#x27;Confirmed&#x27;);
+
+        EnrolmentStatusService.Request found = new EnrolmentStatusService.Request();
+        found.studentEmail = student.Email;
+
+        EnrolmentStatusService.Request missing = new EnrolmentStatusService.Request();
+        missing.studentEmail = &#x27;nobody@oxfordable.test&#x27;;
+
+        Test.startTest();
+        List&lt;EnrolmentStatusService.Result&gt; results = EnrolmentStatusService.checkStatus(
+            new List&lt;EnrolmentStatusService.Request&gt;{ found, missing });
+        Test.stopTest();
+
+        Assert.isTrue(results[0].found,  &#x27;The known student should be found&#x27;);
+        Assert.isFalse(results[1].found, &#x27;The unknown email should not be found&#x27;);
+    }
+}
+</pre>
+
+<!-- APPENDIX B -->
+<h2 class="sec">Appendix B — Lightning Web Component Source</h2>
+
+<h3>B.1 &nbsp;cohortExplorer</h3>
+<h4>cohortExplorer.html</h4>
+<pre class="code">&lt;template&gt;
+    &lt;lightning-card title=&quot;Open Cohorts&quot; icon-name=&quot;standard:education&quot;&gt;
+
+        &lt;div class=&quot;slds-var-m-horizontal_medium&quot;&gt;
+            &lt;lightning-combobox
+                label=&quot;Filter by course&quot;
+                placeholder=&quot;All courses&quot;
+                options={courseOptions}
+                value={selectedCourseId}
+                onchange={handleCourseChange}&gt;
+            &lt;/lightning-combobox&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;slds-var-m-around_medium&quot;&gt;
+            &lt;template lwc:if={hasCohorts}&gt;
+                &lt;lightning-datatable
+                    key-field=&quot;Id&quot;
+                    data={rows}
+                    columns={columns}
+                    max-row-selection=&quot;1&quot;
+                    onrowselection={handleRowSelection}&gt;
+                &lt;/lightning-datatable&gt;
+            &lt;/template&gt;
+
+            &lt;template lwc:else&gt;
+                &lt;p class=&quot;slds-text-color_weak&quot;&gt;No open cohorts with seats available.&lt;/p&gt;
+            &lt;/template&gt;
+        &lt;/div&gt;
+
+    &lt;/lightning-card&gt;
+&lt;/template&gt;
+</pre>
+<h4>cohortExplorer.js</h4>
+<pre class="code">import { LightningElement, wire, api } from &#x27;lwc&#x27;;
+import { refreshApex } from &#x27;@salesforce/apex&#x27;;
+import getActiveCourses from &#x27;@salesforce/apex/CohortController.getActiveCourses&#x27;;
+import getOpenCohorts from &#x27;@salesforce/apex/CohortController.getOpenCohorts&#x27;;
+
+const COLUMNS = [
+    { label: &#x27;Cohort&#x27;,     fieldName: &#x27;Name&#x27;,               type: &#x27;text&#x27; },
+    { label: &#x27;Course&#x27;,     fieldName: &#x27;courseName&#x27;,         type: &#x27;text&#x27; },
+    { label: &#x27;Starts&#x27;,     fieldName: &#x27;Start_Date__c&#x27;,      type: &#x27;date&#x27; },
+    { label: &#x27;Mode&#x27;,       fieldName: &#x27;Delivery_Mode__c&#x27;,   type: &#x27;text&#x27; },
+    { label: &#x27;Capacity&#x27;,   fieldName: &#x27;Capacity__c&#x27;,        type: &#x27;number&#x27;,
+      cellAttributes: { alignment: &#x27;left&#x27; } },
+    { label: &#x27;Seats left&#x27;, fieldName: &#x27;Seats_Remaining__c&#x27;, type: &#x27;number&#x27;,
+      cellAttributes: { alignment: &#x27;left&#x27; } }
+];
+
+export default class CohortExplorer extends LightningElement {
+    columns = COLUMNS;
+    selectedCourseId = null;
+    courseOptions = [];
+    rows = [];
+    wiredCohortResult;               // held so we can refreshApex later
+
+    @wire(getActiveCourses)
+    wiredCourses({ data, error }) {
+        if (data) {
+            this.courseOptions = [
+                { label: &#x27;All courses&#x27;, value: &#x27;&#x27; },
+                ...data.map((course) =&gt; ({ label: course.Name, value: course.Id }))
+            ];
+        } else if (error) {
+            this.courseOptions = [{ label: &#x27;All courses&#x27;, value: &#x27;&#x27; }];
+        }
+    }
+
+    @wire(getOpenCohorts, { courseId: &#x27;$selectedCourseId&#x27; })
+    wiredCohorts(result) {
+        this.wiredCohortResult = result;
+        const { data, error } = result;
+        if (data) {
+            this.rows = data.map((cohort) =&gt; ({
+                ...cohort,
+                courseName: cohort.Course__r ? cohort.Course__r.Name : &#x27;&#x27;
+            }));
+        } else if (error) {
+            this.rows = [];
+        }
+    }
+
+    get hasCohorts() {
+        return this.rows &amp;&amp; this.rows.length &gt; 0;
+    }
+
+    handleCourseChange(event) {
+        this.selectedCourseId = event.detail.value ? event.detail.value : null;
+    }
+
+    handleRowSelection(event) {
+        const selected = event.detail.selectedRows;
+        // Data down, events up: tell the parent which cohort was chosen.
+        this.dispatchEvent(new CustomEvent(&#x27;cohortselected&#x27;, {
+            detail: selected.length ? selected[0] : null,
+            bubbles: true,
+            composed: true
+        }));
+    }
+
+    @api
+    refresh() {
+        return refreshApex(this.wiredCohortResult);
+    }
+}
+</pre>
+<h4>cohortExplorer.js-meta.xml</h4>
+<pre class="code">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;LightningComponentBundle xmlns=&quot;http://soap.sforce.com/2006/04/metadata&quot;&gt;
+    &lt;apiVersion&gt;62.0&lt;/apiVersion&gt;
+    &lt;isExposed&gt;true&lt;/isExposed&gt;
+    &lt;masterLabel&gt;Cohort Explorer&lt;/masterLabel&gt;
+    &lt;targets&gt;
+        &lt;target&gt;lightning__AppPage&lt;/target&gt;
+        &lt;target&gt;lightning__HomePage&lt;/target&gt;
+        &lt;target&gt;lightning__RecordPage&lt;/target&gt;
+    &lt;/targets&gt;
+&lt;/LightningComponentBundle&gt;
+</pre>
+
+<h3>B.2 &nbsp;enrolmentPanel</h3>
+<h4>enrolmentPanel.html</h4>
+<pre class="code">&lt;template&gt;
+    &lt;lightning-card title=&quot;Enrol a Student&quot; icon-name=&quot;standard:contact&quot;&gt;
+        &lt;div class=&quot;slds-var-m-around_medium&quot;&gt;
+
+            &lt;template lwc:if={hasCohort}&gt;
+                &lt;p class=&quot;slds-var-m-bottom_small&quot;&gt;
+                    &lt;strong&gt;Cohort:&lt;/strong&gt; {cohort.Name} &amp;nbsp;
+                    &lt;lightning-badge label={seatsLabel}&gt;&lt;/lightning-badge&gt;
+                &lt;/p&gt;
+
+                &lt;lightning-record-picker
+                    label=&quot;Student&quot;
+                    placeholder=&quot;Search contacts...&quot;
+                    object-api-name=&quot;Contact&quot;
+                    value={studentId}
+                    onchange={handleStudentChange}&gt;
+                &lt;/lightning-record-picker&gt;
+
+                &lt;div class=&quot;slds-var-m-top_medium&quot;&gt;
+                    &lt;lightning-button
+                        variant=&quot;brand&quot;
+                        label=&quot;Enrol student&quot;
+                        disabled={enrolDisabled}
+                        onclick={handleEnrol}&gt;
+                    &lt;/lightning-button&gt;
+                &lt;/div&gt;
+
+                &lt;template lwc:if={isWorking}&gt;
+                    &lt;lightning-spinner alternative-text=&quot;Saving&quot;&gt;&lt;/lightning-spinner&gt;
+                &lt;/template&gt;
+            &lt;/template&gt;
+
+            &lt;template lwc:else&gt;
+                &lt;p class=&quot;slds-text-color_weak&quot;&gt;Select a cohort on the left to begin.&lt;/p&gt;
+            &lt;/template&gt;
+
+        &lt;/div&gt;
+    &lt;/lightning-card&gt;
+&lt;/template&gt;
+</pre>
+<h4>enrolmentPanel.js</h4>
+<pre class="code">import { LightningElement, api } from &#x27;lwc&#x27;;
+import { NavigationMixin } from &#x27;lightning/navigation&#x27;;
+import { ShowToastEvent } from &#x27;lightning/platformShowToastEvent&#x27;;
+import createEnrolment from &#x27;@salesforce/apex/EnrolmentController.createEnrolment&#x27;;
+
+export default class EnrolmentPanel extends NavigationMixin(LightningElement) {
+    @api cohort;
+    studentId = null;
+    isWorking = false;
+
+    get hasCohort() {
+        return !!this.cohort;
+    }
+
+    get seatsLabel() {
+        return `${this.cohort.Seats_Remaining__c} seat(s) remaining`;
+    }
+
+    get enrolDisabled() {
+        return !this.studentId || this.isWorking;
+    }
+
+    handleStudentChange(event) {
+        this.studentId = event.detail.recordId;
+    }
+
+    async handleEnrol() {
+        this.isWorking = true;
+        try {
+            const enrolment = await createEnrolment({
+                cohortId:  this.cohort.Id,
+                studentId: this.studentId,
+                status:    &#x27;Confirmed&#x27;
+            });
+
+            this.showToast(&#x27;Success&#x27;, `Enrolment ${enrolment.Name} created.`, &#x27;success&#x27;);
+            this.studentId = null;
+
+            // Tell the page to refresh the cohort list (the seat count has changed).
+            this.dispatchEvent(new CustomEvent(&#x27;enrolled&#x27;, {
+                detail: enrolment.Id, bubbles: true, composed: true
+            }));
+
+            this[NavigationMixin.Navigate]({
+                type: &#x27;standard__recordPage&#x27;,
+                attributes: {
+                    recordId: enrolment.Id,
+                    objectApiName: &#x27;Enrolment__c&#x27;,
+                    actionName: &#x27;view&#x27;
+                }
+            });
+
+        } catch (error) {
+            const message = error?.body?.message || &#x27;Something went wrong. Please try again.&#x27;;
+            this.showToast(&#x27;Could not enrol student&#x27;, message, &#x27;error&#x27;);
+        } finally {
+            this.isWorking = false;
+        }
+    }
+
+    showToast(title, message, variant) {
+        this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
+    }
+}
+</pre>
+<p style="color:#5a6b82;font-size:9pt"><code>enrolmentPanel.js-meta.xml</code> — the same structure as B.1, with <code>&lt;masterLabel&gt;Enrolment Panel&lt;/masterLabel&gt;</code>.</p>
+
+<h3>B.3 &nbsp;Wiring the two together — enrolmentConsole</h3>
+<p>Two ways exist, and the trade-off is a real design discussion: the <b>simple</b> wrapper we build in
+class (below), or independent siblings communicating over Lightning Message Service (Advanced Course).</p>
+<h4>enrolmentConsole.html</h4>
+<pre class="code">&lt;template&gt;
+    &lt;div class=&quot;slds-grid slds-gutters slds-wrap&quot;&gt;
+        &lt;div class=&quot;slds-col slds-size_1-of-1 slds-large-size_2-of-3&quot;&gt;
+            &lt;c-cohort-explorer oncohortselected={handleCohortSelected}&gt;&lt;/c-cohort-explorer&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;slds-col slds-size_1-of-1 slds-large-size_1-of-3&quot;&gt;
+            &lt;c-enrolment-panel cohort={selectedCohort} onenrolled={handleEnrolled}&gt;&lt;/c-enrolment-panel&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</pre>
+<h4>enrolmentConsole.js</h4>
+<pre class="code">import { LightningElement } from &#x27;lwc&#x27;;
+
+export default class EnrolmentConsole extends LightningElement {
+    selectedCohort;
+
+    handleCohortSelected(event) {
+        this.selectedCohort = event.detail;
+    }
+
+    handleEnrolled() {
+        const explorer = this.template.querySelector(&#x27;c-cohort-explorer&#x27;);
+        if (explorer) {
+            explorer.refresh();
+        }
+    }
+}
+</pre>
+
+<!-- APPENDIX C -->
+<h2 class="sec">Appendix C — CLI, Manifest &amp; Command Cheat Sheet</h2>
+<h3>C.1 &nbsp;manifest/package.xml</h3>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Package xmlns="http://soap.sforce.com/2006/04/metadata"&gt;
+    &lt;types&gt;
+        &lt;members&gt;Course__c&lt;/members&gt;&lt;members&gt;Cohort__c&lt;/members&gt;
+        &lt;members&gt;Enrolment__c&lt;/members&gt;&lt;members&gt;Contact&lt;/members&gt;
+        &lt;name&gt;CustomObject&lt;/name&gt;
+    &lt;/types&gt;
+    &lt;types&gt;&lt;members&gt;*&lt;/members&gt;&lt;name&gt;ApexClass&lt;/name&gt;&lt;/types&gt;
+    &lt;types&gt;&lt;members&gt;EnrolmentTrigger&lt;/members&gt;&lt;name&gt;ApexTrigger&lt;/name&gt;&lt;/types&gt;
+    &lt;types&gt;
+        &lt;members&gt;cohortExplorer&lt;/members&gt;&lt;members&gt;enrolmentPanel&lt;/members&gt;
+        &lt;members&gt;enrolmentConsole&lt;/members&gt;
+        &lt;name&gt;LightningComponentBundle&lt;/name&gt;
+    &lt;/types&gt;
+    &lt;types&gt;
+        &lt;members&gt;Enrolment_Confirmed_Actions&lt;/members&gt;&lt;members&gt;Quick_Enrol_Student&lt;/members&gt;
+        &lt;members&gt;Cohort_Start_Reminder&lt;/members&gt;
+        &lt;name&gt;Flow&lt;/name&gt;
+    &lt;/types&gt;
+    &lt;types&gt;&lt;members&gt;Enrolment_Console&lt;/members&gt;&lt;name&gt;FlexiPage&lt;/name&gt;&lt;/types&gt;
+    &lt;types&gt;
+        &lt;members&gt;Course__c&lt;/members&gt;&lt;members&gt;Cohort__c&lt;/members&gt;
+        &lt;members&gt;Enrolment__c&lt;/members&gt;
+        &lt;name&gt;CustomTab&lt;/name&gt;
+    &lt;/types&gt;
+    &lt;types&gt;&lt;members&gt;Enrolment_Console_User&lt;/members&gt;&lt;name&gt;PermissionSet&lt;/name&gt;&lt;/types&gt;
+    &lt;version&gt;62.0&lt;/version&gt;
+&lt;/Package&gt;</pre>
+<p style="color:#5a6b82;font-size:9pt">Adjust <code>&lt;version&gt;</code> to your org's API version. The Extension Pack adds further types
+(custom metadata, labels, named credentials, Visualforce, more LWCs and flows) — deploy those with
+<code>--source-dir force-app</code>, which needs no manifest.</p>
+
+<h3>C.2 &nbsp;Salesforce CLI cheat sheet</h3>
+<table>
+<tr><th>Purpose</th><th>Command</th></tr>
+<tr><td>Check the CLI is installed</td><td><code>sf --version</code></td></tr>
+<tr><td>Authorise an org / list orgs / open</td><td><code>sf org login web --alias devorg</code> · <code>sf org list</code> · <code>sf org open</code></td></tr>
+<tr><td>Create a project</td><td><code>sf project generate --name careerlaunch</code></td></tr>
+<tr><td>Retrieve by manifest / one item</td><td><code>sf project retrieve start --manifest manifest/package.xml</code> · <code>--metadata ApexClass:CohortController</code></td></tr>
+<tr><td>Validate a deployment (saves nothing)</td><td><code>sf project deploy start … --test-level RunLocalTests --dry-run</code></td></tr>
+<tr><td>Deploy / confirm</td><td><code>sf project deploy start …</code> · <code>sf project deploy report</code></td></tr>
+<tr><td>Run all tests with coverage / one class</td><td><code>sf apex run test --code-coverage --result-format human --wait 10</code> · <code>--tests EnrolmentTriggerTest</code></td></tr>
+<tr><td>Execute anonymous Apex</td><td><code>sf apex run --file scripts/apex/seed.apex</code></td></tr>
+<tr><td>Assign a permission set</td><td><code>sf org assign permset --name Enrolment_Console_User</code></td></tr>
+</table>
+
+<h3>C.3 &nbsp;Git cheat sheet</h3>
+<table>
+<tr><th>Purpose</th><th>Command</th></tr>
+<tr><td>Start / stage / commit</td><td><code>git init</code> · <code>git add .</code> · <code>git commit -m "message"</code></td></tr>
+<tr><td>Connect to GitHub / push</td><td><code>git remote add origin https://github.com/&lt;user&gt;/careerlaunch.git</code> · <code>git push -u origin main</code></td></tr>
+<tr><td>Branch for a change</td><td><code>git checkout -b feature/waitlist</code></td></tr>
+<tr><td>See what changed</td><td><code>git status</code> · <code>git diff</code></td></tr>
+<tr><td>Tag a release</td><td><code>git tag v1.0 &amp;&amp; git push --tags</code></td></tr>
+</table>
+
+<!-- APPENDIX D -->
+<h2 class="sec">Appendix D — Troubleshooting &amp; Glossary</h2>
+<h3>D.1 &nbsp;Troubleshooting</h3>
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>LWC not available in App Builder</td><td><code>isExposed</code> false, or wrong target</td><td><code>&lt;isExposed&gt;true&lt;/isExposed&gt;</code> + <code>lightning__AppPage</code></td></tr>
+<tr><td>LWC shows “no access” errors</td><td>Missing Apex class access</td><td>Add the class to the permission set</td></tr>
+<tr><td><code>refreshApex</code> does nothing</td><td>The wired result object was not stored</td><td>Assign the <i>whole</i> wire result to a property, not just <code>result.data</code></td></tr>
+<tr><td>Agentforce menu missing in Setup</td><td>Not enabled, or unavailable in that org type</td><td>Setup → Einstein Setup → enable; else use the reference org</td></tr>
+<tr><td>Agent answers vaguely / picks the wrong action</td><td>Thin topic and action descriptions</td><td>Rewrite them in plain, specific English</td></tr>
+<tr><td>Queueable does not run in a test</td><td><code>Test.stopTest()</code> missing</td><td>Async completes at stopTest</td></tr>
+<tr><td>Test passes alone, fails in a run</td><td>Reliance on org data or record IDs</td><td>Create all data in <code>@testSetup</code>; never hard-code IDs</td></tr>
+<tr><td>Deployment fails on coverage</td><td>Below 75%</td><td>Cover the untested branches with real assertions</td></tr>
+<tr><td>Flow deployed but nothing happens</td><td>Flows can deploy inactive</td><td>Activate every flow in the target org</td></tr>
+<tr><td>Emails not received from Flow</td><td>Deliverability “System email only”</td><td>Setup → Deliverability → All Email</td></tr>
+<tr><td><code>Too many SOQL queries: 101</code></td><td>A query inside a loop</td><td>Collect IDs, then query once</td></tr>
+</table>
+<h3>D.2 &nbsp;Glossary — the full programme</h3>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Agentforce</td><td>Salesforce's platform for AI agents acting on org data via topics and actions.</td></tr>
+<tr><td>Apex / Trigger</td><td>Salesforce's Java-like server-side language / Apex that runs before or after saves.</td></tr>
+<tr><td>Bulkification</td><td>Correct, efficient behaviour when processing many records at once.</td></tr>
+<tr><td>Custom Object / External ID</td><td>A table you define (<code>__c</code>) / an outside-system identifier, unique + upsert-able.</td></tr>
+<tr><td>FLS / Permission Set</td><td>Field-Level Security / an additive bundle of permissions assigned on top of a profile.</td></tr>
+<tr><td>Flow</td><td>Declarative automation: record-triggered, screen, scheduled, autolaunched.</td></tr>
+<tr><td>Governor limit</td><td>Per-transaction caps that keep a multi-tenant platform fair.</td></tr>
+<tr><td>Invocable method</td><td><code>@InvocableMethod</code> Apex that Flow, Agentforce and REST can call.</td></tr>
+<tr><td>Lookup / Master-Detail / Roll-Up</td><td>Loose vs tight parent-child relationships; master-side count/sum fields.</td></tr>
+<tr><td>LWC / Wire service</td><td>The modern UI framework / its reactive way of reading data.</td></tr>
+<tr><td>Queueable Apex</td><td>An asynchronous job with fresh governor limits, enqueued with <code>System.enqueueJob</code>.</td></tr>
+<tr><td>Sandbox / SOQL / DML</td><td>A copy of production for dev/test / how Apex reads / writes data.</td></tr>
+<tr><td>UAT</td><td>The business confirming the solution does what was asked.</td></tr>
+</table>
+<!-- APPENDIX — AI BUILD PROMPTS (SHARED, COMPLETE ORDERED SERIES) -->
+<h2 class="sec">Appendix E — AI Build Prompts: the complete ordered series</h2>
+<p>Pasted into an AI coding assistant (Claude Code, Agentforce for Developers, or similar) running
+<b>inside a careerlaunch SFDX project connected to a Developer org</b>, these twelve prompts rebuild the
+entire CareerLaunch system — core and Extension Pack — and finish by seeding demo data. They are
+designed to be <b>copy-pasted one at a time, strictly in order P1 → P12</b>: each layer depends on the
+one before it. Before every prompt, a short note tells you what it will do and what you should see when
+it worked.</p>
+
+<div class="callout warn"><div class="ct">Read this before using any prompt</div>
+<b>The labs come first.</b> You learn by typing, breaking and fixing — not by generating. Use this series
+for three purposes only: catching up after a session, verifying your hand-built org, or rebuilding fast
+in a fresh org. Whatever the AI produces: read the diff before deploying, deploy with the CLI yourself,
+and run the matching checkpoints. If you cannot explain a line the AI wrote, you are not finished with
+it. Never put real passwords or personal email addresses inside a prompt — where one is needed, the
+prompts use a <b>&lt;placeholder&gt;</b> for you to substitute.</div>
+
+<div class="callout info"><div class="ct">Setup, once</div>
+1. Terminal in your <code>careerlaunch</code> project folder · 2. <code>sf org list</code> shows your org
+as default · 3. Start the assistant there · 4. Paste P1, review the diff, let it deploy, run the
+checkpoint · 5. Continue to P2, and so on.</div>
+
+<h3>Coverage map — every metadata type and the prompt that builds it</h3>
+<table>
+<tr><th>Metadata type</th><th>Prompt(s)</th></tr>
+<tr><td>Custom objects, fields, validation rules, tabs</td><td>P1 (core) · P6 (extension + platform event)</td></tr>
+<tr><td>Custom Metadata Types + records · Named Credential</td><td>P6</td></tr>
+<tr><td>Custom Labels · translations</td><td>P7</td></tr>
+<tr><td>Apex classes, triggers, Visualforce, tests</td><td>P2 (core) · P8 (extension)</td></tr>
+<tr><td>Flows</td><td>P4 (core) · P9 (extension + automation wiring)</td></tr>
+<tr><td>Lightning Web Components</td><td>P3 (console) · P10 (portal, incl. header/logout/profile)</td></tr>
+<tr><td>Permission sets · FlexiPage (App Page)</td><td>P5 (core) · P10 (portal)</td></tr>
+<tr><td>Experience Cloud site (clicks)</td><td>P11 checklist</td></tr>
+<tr><td>Demo &amp; test data, portal logins</td><td>P12</td></tr>
+</table>
+
+<h3>P1 — Core objects and fields</h3>
+<p><b>What this prompt does:</b> creates the three-object data model from Section 2 — Course, Cohort and
+Enrolment with every field, the roll-up and formulas, both validation rules, the Contact field and the
+three tabs — and deploys it. <b>When it worked:</b> creating one enrolment on a capacity-3 cohort shows
+Enrolled Count 1 / Seats Remaining 2 with nothing typed by hand.</p>
+<pre>You are working in a Salesforce DX project connected to my Developer org. Create the metadata
+(source format, under force-app/main/default) for the CareerLaunch data model, then deploy it.
+Use these EXACT API names and settings - do not improvise names. British spelling: Enrolment, one "l".
+
+1) Custom object Course__c (may already exist from Lab 1 - if so, verify and complete it):
+   label Course/Courses, Name field = text "Course Name", enable reports and activities.
+   Fields: Course_Level__c Picklist restricted (Introductory, Advanced);
+   Duration_Weeks__c Number(2,0); Fee__c Currency(10,2); Active__c Checkbox default true;
+   Description__c LongTextArea(1000).
+
+2) Custom object Cohort__c: label Cohort/Cohorts, Name = AutoNumber "CO-{0000}", reports+activities.
+   Fields: Course__c Lookup(Course__c) required; Start_Date__c Date required; End_Date__c Date;
+   Delivery_Mode__c Picklist (Online, In-Person, Hybrid); Capacity__c Number(3,0) required default 20;
+   Status__c Picklist (Planned, Open, Full, Running, Completed, Cancelled);
+   Enrolled_Count__c Roll-Up Summary COUNT of Enrolment__c filtered Status__c != Cancelled;
+   Seats_Remaining__c Formula Number(0dp) = Capacity__c - Enrolled_Count__c;
+   Cohort_Label__c Formula Text = Course__r.Name &amp; " - " &amp; TEXT(Start_Date__c).
+   Validation rule End_Date_After_Start_Date:
+   AND(NOT(ISBLANK(End_Date__c)), End_Date__c &lt; Start_Date__c)
+   message "End Date cannot be earlier than Start Date."
+
+3) Custom object Enrolment__c: label Enrolment/Enrolments, Name = AutoNumber "ENR-{00000}".
+   Fields in this order: Cohort__c MasterDetail(Cohort__c); Student__c Lookup(Contact) required,
+   relationship name Enrolments; Status__c Picklist restricted (Applied default, Confirmed,
+   Waitlisted, Cancelled, Completed); Enrolment_Date__c Date; Amount_Paid__c Currency(10,2) default 0;
+   Enrolment_Key__c Text(64) External ID + Unique (case-insensitive);
+   Attendance_Percent__c Percent(3,0); Certificate_Issued__c Checkbox default false.
+   Validation rule Payment_Not_Above_Fee: Amount_Paid__c &gt; Cohort__r.Course__r.Fee__c
+   message "Amount Paid cannot exceed the course fee."
+
+4) On standard Contact: field Total_Enrolments__c Number(3,0), label "Total Enrolments".
+5) Custom tabs for Course__c, Cohort__c and Enrolment__c (any motif).
+
+Deploy with sf project deploy start, report any errors, list every file you created.
+Do NOT create any Apex, flows, LWCs or records in this step.</pre>
+
+<h3>P2 — Core Apex, trigger and tests</h3>
+<p><b>What this prompt does:</b> writes the trigger + handler (capacity rule, duplicate key, defaults),
+the async roll-up job, the two invocable services, the two LWC controllers, and the core test classes —
+then runs the tests. <b>When it worked:</b> a 4th enrolment on a full cohort fails with your message,
+a duplicate fails on the unique key, and the test run is green.</p>
+<pre>In the same project (P1 deployed), create these Apex files exactly as specified by the Oxfordable
+workbooks, deploy, then run all tests and show the results. API 62.0, with sharing unless stated.
+
+1) trigger EnrolmentTrigger on Enrolment__c (before insert, before update, after insert, after update)
+   - routing only: before insert -> EnrolmentTriggerHandler.onBeforeInsert(Trigger.new); before update
+   -> onBeforeUpdate(Trigger.new, Trigger.oldMap); after insert/update -> onAfterChange(Trigger.new).
+2) class EnrolmentTriggerHandler: setDefaults (date=today, status='Applied', amount=0 when blank);
+   buildUniqueKey (Enrolment_Key__c = 15-char Cohort id + '-' + 15-char Student id);
+   preventOverbooking (bulk-safe: count newly-consuming rows per cohort where Status != 'Cancelled',
+   ONE query of Capacity__c/Enrolled_Count__c, allocate in memory, addError("This cohort is full.
+   Please choose another cohort or add the student to the waiting list.") on overflow);
+   enqueueStudentSummary (collect Student__c ids, enqueue StudentSummaryQueueable within limits).
+3) class StudentSummaryQueueable implements Queueable: zero every passed Contact's
+   Total_Enrolments__c, one aggregate COUNT grouped by Student__c where Status != 'Cancelled',
+   update Contacts, swallow DmlException with a debug log.
+4) class CohortAvailabilityService: @InvocableMethod 'Find Available Cohorts' (category
+   'Oxfordable CareerLaunch'); Request.courseName; Result answer/cohorts/seatsAvailable; query Open
+   future cohorts matching the name, keep Seats_Remaining__c &gt; 0, build a readable answer.
+5) class EnrolmentStatusService: @InvocableMethod 'Check Enrolment Status'; Request.studentEmail;
+   Result answer/found summarising each enrolment (cohort label, start date, status).
+6) class CohortController: @AuraEnabled(cacheable=true) getActiveCourses() and getOpenCohorts(Id
+   courseId) - Open future cohorts, WITH SECURITY_ENFORCED, optional course filter.
+7) class EnrolmentController: @AuraEnabled createEnrolment(cohortId, studentId, status) - validate,
+   insert (default 'Confirmed'), catch DmlException -> AuraHandledException with a friendly message
+   ("That student is already enrolled on this cohort." for duplicates), return the record with names.
+8) Tests: TestDataFactory (@isTest: createCourse, createCohort, createStudents bypassing duplicate
+   rules, buildEnrolments NOT inserted, createStudent(String email)); EnrolmentTriggerTest (defaults,
+   overbooking negative, 200-record bulk, duplicate blocked, queueable via startTest/stopTest);
+   CohortServicesTest (controllers + both services incl. error paths). 90% coverage, real assertions.</pre>
+
+<h3>P3 — Core Lightning Web Components (the Enrolment Console)</h3>
+<p><b>What this prompt does:</b> builds the three console components and wires them together with the
+data-down/events-up pattern. <b>When it worked:</b> after P5 puts them on a page, enrolling from the
+console shows a toast and the seat count drops without a refresh.</p>
+<pre>Same project; P2 deployed. Create three LWCs under force-app/main/default/lwc (html, js,
+js-meta.xml each; apiVersion 62.0; isExposed true; targets lightning__AppPage, lightning__HomePage,
+lightning__RecordPage). Then deploy.
+
+1) cohortExplorer: combobox "Filter by course" fed by @wire CohortController.getActiveCourses
+   (prepend "All courses"); lightning-datatable of @wire getOpenCohorts(courseId:
+   '$selectedCourseId') with columns Cohort, Course (flattened Course__r.Name), Starts (date),
+   Mode, Capacity, Seats left; single row selection dispatches CustomEvent 'cohortselected'
+   (bubbles, composed); store the whole wire result; expose @api refresh() calling refreshApex.
+2) enrolmentPanel: @api cohort; badge "&lt;n&gt; seat(s) remaining"; lightning-record-picker for
+   Contact; Enrol button (disabled until chosen) -> imperative EnrolmentController.createEnrolment
+   status 'Confirmed'; success: ShowToastEvent + dispatch 'enrolled' + NavigationMixin to the
+   record; error: error.body.message in a toast, never a stack trace; spinner while working.
+3) enrolmentConsole: wrapper grid - cohortExplorer (2/3) with oncohortselected setting
+   selectedCohort; enrolmentPanel (1/3) with cohort={selectedCohort} and onenrolled calling
+   the explorer's refresh().</pre>
+
+<h3>P4 — Core flows</h3>
+<p><b>What this prompt does:</b> builds the three declarative automations — confirmation actions,
+the Quick Enrol wizard and the scheduled reminder — as deployable flow metadata.
+<b>When it worked:</b> confirming an enrolment sends the email + task, and filling the last seat
+flips the cohort to Full by itself.</p>
+<pre>Same project. Create three flows as flow-meta.xml files (API 62.0, status Active) and deploy.
+If any element is easier in Flow Builder, generate the closest valid metadata and tell me what to
+verify there.
+
+1) Enrolment_Confirmed_Actions - record-triggered on Enrolment__c, create-or-update, entry
+   Status__c='Confirmed', only when updated to meet the condition, after-save: Get_Cohort (first
+   Cohort__c where Id = $Record.Cohort__c); Send Email to $Record.Student__r.Email, subject
+   "Your place is confirmed - " + $Record.Cohort__r.Cohort_Label__c; Create Task ("Send welcome
+   pack to " + $Record.Student__r.Name, WhatId=$Record.Id, OwnerId=$Record.OwnerId, due today,
+   High); Decision Seats_Remaining &lt;= 0 -&gt; Update cohort Status__c='Full'.
+2) Quick_Enrol_Student - screen flow: course picklist choice set (active courses); get open cohorts
+   of the choice sorted by start date; cohort radio choice (label + seats in help text); Contact
+   lookup; Apex action Find Available Cohorts re-checking seats; Decision; Create Enrolment__c
+   (Status 'Confirmed'); success screen with the enrolment Name; "just filled up" screen otherwise;
+   every Get/Create has a Fault connector to an error screen showing $Flow.FaultMessage.
+3) Cohort_Start_Reminder - schedule-triggered daily 07:00 on Enrolment__c where
+   Status__c='Confirmed' and Cohort__r.Start_Date__c = today + 3 (formula); reminder email + Task.
+After deploying, confirm all three show State = Active.</pre>
+
+<h3>P5 — Core permission set, App Page and validation</h3>
+<p><b>What this prompt does:</b> packages the core for delivery — the staff permission set (NFR-05:
+never edit profiles), the Enrolment Console FlexiPage, and a validate-only deploy proving everything
+ships. <b>When it worked:</b> the App Launcher shows Enrolment Console and the dry-run deploy passes
+with tests.</p>
+<pre>Same project. Finish the core delivery layer:
+1) Permission set Enrolment_Console_User (label "Enrolment Console User"): Read/Create/Edit on
+   Course__c, Cohort__c, Enrolment__c; Read on Contact; field permissions on all custom fields
+   (formulas and roll-ups read-only); Apex class access CohortController, EnrolmentController,
+   CohortAvailabilityService, EnrolmentStatusService; flow access Quick_Enrol_Student; tab
+   visibility Courses/Cohorts/Enrolments. Deploy and assign it to the current user with
+   sf org assign permset -n Enrolment_Console_User
+2) FlexiPage Enrolment_Console ("Enrolment Console"), App Page, two regions, containing the
+   enrolmentConsole LWC - deploy and tell me how to activate it and add it to navigation.
+3) Verify: run all local tests with coverage; then a validate-only deploy:
+   sf project deploy start --source-dir force-app --dry-run -l RunLocalTests
+4) Print the manual steps metadata cannot do: activate the app page; Setup -&gt; Deliverability =
+   All Email.</pre>
+
+<h3>P6 — Extension data layer (objects, platform event, custom metadata, named credential)</h3>
+<p><b>What this prompt does:</b> creates everything the Extension Pack stores or configures: the Error
+Log object + its publish-immediately platform event, the Invoice object with the frozen-rate design,
+both Custom Metadata Types with their records, the payment Named Credential, and the two new tabs.
+<b>When it worked:</b> a hand-made invoice shows Amount (Invoice Currency) computing itself, and
+marking it Paid without a reference is blocked.</p>
+<pre>Same project, core deployed. Create and deploy the Extension Pack data layer. Exact API names.
+
+1) Custom object Error_Log__c: Name = AutoNumber "ERR-{00000}", reports on. Fields:
+   Source_Type__c Picklist restricted (Apex default, Trigger, Flow, Integration);
+   Source_Name__c Text(255); Error_Message__c LongTextArea(32768,5); Stack_Trace__c
+   LongTextArea(32768,10); Record_Id__c Text(18); Severity__c Picklist restricted
+   (Info, Warning, Error default, Critical). Custom tab.
+2) Platform event Error_Log_Event__e, publish behavior PUBLISH IMMEDIATELY, fields:
+   Source_Type__c Text(50); Source_Name__c Text(255); Error_Message__c LongTextArea(32768);
+   Stack_Trace__c LongTextArea(32768); Record_Id__c Text(18); Severity__c Text(20).
+3) Custom object Invoice__c: Name = AutoNumber "INV-{00000}", reports + activities. Fields in
+   order: Enrolment__c MasterDetail(Enrolment__c, related list "Invoices"); Amount__c
+   Currency(12,2) required; Currency_Code__c Picklist restricted (GBP default, USD, EUR);
+   Exchange_Rate__c Number(12,6) default 1; Amount_In_Currency__c Formula Number(2dp) =
+   Amount__c * Exchange_Rate__c (blanks as zero); Status__c Picklist restricted (Draft default,
+   Sent, Paid, Cancelled); Due_Date__c Date; Paid_Date__c Date; Payment_Reference__c Text(100).
+   Custom tab. Validation rule Paid_Requires_Reference:
+   AND(ISPICKVAL(Status__c, "Paid"), ISBLANK(Payment_Reference__c))
+   message "An invoice cannot be marked Paid without the gateway payment reference."
+4) Custom Metadata Type Exchange_Rate__mdt with Rate_From_GBP__c Number(12,6) required and
+   Symbol__c Text(5); records GBP=1.0/£, USD=1.27/$, EUR=1.17/€.
+5) Custom Metadata Type Integration_Setting__mdt with Implementation_Class__c Text(255)
+   required; record Payment_Gateway = "PaymentGatewayStub".
+6) Legacy Named Credential Payment_Gateway: label "Payment Gateway",
+   URL https://api.payments.example.com, Anonymous, No Authentication.
+Deploy and list the files. No Apex yet.</pre>
+
+<h3>P7 — Custom Labels and French translations</h3>
+<p><b>What this prompt does:</b> creates every piece of user-facing text as labels (P8's certificate and
+P10's portal import them <b>by name</b>) plus the French translation file. Runs before the extension
+Apex so everything referencing a label compiles first time. <b>When it worked:</b> the labels list in
+Setup shows all thirteen, and the translation deploy succeeds after French is enabled.</p>
+<pre>Same project. Create labels/CustomLabels.labels-meta.xml with these labels (category CareerLaunch,
+language en_US, protected false) - names EXACT:
+Certificate_Title="Certificate of Completion" · Certificate_Awarded_To="This certificate is proudly
+awarded to" · Certificate_Completion_Text="for successfully completing" · Certificate_Issued_On=
+"Issued on" · Portal_My_Enrolments="My Enrolments" · Portal_My_Invoices="My Invoices" ·
+Portal_My_Profile="My Profile" · Portal_Pay_Now="Pay now" · Portal_No_Records="Nothing to show
+here yet." · Portal_Payment_Success="Payment received - thank you!" · Portal_Download_Certificate=
+"Download certificate" · Portal_Log_Out="Log out" · Portal_Log_In="Log in"
+
+Also create translations/fr.translation-meta.xml with the French:
+Certificat de réussite · Ce certificat est fièrement décerné à · pour avoir terminé avec succès ·
+Délivré le · Mes inscriptions · Mes factures · Mon profil · Payer maintenant · Rien à afficher pour
+le moment. · Paiement reçu - merci ! · Télécharger le certificat · Se déconnecter · Se connecter
+
+Deploy the labels first. Then REMIND ME to enable French (Setup -&gt; Translation Language Settings)
+before deploying the translation file - deploying translations for a disabled language fails.</pre>
+
+<h3>P8 — Extension Apex, triggers and the certificate page</h3>
+<p><b>What this prompt does:</b> writes the whole extension code layer: the rollback-proof error logger
+and its event trigger, the currency service, the complete payment stack behind the interface/factory
+seam, invoicing, the certificate controller + PDF page + queueable (which also <b>emails the PDF to the
+student</b>), the paid-invoice portal-access provisioner, the one-line trigger-handler edit, and the
+extension test classes. <b>When it worked:</b> the full test run is green and confirming an enrolment
+raises exactly one invoice.</p>
+<pre>Same project; P6 and P7 deployed. Create per the CareerLaunch Complete Build Guide, deploy, then
+run ALL tests and show the summary. Every service that can fail must log via ErrorLogger.
+
+Error logging: class ErrorLogger (without sharing; overloads log(e, source[, recordId]) and
+log(type, source, msg, stack, recordId, severity); @InvocableMethod "Log Flow Error"
+(flowName/errorMessage/recordId); every path publishes Error_Log_Event__e via EventBus, never
+insert) + trigger ErrorLogEventTrigger on Error_Log_Event__e after insert copying events into
+Error_Log__c.
+
+Currency: class CurrencyService over Exchange_Rate__mdt.getInstance (no SOQL): getRate, getSymbol,
+convertFromGBP (2dp half-up), format; UnknownCurrencyException.
+
+Payments (in order): PaymentRequest (DTO: invoiceId, invoiceNumber, amount, currencyCode,
+studentEmail, idempotencyKey); PaymentResult (@AuraEnabled success/transactionId/errorMessage +
+ok()/fail()); interface IPaymentGateway { PaymentResult charge(PaymentRequest) };
+PaymentGatewayStub (amount &lt;= 0 fails; email containing "declined" fails; else
+ok("STUB-"+invoiceNumber+"-"+currency)); PaymentGatewayFactory (reads Integration_Setting__mdt
+Payment_Gateway, Type.forName, interface check, @TestVisible gatewayOverride);
+PaymentGatewayHttpClient (POST callout:Payment_Gateway/v1/charges, Idempotency-Key header, 20s
+timeout, CalloutException -&gt; ErrorLogger Critical + fail; wire format in private inner classes);
+InvoiceService (inherited sharing; createForConfirmedEnrolments: one Sent invoice per Confirmed
+enrolment at the course fee, due +14 days, GBP rate stamped, skip fee &lt;= 0 and enrolments with a
+live non-Cancelled invoice - idempotent and bulk-safe); PaymentService (without sharing + comment
+why; payInvoice: load, refuse Paid/Cancelled, idempotencyKey = invoiceId+"-"+Name, callout BEFORE
+DML, on success mark Paid with reference + date and add the GBP amount to Amount_Paid__c).
+
+Certificates: class CertificateController (?id= param -&gt; enrolment with student/cohort/course);
+Visualforce page CertificatePdf (renderAs="pdf", A4 landscape, $Label.Certificate_* merge fields);
+class CertificateService (@InvocableMethod "Issue Completion Certificate"; inner IssueJob
+Queueable + Database.AllowsCallouts: only Certificate_Issued__c=false, render via
+Page.CertificatePdf getContent (Test.isRunningTest() -&gt; placeholder blob), insert ContentVersion
+with FirstPublishLocationId, tick the flag, AND email the student: SingleEmailMessage with
+setTargetObjectId(contact), congratulations body naming the course, the PDF attached as
+Messaging.EmailFileAttachment; whole job try/catch -&gt; ErrorLogger).
+
+Portal access on payment: class PortalAccessService (without sharing; @InvocableMethod "Grant
+Portal Access" taking invoiceId; enqueues an inner Queueable because User creation is setup DML -
+the mixed-DML rule: for each PAID invoice's student (must have Email + Account), if no active User
+exists for that ContactId, create one on profile "Customer Community User" (username = contact
+email with "@" replaced by "." + "@careerlaunch.portal", nickname/alias derived from the Contact
+id), assign permission set Student_Portal_User, System.resetPassword(id, true) outside tests; then
+email every student their username + the site login URL via Network.getLoginUrl; failures -&gt;
+ErrorLogger).
+
+Trigger wiring: in EnrolmentTriggerHandler.onAfterChange, after enqueueStudentSummary, add:
+InvoiceService.createForConfirmedEnrolments(newEnrolments);
+
+Tests: ErrorLoggerTest (Test.getEventBus().deliver()), CurrencyServiceTest,
+InvoicePaymentServicesTest (auto-invoice + idempotency; stub happy/declined/double-pay;
+HttpCalloutMock asserting the callout: endpoint and the Idempotency-Key header; factory +
+override), CertificateServiceTest, PortalAccessServiceTest (provisions user + permission set on a
+paid invoice; never duplicates; ignores unpaid). Real assertions, 85%+ coverage.</pre>
+
+<h3>P9 — Extension flows and automation wiring</h3>
+<p><b>What this prompt does:</b> wires the extension automations: certificates on completion, portal
+access on payment, and error logging on every Quick Enrol fault path. <b>When it worked:</b> setting an
+enrolment to Completed produces the PDF + email within seconds, and paying an invoice provisions the
+student's login.</p>
+<pre>Same project; P8 deployed. Three flow changes, then deploy and confirm all are Active:
+1) New record-triggered flow Issue_Certificate_On_Completion on Enrolment__c: create-or-update,
+   entry Status__c='Completed', ONLY when updated to meet the condition, after-save; one Apex
+   action "Issue Completion Certificate" passing enrolmentId = $Record.Id.
+2) New record-triggered flow Grant_Portal_Access_On_Payment on Invoice__c: same pattern with
+   entry Status__c='Paid'; one Apex action "Grant Portal Access" passing invoiceId = $Record.Id.
+3) Update Quick_Enrol_Student: insert an Apex action "Log Flow Error" before the error screen
+   (flowName = "Quick_Enrol_Student" literal, errorMessage = $Flow.FaultMessage) and repoint every
+   faultConnector to it; its connector continues to the error screen. New active version.
+Note in your summary: record-triggered flows never act retroactively - records already in the
+matching state before deployment need a status nudge (away and back) to fire.</pre>
+
+<h3>P10 — Portal code: controller, five LWCs, permission sets</h3>
+<p><b>What this prompt does:</b> builds everything the student portal runs on — the contact-scoped
+controller (enrolments, invoices, profile, ownership-checked payment), the five portal components
+(branded header, enrolments with certificate download, invoices with Pay now, profile card, logout
+link), the read-only student permission set, and the staff permission-set update for invoices.
+<b>When it worked:</b> the automated tests prove a student sees only their own records and cannot pay
+someone else's invoice.</p>
+<pre>Same project; P8-P9 deployed. Build the portal layer and deploy:
+
+1) Class StudentPortalController (without sharing WITH the explanatory comment: Enrolment__c is a
+   master-detail child so Experience Cloud sharing sets cannot reach it; privacy = contact-scoped
+   queries): resolveContactId() from UserInfo -&gt; User.ContactId (@TestVisible contactIdOverride;
+   friendly AuraHandledException when null); @AuraEnabled(cacheable=true) getMyEnrolments()
+   (view wrappers: course, cohort label, status, start date, certificateIssued, certificateUrl =
+   "/sfc/servlet.shepherd/document/download/"+docId found via ContentDocumentLink Title LIKE
+   'Certificate%'); getMyInvoices() (number, course, amountDisplay = CurrencyService symbol +
+   Amount_In_Currency + code, status, dueDate, payable = Sent/Draft); getMyProfile() (name, email,
+   username, account name, member-since, count of active enrolments and of certificates);
+   @AuraEnabled payInvoice(Id): COUNT() ownership check against the caller's contact BEFORE
+   delegating to PaymentService; PaymentStateException -&gt; AuraHandledException.
+2) Five LWCs (isExposed, targets lightningCommunity__Page + lightningCommunity__Default; LWR has
+   no SLDS so style custom components yourself; all text from the P7 labels):
+   portalHeader - branded gradient hero ("CareerLaunch", tagline) with a built-in link:
+   basePath+"/secur/logout.jsp" for authenticated users, basePath+"/login" for guests
+   (@salesforce/community/basePath, @salesforce/user/isGuest);
+   portalLogout - the same auth link as a small standalone button;
+   studentEnrolments - card listing enrolments with status badges and the certificate download
+   link when present;
+   studentInvoices - card with amount/due/status, Pay now button -&gt; imperative payInvoice,
+   success toast with Portal_Payment_Success + the reference, refreshApex;
+   studentProfile - card showing the getMyProfile() fields in a tidy grid.
+3) Permission set Student_Portal_User: READ-ONLY objects + fields on Course__c, Cohort__c,
+   Enrolment__c, Invoice__c; Apex class access StudentPortalController ONLY. Update
+   Enrolment_Console_User: Read/Create/Edit on Invoice__c, its fields, and the Invoices +
+   Error Logs tabs.
+4) Add a test class covering getMyProfile and re-run StudentPortalControllerTest requirements:
+   only-own-records, pay-own-invoice, reject someone else's invoice.</pre>
+
+<h3>P11 — Experience Cloud site (the clicks no prompt can do)</h3>
+<p><b>What this prompt does:</b> nothing in the org by itself — it makes the assistant print the exact
+click checklist for the parts of Experience Cloud that are configuration, not metadata. Follow the
+checklist by hand. <b>When it worked:</b> a private-window login as a portal user shows the branded
+header, both cards and the profile.</p>
+<pre>Print (do not attempt to execute) a numbered click checklist for standing up the CareerLaunch
+portal in this org, covering exactly:
+1) Setup -&gt; Digital Experiences -&gt; Settings: enable Digital Experiences AND tick "Allow using
+   standard external profiles for self-registration, user creation, and login".
+2) All Sites -&gt; New -&gt; Build Your Own (LWR) -&gt; name "CareerLaunch Portal" -&gt; Builder.
+3) Delete the template placeholder content; layout: portalHeader full-width, then
+   studentEnrolments and studentInvoices side by side (6/6), then studentProfile full-width.
+4) Publish (also activates the site).
+5) Give the running admin a role (Setup -&gt; Roles) - portal account owners must have one.
+6) Experience Builder -&gt; Administration -&gt; Members: add profile "Customer Community User".
+7) Create a test student: Contact WITH an Account and a real email you control -&gt; Enable
+   Customer User -&gt; profile Customer Community User -&gt; username like
+   &lt;something-unique&gt;@careerlaunch.portal -&gt; assign permission set Student_Portal_User -&gt;
+   set the password from the emailed link.
+8) Test in a private window: login, both cards, profile, Pay now, certificate download, Log out.
+Include the two classic failure messages and their fixes: FIELD_INTEGRITY "standard external
+profiles" (step 1 skipped) and "account owner must have a role" (step 5 skipped).</pre>
+
+<h3>P12 — Seed demo and test data</h3>
+<p><b>What this prompt does:</b> fills the org with repeatable demo data — courses, cohorts sized for
+the capacity demos, students (including the special <code>declined@</code> student for the failed-card
+demo), and optional portal logins — using an idempotent script it saves into the project. Uses
+placeholders, never real personal credentials. <b>When it worked:</b> the debug summary prints the
+counts, and re-running changes nothing.</p>
+<pre>Same project, everything deployed. Write scripts/apex/seed_demo.apex - an IDEMPOTENT anonymous
+Apex script (safe to re-run: check-before-create on every record) that creates:
+1) Courses: "Salesforce Developer - Introductory" (Introductory, 3 wks, fee 500, active) and
+   "Salesforce Developer - Advanced" (Advanced, 10 wks, fee 1500, active), plus "Free Taster"
+   (Introductory, 1 wk, fee 0, active).
+2) Cohorts: on the Introductory course - capacity 3 starting today+14 (the overbooking demo) and
+   capacity 200 starting today+30 (the bulk demo); on the Free Taster - capacity 10 today+14.
+   All Online, Status Open, End Date = Start + 35.
+3) An Account "Demo Students" and Contacts under it: five students with emails
+   student1..student5@example.com, plus one "declined.card@example.com" (the word "declined"
+   drives the payment stub's failure path). Bypass duplicate rules with DMLOptions.
+4) NO enrolments or invoices - the automation creates those when we demo.
+Then run it with: sf apex run -f scripts/apex/seed_demo.apex
+and print the record counts. Finally, remind me (do not do it) that portal logins for demo
+students are created automatically when their invoice is PAID, or manually via Enable Customer
+User - and that any password I set must be typed by me in Setup, never stored in a script or
+prompt.</pre>
+
+<div class="callout dark"><div class="ct">How to run the full rebuild</div>
+Fresh org, whole system: P1 → P12, one at a time, deploying and running the matching checkpoint between
+each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
+reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
+remains the source of truth: its Code Pack items are the reference implementation your generated code
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.0 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+</body>
+</html>
