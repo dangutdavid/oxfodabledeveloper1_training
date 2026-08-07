@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
+  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.1</span></div>
   <h1 class="cov">Design &amp; Build<br>Part 1</h1>
   <div class="cov-sub">Data, Automation and Code</div>
   <div class="cov-rule"></div>
@@ -69,7 +69,7 @@
     <b>Date:</b> ______________________________________
   </div>
   <div class="cov-foot">
-    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.0 — updated for the Extension Pack</b><br>
+    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.1 — Extension Pack update + AI Build Prompts appendix</b><br>
     Read the solution design (Sections 1–2) before the session. We build from it, we do not re-explain it.
   </div>
 </div>
@@ -850,9 +850,203 @@ Complete Build Guide, Chapter 10.</div>
 }
 </pre>
 
+<!-- APPENDIX B — AI BUILD PROMPTS -->
+<h2 class="sec">Appendix B — AI Build Prompts</h2>
+<p>Each prompt below, pasted into an AI coding assistant (Claude Code, Agentforce for Developers, or
+similar) running <b>inside your careerlaunch SFDX project with your org authorised</b>, rebuilds one
+layer of the application. The prompts encode the exact specification from this workbook — API names,
+picklist values, formulas — so the result matches what the labs build by hand.</p>
+
+<div class="callout warn"><div class="ct">Read this before using any prompt</div>
+<b>The labs come first.</b> You learn by typing, breaking and fixing — not by generating. Use these
+prompts for three legitimate purposes only: <b>catching up</b> after the session if your org is broken,
+<b>verifying</b> your hand-built org against a correct build, or <b>rebuilding fast</b> in a fresh org
+(for example, before UAT practice). Whatever the AI produces: read the diff before deploying, deploy
+with the CLI yourself, and run the checkpoints from Labs 2–4 to prove the result. If you cannot explain
+a line the AI wrote, you are not finished with it.</div>
+
+<div class="callout info"><div class="ct">Setup for every prompt</div>
+1. Open a terminal in your <code>careerlaunch</code> project folder (created in Week 1).<br>
+2. Confirm the org connection: <code>sf org list</code> shows your org as default.<br>
+3. Start your AI assistant in that folder, paste one prompt, review, deploy, run the matching lab checkpoint.<br>
+4. Run the prompts <b>in order B.1 → B.5</b> — later layers depend on earlier ones.</div>
+
+<h3>B.1 — Prompt: create all objects and fields</h3>
+<pre>You are working in a Salesforce DX project connected to my Developer org. Create the metadata
+(source format, under force-app/main/default) for the CareerLaunch data model, then deploy it.
+Use these EXACT API names and settings - do not improvise names. British spelling: Enrolment, one "l".
+
+1) Custom object Course__c (may already exist from Lab 1 - if so, verify and complete it):
+   label Course/Courses, Name field = text "Course Name", enable reports and activities.
+   Fields: Course_Level__c Picklist restricted (Introductory, Advanced);
+   Duration_Weeks__c Number(2,0); Fee__c Currency(10,2); Active__c Checkbox default true;
+   Description__c LongTextArea(1000).
+
+2) Custom object Cohort__c: label Cohort/Cohorts, Name = AutoNumber "CO-{0000}", reports+activities.
+   Fields: Course__c Lookup(Course__c) required; Start_Date__c Date required; End_Date__c Date;
+   Delivery_Mode__c Picklist (Online, In-Person, Hybrid); Capacity__c Number(3,0) required default 20;
+   Status__c Picklist (Planned, Open, Full, Running, Completed, Cancelled);
+   Enrolled_Count__c Roll-Up Summary COUNT of Enrolment__c filtered Status__c != Cancelled;
+   Seats_Remaining__c Formula Number(0dp) = Capacity__c - Enrolled_Count__c;
+   Cohort_Label__c Formula Text = Course__r.Name &amp; " - " &amp; TEXT(Start_Date__c).
+   Validation rule End_Date_After_Start_Date:
+   AND(NOT(ISBLANK(End_Date__c)), End_Date__c &lt; Start_Date__c)
+   message "End Date cannot be earlier than Start Date."
+
+3) Custom object Enrolment__c: label Enrolment/Enrolments, Name = AutoNumber "ENR-{00000}".
+   Fields in this order: Cohort__c MasterDetail(Cohort__c); Student__c Lookup(Contact) required;
+   Status__c Picklist restricted (Applied default, Confirmed, Waitlisted, Cancelled, Completed);
+   Enrolment_Date__c Date; Amount_Paid__c Currency(10,2) default 0;
+   Enrolment_Key__c Text(64) External ID + Unique (case-insensitive);
+   Attendance_Percent__c Percent(3,0); Certificate_Issued__c Checkbox default false.
+   Validation rule Payment_Not_Above_Fee:
+   Amount_Paid__c &gt; Cohort__r.Course__r.Fee__c
+   message "Amount Paid cannot exceed the course fee."
+
+4) On standard Contact: field Total_Enrolments__c Number(3,0), label "Total Enrolments".
+
+5) Custom tabs for Course__c, Cohort__c and Enrolment__c (any motif).
+
+Then: deploy with sf project deploy start, report any errors, and list every file you created.
+Do NOT create any Apex, flows, LWCs or sample records in this step.</pre>
+
+<h3>B.2 — Prompt: create all the Apex classes</h3>
+<pre>In the same project (data model from prompt B.1 is deployed), create these Apex files exactly as
+specified by the Oxfordable Week 2/3 workbooks, deploy them, then run all tests and show me the results.
+API version 62.0, with sharing unless stated, British spelling Enrolment__c throughout.
+
+1) trigger EnrolmentTrigger on Enrolment__c (before insert, before update, after insert, after update)
+   - routing only, no logic: before insert -> EnrolmentTriggerHandler.onBeforeInsert(Trigger.new);
+   before update -> onBeforeUpdate(Trigger.new, Trigger.oldMap); after insert/update ->
+   onAfterChange(Trigger.new).
+
+2) class EnrolmentTriggerHandler with: setDefaults (Enrolment_Date__c=today, Status__c='Applied',
+   Amount_Paid__c=0 when blank); buildUniqueKey (Enrolment_Key__c = first 15 chars of Cohort__c
+   + '-' + first 15 chars of Student__c); preventOverbooking (bulk-safe: count newly-consuming
+   rows per cohort where Status != 'Cancelled', ONE query of Capacity__c/Enrolled_Count__c for the
+   involved cohorts, allocate seats in memory, addError("This cohort is full. Please choose another
+   cohort or add the student to the waiting list.") on rows that exceed capacity);
+   enqueueStudentSummary (collect Student__c ids, enqueue StudentSummaryQueueable, respecting
+   Limits.getQueueableJobs()).
+
+3) class StudentSummaryQueueable implements Queueable: start every passed Contact at
+   Total_Enrolments__c = 0, then one aggregate query COUNT(Id) grouped by Student__c where
+   Status__c != 'Cancelled', update the Contacts, swallow DmlException with a debug log.
+
+4) class CohortAvailabilityService: @InvocableMethod label 'Find Available Cohorts'
+   category 'Oxfordable CareerLaunch'; Request has courseName; Result has answer, cohorts,
+   seatsAvailable; query Open cohorts starting today or later whose Course name LIKE the term,
+   keep those with Seats_Remaining__c &gt; 0, build a human-readable answer string.
+
+5) class EnrolmentStatusService: @InvocableMethod label 'Check Enrolment Status', Request has
+   studentEmail; returns found + an answer summarising each enrolment (cohort label, start date,
+   status), with a polite not-found message.
+
+6) class CohortController: @AuraEnabled(cacheable=true) getActiveCourses() and
+   getOpenCohorts(Id courseId) - Open, future cohorts, WITH SECURITY_ENFORCED, optional course filter.
+
+7) class EnrolmentController: @AuraEnabled createEnrolment(Id cohortId, Id studentId, String status)
+   - validate inputs, insert with Status default 'Confirmed', catch DmlException and rethrow as
+   AuraHandledException with a friendly message ("That student is already enrolled on this cohort."
+   for duplicate value errors), return the saved record with related names.
+
+8) Tests: TestDataFactory (@isTest: createCourse, createCohort, createStudents with duplicate-rule
+   bypass, buildEnrolments NOT inserted) plus EnrolmentTriggerTest (defaults, overbooking negative
+   test, 200-record bulk, duplicate blocked, queueable via startTest/stopTest) and CohortServicesTest
+   (controllers + both invocable services incl. error paths). Target 90% coverage, real assertions.
+
+Checkpoint after deploy: enrolling a 4th student on a capacity-3 cohort must fail with the capacity
+message, and a duplicate enrolment must fail on the unique key.</pre>
+
+<h3>B.3 — Prompt: create all the Lightning Web Components</h3>
+<pre>Same project; Apex from prompt B.2 is deployed. Create three LWCs under force-app/main/default/lwc,
+each three files (html, js, js-meta.xml), apiVersion 62.0, isExposed true, targets lightning__AppPage,
+lightning__HomePage, lightning__RecordPage. Then deploy.
+
+1) cohortExplorer: lightning-combobox "Filter by course" fed by @wire CohortController.getActiveCourses
+   (prepend an "All courses" option); lightning-datatable of @wire getOpenCohorts(courseId:
+   '$selectedCourseId') with columns Cohort, Course (flattened Course__r.Name), Starts (date), Mode,
+   Capacity, Seats left; single row selection dispatches CustomEvent 'cohortselected' (bubbles,
+   composed) with the row; store the whole wire result and expose @api refresh() that calls
+   refreshApex on it; friendly empty state.
+
+2) enrolmentPanel: @api cohort; when set, show cohort name + a lightning-badge "&lt;n&gt; seat(s)
+   remaining"; lightning-record-picker for Contact; "Enrol student" button disabled until a student
+   is chosen; imperative call to EnrolmentController.createEnrolment with status 'Confirmed';
+   on success ShowToastEvent, dispatch 'enrolled' (bubbles, composed), NavigationMixin to the new
+   record; on error show error.body.message in a toast - never a stack trace; spinner while working.
+
+3) enrolmentConsole: wrapper with a responsive SLDS grid - cohortExplorer (2/3 width) listening for
+   oncohortselected to set selectedCohort, enrolmentPanel (1/3) receiving cohort={selectedCohort}
+   and onenrolled calling the explorer's refresh().
+
+Do not restyle beyond SLDS classes. After deploy, tell me how to add enrolmentConsole to a Lightning
+App Page named "Enrolment Console" and activate it.</pre>
+
+<h3>B.4 — Prompt: create all the flows</h3>
+<pre>Same project. Create these three flows as flow-meta.xml files (API 62.0, status Active) and deploy.
+If any element is easier done in Flow Builder, generate the closest valid metadata and tell me what
+to verify in the Builder afterwards.
+
+1) Enrolment_Confirmed_Actions - record-triggered on Enrolment__c, create-or-update, entry
+   Status__c = 'Confirmed', only when updated to meet the condition, after-save. Elements:
+   Get_Cohort (first Cohort__c where Id = $Record.Cohort__c); Send Email action to
+   $Record.Student__r.Email, subject "Your place is confirmed - " + $Record.Cohort__r.Cohort_Label__c;
+   Create a Task (Subject "Send welcome pack to " + $Record.Student__r.Name, WhatId = $Record.Id,
+   OwnerId = $Record.OwnerId, ActivityDate = today, Priority High); Decision Is_Cohort_Now_Full
+   (Get_Cohort.Seats_Remaining__c &lt;= 0) -&gt; Update the cohort Status__c = 'Full'.
+
+2) Quick_Enrol_Student - screen flow: Screen 1 picklist choice set of active Course__c; Get open
+   cohorts of the chosen course sorted by Start_Date__c; Screen 2 radio choice of cohort showing
+   Cohort_Label__c with seats in help text; Screen 3 Contact lookup; Apex action Find Available
+   Cohorts re-checking seats; Decision; Create Enrolment__c (Status 'Confirmed'); success screen
+   showing the enrolment Name; "just filled up" screen otherwise; every Get/Create has a Fault
+   connector to an error screen showing $Flow.FaultMessage.
+
+3) Cohort_Start_Reminder - schedule-triggered daily 07:00 on Enrolment__c where Status__c =
+   'Confirmed' and Cohort__r.Start_Date__c = today + 3 (formula); send a reminder email and create
+   a Task.
+
+After deploy, confirm all three show State = Active, and list any element I should visually verify
+in Flow Builder.</pre>
+
+<h3>B.5 — Prompt: create everything else (permission set, page, sample data, deploy)</h3>
+<pre>Same project. Finish the delivery layer:
+
+1) Permission set Enrolment_Console_User (label "Enrolment Console User", description referencing
+   NFR-05: access by permission set, never by profile edits): object permissions Read/Create/Edit
+   on Course__c, Cohort__c, Enrolment__c and Read on Contact; field permissions on all custom fields
+   (formulas and roll-ups read-only); Apex class access CohortController, EnrolmentController,
+   CohortAvailabilityService, EnrolmentStatusService; flow access Quick_Enrol_Student; tab
+   visibility for Courses, Cohorts, Enrolments. Deploy, then assign it to me:
+   sf org assign permset -n Enrolment_Console_User
+
+2) Lightning App Page: FlexiPage named Enrolment_Console ("Enrolment Console"), two-region layout,
+   with the enrolmentConsole LWC - deploy it and tell me how to activate it and add it to navigation.
+
+3) Sample data script scripts/apex/seed.apex: two courses (Introductory fee 500, Advanced fee 1500),
+   cohort CO-style capacity 3 starting +14 days and capacity 10 starting +30 days (Status Open),
+   three Contacts with @oxfordable.test emails - idempotent (do not duplicate on re-run). Run it
+   with sf apex run.
+
+4) Verify the whole build: run all local tests with coverage and show the summary; then do a
+   validate-only deploy of force-app to confirm everything is deployable:
+   sf project deploy start --source-dir force-app --dry-run -l RunLocalTests
+
+Finally, print a checklist of the manual steps that metadata cannot do: activate the app page,
+check email deliverability is All Email, and run the Lab 2-4 checkpoints.</pre>
+
+<div class="callout dark"><div class="ct">One-shot master prompt (rebuild everything)</div>
+For a fresh org, you can paste prompts B.1–B.5 into the assistant <b>one at a time, in order,
+deploying and checkpointing between each</b>. Resist the temptation to merge them into a single
+mega-prompt: layer-by-layer builds surface errors where they happen, exactly like the labs do —
+and reviewing five small diffs teaches you more than approving one huge one. The Extension Pack
+features (invoicing, payments, certificates, portal, error logging) have their own build path:
+follow the Complete Build Guide, whose Code Pack items are the source of truth for that code.</div>
+
 <p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook ·
-Version 2.0 (updated August 2026 for the CareerLaunch Extension Pack). Companion documents: Week 1 and
-Week 3 workbooks · Extension Workbooks Parts A–C · CareerLaunch Complete Build Guide · User Guide ·
-Technical Guide.</p>
+Version 2.1 (August 2026: Extension Pack update + AI Build Prompts appendix). Companion documents:
+Week 1 and Week 3 workbooks · Extension Workbooks Parts A–C · CareerLaunch Complete Build Guide ·
+E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>
