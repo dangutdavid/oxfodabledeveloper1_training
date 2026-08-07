@@ -169,6 +169,25 @@ from the Error Logs tab), which carries the stack trace the developer needs. Sev
 <div class="callout warn"><div class="ct">Reset rule</div>
 If you must re-run a suite, create fresh records rather than editing used ones — auto-numbers and
 error logs are audit evidence. Never delete Error Log records during the test cycle.</div>
+
+<h3>1.8 What to test — at a glance</h3>
+<p>The complete test surface on one page. Each row is a suite; run them top to bottom. The detailed
+scripts start in Section 3.</p>
+<table>
+<tr><th>Suite</th><th>What you are testing</th><th>How</th><th>Cases</th></tr>
+<tr><td><b>A — Catalogue &amp; data model</b></td><td>Courses and cohorts live in one place; seat counters compute themselves (and release on cancellation); date validation blocks bad cohorts</td><td>Staff UI</td><td>E2E-01…04</td></tr>
+<tr><td><b>B — Enrolment rules</b></td><td>Defaults on create; the capacity rule (one record <i>and</i> a 200-record bulk load); duplicate prevention; the fee-cap validation</td><td>Staff UI + one Apex script</td><td>E2E-05…09</td></tr>
+<tr><td><b>C — Automation</b></td><td>Welcome email + task on confirmation; cohort auto-Full; the Quick Enrol wizard (happy and full paths); the T-3 reminder; the Contact roll-up count</td><td>Staff UI + flow debug</td><td>E2E-10…15</td></tr>
+<tr><td><b>D — Enrolment Console</b></td><td>The staff one-screen console: list/filter with live seat counts, enrol with toast + reactive refresh, friendly error messages</td><td>Console UI</td><td>E2E-16…18</td></tr>
+<tr><td><b>E — Agent</b> <i>(conditional)</i></td><td>Availability and status questions answered from live org data; graceful out-of-scope handling</td><td>Agent preview</td><td>E2E-19…21</td></tr>
+<tr><td><b>F — Invoicing</b></td><td>Invoices raise themselves on confirmation (fee, Sent, +14 days); never duplicate; skip free courses; Paid demands a reference; cancel → re-issue</td><td>Staff UI</td><td>E2E-22…26</td></tr>
+<tr><td><b>G — Payments</b></td><td>The gateway loop: successful settlement with reference + roll-up; simulated decline changes nothing; double-pay impossible; audit trail complete</td><td>Execute Anonymous</td><td>E2E-27…30</td></tr>
+<tr><td><b>H — Certificates</b></td><td>Completion produces the PDF, filed on the record, flag ticked, exactly once, with correct content</td><td>Staff UI</td><td>E2E-31…33</td></tr>
+<tr><td><b>I — Currency &amp; language</b></td><td>Conversions follow configured rates; rates are frozen on issued invoices; French users get a French portal and certificate</td><td>Setup + portal</td><td>E2E-34…36</td></tr>
+<tr><td><b>J — Error logging</b></td><td>Apex exceptions, flow faults and integration errors all become permanent log records — including when the failing transaction rolls back</td><td>Execute Anonymous + flow</td><td>E2E-37…39</td></tr>
+<tr><td><b>K — Student portal</b></td><td>The full customer journey: login, own-records-only privacy, Pay now end to end, certificate download — plus guest and cross-student access control</td><td>Portal, two students</td><td>E2E-40…44</td></tr>
+<tr><td><b>L — Release quality</b></td><td>The automated suite passes at ≥75% coverage; the release validates against a clean org</td><td>CLI</td><td>E2E-45…46</td></tr>
+</table>
 <!-- CH 2 ENV & DATA -->
 <h2 class="sec"><span class="secnum">2</span>Environment, roles &amp; test data preparation</h2>
 <p class="sec-intro">Complete this chapter once, before Suite A. Every case assumes this exact starting state.</p>
@@ -192,6 +211,13 @@ error logs are audit evidence. Never delete Error Log records during the test cy
 </table>
 
 <h3>2.3 Seed data script (TD-01 … TD-08)</h3>
+<div class="callout info"><div class="ct">Automated seeding available</div>
+Running <code>sf apex run -o &lt;org&gt; -f scripts/apex/e2e_seed.apex</code> creates TD-01…TD-06
+automatically and is idempotent (safe to re-run). The E2E-07 bulk load is likewise scripted as
+<code>scripts/apex/e2e_bulk.apex</code>. In the reference QA org this data — including the TD-07
+portal users <code>e2e.student.a@careerlaunch.portal</code> and
+<code>e2e.student.b@careerlaunch.portal</code> — is already provisioned; ask the instructor for the
+portal password. The table below remains the manual, click-by-click equivalent.</div>
 <table>
 <tr><th>ID</th><th>Create (as Admin Tester)</th><th>Values</th></tr>
 <tr><td>TD-01</td><td>Course</td><td><code>E2E Developer Course</code> · Level Introductory · 5 weeks · <b>Fee 500</b> · Active</td></tr>
