@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
+  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.1</span></div>
   <h1 class="cov">Build, Test,<br>Deploy &amp; Demo</h1>
   <div class="cov-sub">User Interface, AI, Testing and Release</div>
   <div class="cov-rule"></div>
@@ -71,7 +71,7 @@
   </div>
   <div class="cov-foot">
     Salesforce Developer Introductory Programme · Labs 5, 6, 7 and 8 · UAT and demo ·
-    <b>Version 2.0 — Extension Pack update + complete AI Build Prompt series</b><br>
+    <b>Version 2.1 — Fixed: App Page → App Launcher requires an explicit Tab (Lab 5 / Appendix E, P5)</b><br>
     This is the workbook you keep. It contains your acceptance test script, your deployment commands and your portfolio write-up.
   </div>
 </div>
@@ -138,7 +138,8 @@ cacheable, for reading) or <b>imperatively</b> (on demand, for writing).</p>
 <div class="step"><code>cohortExplorer</code> (Appendix B.1) — a combobox of courses and a <code>lightning-datatable</code> of open cohorts, populated by the wire adapter. Selecting a row dispatches a <code>cohortselected</code> custom event.</div>
 <div class="step"><code>enrolmentPanel</code> (Appendix B.2) — receives the selected cohort through <code>@api</code>, shows a contact picker, calls Apex imperatively, fires a toast, navigates to the new record, and tells the parent to refresh.</div>
 <div class="step"><code>enrolmentConsole</code> (Appendix B.3) — the small wrapper that listens for <code>cohortselected</code>, passes the record down, and refreshes the explorer when an enrolment is created.</div>
-<div class="step"><b>The Lightning page.</b> Setup → Lightning App Builder → New → App Page → two-column layout. Drop <code>enrolmentConsole</code> on, name it <b>Enrolment Console</b>, then Save → <b>Activate</b> → add it to your app's navigation.</div>
+<div class="step"><b>The Lightning page.</b> Setup → Lightning App Builder → New → App Page → two-column layout. Drop <code>enrolmentConsole</code> on, name it <b>Enrolment Console</b>, then Save → <b>Activate</b> → in the activation dialog choose <i>App, Record Type, and Profile</i> and add it to your app's navigation if offered.</div>
+<div class="step"><b>Create the Tab — do not skip this.</b> Activating an App Page does <b>not</b> put it in the App Launcher; that needs an explicit Tab pointing at it. Setup → Quick Find <code>Tabs</code> → find the <b>Lightning Page Tabs</b> section → <b>New</b> → select page <b>Enrolment Console</b> → pick a tab style/icon → Next → Next (profile visibility can be skipped; permission sets handle it) → Save. Without this step the page exists but has no address the App Launcher can search for.</div>
 </div>
 <h3>Teaching beats — the things to actually remember</h3>
 <table>
@@ -232,7 +233,8 @@ they broke your capacity rule. That person is often you, three months later.</di
 <p>Setup → Permission Sets → New → label <code>Enrolment Console User</code>. Object Settings: Course,
 Cohort, Enrolment → Read, Create, Edit; Contact → Read. Field permissions for all custom fields. Apex
 Class Access: CohortController, EnrolmentController, CohortAvailabilityService,
-EnrolmentStatusService. Tab settings: Courses, Cohorts, Enrolments → Visible. Assign it to yourself,
+EnrolmentStatusService. Tab settings: Courses, Cohorts, Enrolments, <b>Enrolment Console</b> → Visible
+(the Console tab from Lab 5 needs this too, or it never shows for anyone but you). Assign it to yourself,
 and to a second test user if you have one.</p>
 <div class="callout info"><div class="ct">Why not just edit the profile?</div>
 Profiles are shared by many users and painful to deploy and audit. Permission sets are additive,
@@ -1155,6 +1157,7 @@ export default class EnrolmentConsole extends LightningElement {
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
 <tr><td>LWC not available in App Builder</td><td><code>isExposed</code> false, or wrong target</td><td><code>&lt;isExposed&gt;true&lt;/isExposed&gt;</code> + <code>lightning__AppPage</code></td></tr>
+<tr><td>App Page (e.g. Enrolment Console) missing from App Launcher</td><td>Activating an App Page does not create a Tab - they are separate steps</td><td>Setup → Tabs → <b>Lightning Page Tabs</b> → New → select the page; then grant it <b>Visible</b> in your permission set</td></tr>
 <tr><td>LWC shows “no access” errors</td><td>Missing Apex class access</td><td>Add the class to the permission set</td></tr>
 <tr><td><code>refreshApex</code> does nothing</td><td>The wired result object was not stored</td><td>Assign the <i>whole</i> wire result to a property, not just <code>result.data</code></td></tr>
 <tr><td>Agentforce menu missing in Setup</td><td>Not enabled, or unavailable in that org type</td><td>Setup → Einstein Setup → enable; else use the reference org</td></tr>
@@ -1214,7 +1217,7 @@ checkpoint · 5. Continue to P2, and so on.</div>
 <tr><td>Apex classes, triggers, Visualforce, tests</td><td>P2 (core) · P8 (extension)</td></tr>
 <tr><td>Flows</td><td>P4 (core) · P9 (extension + automation wiring)</td></tr>
 <tr><td>Lightning Web Components</td><td>P3 (console) · P10 (portal, incl. header/logout/profile)</td></tr>
-<tr><td>Permission sets · FlexiPage (App Page)</td><td>P5 (core) · P10 (portal)</td></tr>
+<tr><td>Permission sets · FlexiPage (App Page) · <b>the Tab that exposes it</b></td><td>P5 (core) · P10 (portal)</td></tr>
 <tr><td>Experience Cloud site (clicks)</td><td>P11 checklist</td></tr>
 <tr><td>Demo &amp; test data, portal logins</td><td>P12</td></tr>
 </table>
@@ -1342,18 +1345,28 @@ After deploying, confirm all three show State = Active.</pre>
 
 <h3>P5 — Core permission set, App Page and validation</h3>
 <p><b>What this prompt does:</b> packages the core for delivery — the staff permission set (NFR-05:
-never edit profiles), the Enrolment Console FlexiPage, and a validate-only deploy proving everything
-ships. <b>When it worked:</b> the App Launcher shows Enrolment Console and the dry-run deploy passes
-with tests.</p>
+never edit profiles), the Enrolment Console FlexiPage <b>and the Tab that makes it findable</b>, and a
+validate-only deploy proving everything ships. <b>When it worked:</b> searching <code>Enrolment
+Console</code> in the App Launcher returns it under <i>Items</i>, and the dry-run deploy passes with
+tests.</p>
+<div class="callout warn"><div class="ct">The step almost everyone misses</div>
+<b>Activating an App Page does not create a Tab.</b> They are two separate things. An App Page with no
+Tab pointing at it exists in the org but has no address the App Launcher can search for — like a room
+with no door. This prompt builds the door as step 2 below; do not skip it.</div>
 <pre>Same project. Finish the core delivery layer:
 1) Permission set Enrolment_Console_User (label "Enrolment Console User"): Read/Create/Edit on
    Course__c, Cohort__c, Enrolment__c; Read on Contact; field permissions on all custom fields
    (formulas and roll-ups read-only); Apex class access CohortController, EnrolmentController,
    CohortAvailabilityService, EnrolmentStatusService; flow access Quick_Enrol_Student; tab
-   visibility Courses/Cohorts/Enrolments. Deploy and assign it to the current user with
+   visibility Courses/Cohorts/Enrolments/Enrolment_Console (all four - see step 2). Deploy and
+   assign it to the current user with
    sf org assign permset -n Enrolment_Console_User
 2) FlexiPage Enrolment_Console ("Enrolment Console"), App Page, two regions, containing the
-   enrolmentConsole LWC - deploy and tell me how to activate it and add it to navigation.
+   enrolmentConsole LWC. THEN create force-app/main/default/tabs/Enrolment_Console.tab-meta.xml -
+   a CustomTab with &lt;flexiPage&gt;Enrolment_Console&lt;/flexiPage&gt; and a &lt;motif&gt; icon - this
+   is what actually makes the page appear in the App Launcher. Deploy both together and tell me
+   how to activate the page and pin it to an app's navigation bar (optional - the Tab alone is
+   enough for App Launcher search).
 3) Verify: run all local tests with coverage; then a validate-only deploy:
    sf project deploy start --source-dir force-app --dry-run -l RunLocalTests
 4) Print the manual steps metadata cannot do: activate the app page; Setup -&gt; Deliverability =
@@ -1581,6 +1594,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.0 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.1 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>

@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v3.0</span></div>
+  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.2</span></div>
   <h1 class="cov">Design &amp; Build<br>Part 1</h1>
   <div class="cov-sub">Data, Automation and Code</div>
   <div class="cov-rule"></div>
@@ -69,7 +69,7 @@
     <b>Date:</b> ______________________________________
   </div>
   <div class="cov-foot">
-    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 3.0 — Extension Pack update + complete AI Build Prompt series (P1–P12)</b><br>
+    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.2 — Extension Pack update + full-stack AI Build Prompts (B.1–B.10)</b><br>
     Read the solution design (Sections 1–2) before the session. We build from it, we do not re-explain it.
   </div>
 </div>
@@ -881,7 +881,7 @@ checkpoint · 5. Continue to P2, and so on.</div>
 <tr><td>Apex classes, triggers, Visualforce, tests</td><td>P2 (core) · P8 (extension)</td></tr>
 <tr><td>Flows</td><td>P4 (core) · P9 (extension + automation wiring)</td></tr>
 <tr><td>Lightning Web Components</td><td>P3 (console) · P10 (portal, incl. header/logout/profile)</td></tr>
-<tr><td>Permission sets · FlexiPage (App Page)</td><td>P5 (core) · P10 (portal)</td></tr>
+<tr><td>Permission sets · FlexiPage (App Page) · <b>the Tab that exposes it</b></td><td>P5 (core) · P10 (portal)</td></tr>
 <tr><td>Experience Cloud site (clicks)</td><td>P11 checklist</td></tr>
 <tr><td>Demo &amp; test data, portal logins</td><td>P12</td></tr>
 </table>
@@ -1009,18 +1009,28 @@ After deploying, confirm all three show State = Active.</pre>
 
 <h3>P5 — Core permission set, App Page and validation</h3>
 <p><b>What this prompt does:</b> packages the core for delivery — the staff permission set (NFR-05:
-never edit profiles), the Enrolment Console FlexiPage, and a validate-only deploy proving everything
-ships. <b>When it worked:</b> the App Launcher shows Enrolment Console and the dry-run deploy passes
-with tests.</p>
+never edit profiles), the Enrolment Console FlexiPage <b>and the Tab that makes it findable</b>, and a
+validate-only deploy proving everything ships. <b>When it worked:</b> searching <code>Enrolment
+Console</code> in the App Launcher returns it under <i>Items</i>, and the dry-run deploy passes with
+tests.</p>
+<div class="callout warn"><div class="ct">The step almost everyone misses</div>
+<b>Activating an App Page does not create a Tab.</b> They are two separate things. An App Page with no
+Tab pointing at it exists in the org but has no address the App Launcher can search for — like a room
+with no door. This prompt builds the door as step 2 below; do not skip it.</div>
 <pre>Same project. Finish the core delivery layer:
 1) Permission set Enrolment_Console_User (label "Enrolment Console User"): Read/Create/Edit on
    Course__c, Cohort__c, Enrolment__c; Read on Contact; field permissions on all custom fields
    (formulas and roll-ups read-only); Apex class access CohortController, EnrolmentController,
    CohortAvailabilityService, EnrolmentStatusService; flow access Quick_Enrol_Student; tab
-   visibility Courses/Cohorts/Enrolments. Deploy and assign it to the current user with
+   visibility Courses/Cohorts/Enrolments/Enrolment_Console (all four - see step 2). Deploy and
+   assign it to the current user with
    sf org assign permset -n Enrolment_Console_User
 2) FlexiPage Enrolment_Console ("Enrolment Console"), App Page, two regions, containing the
-   enrolmentConsole LWC - deploy and tell me how to activate it and add it to navigation.
+   enrolmentConsole LWC. THEN create force-app/main/default/tabs/Enrolment_Console.tab-meta.xml -
+   a CustomTab with &lt;flexiPage&gt;Enrolment_Console&lt;/flexiPage&gt; and a &lt;motif&gt; icon - this
+   is what actually makes the page appear in the App Launcher. Deploy both together and tell me
+   how to activate the page and pin it to an app's navigation bar (optional - the Tab alone is
+   enough for App Launcher search).
 3) Verify: run all local tests with coverage; then a validate-only deploy:
    sf project deploy start --source-dir force-app --dry-run -l RunLocalTests
 4) Print the manual steps metadata cannot do: activate the app page; Setup -&gt; Deliverability =
@@ -1248,6 +1258,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook · Version 3.0 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook · Version 3.1 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>
