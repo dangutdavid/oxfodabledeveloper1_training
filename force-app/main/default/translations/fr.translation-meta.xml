@@ -40,4 +40,12 @@
         <label>Télécharger le certificat</label>
         <name>Portal_Download_Certificate</name>
     </customLabels>
+    <customLabels>
+        <label>Se déconnecter</label>
+        <name>Portal_Log_Out</name>
+    </customLabels>
+    <customLabels>
+        <label>Se connecter</label>
+        <name>Portal_Log_In</name>
+    </customLabels>
 </Translations>

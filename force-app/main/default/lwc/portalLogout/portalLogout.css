@@ -1,0 +1,15 @@
+/* LWR sites include no SLDS, so the button styles itself. */
+.portal-auth-link {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #16324f;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+.portal-auth-link:hover {
+    background: #f1f4f8;
+}

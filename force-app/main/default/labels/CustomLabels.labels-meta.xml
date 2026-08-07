@@ -73,6 +73,22 @@
         <value>Payment received - thank you!</value>
     </labels>
     <labels>
+        <fullName>Portal_Log_Out</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal log out link</shortDescription>
+        <value>Log out</value>
+    </labels>
+    <labels>
+        <fullName>Portal_Log_In</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal log in link</shortDescription>
+        <value>Log in</value>
+    </labels>
+    <labels>
         <fullName>Portal_Download_Certificate</fullName>
         <categories>CareerLaunch,Portal</categories>
         <language>en_US</language>

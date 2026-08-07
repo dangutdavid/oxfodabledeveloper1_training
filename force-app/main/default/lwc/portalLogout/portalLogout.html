@@ -1,0 +1,8 @@
+<template>
+    <template lwc:if={isGuest}>
+        <a class="portal-auth-link" href={loginUrl}>{labels.logIn}</a>
+    </template>
+    <template lwc:else>
+        <a class="portal-auth-link" href={logoutUrl}>{labels.logOut}</a>
+    </template>
+</template>
