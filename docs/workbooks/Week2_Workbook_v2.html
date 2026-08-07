@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.1</span></div>
+  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.2</span></div>
   <h1 class="cov">Design &amp; Build<br>Part 1</h1>
   <div class="cov-sub">Data, Automation and Code</div>
   <div class="cov-rule"></div>
@@ -69,7 +69,7 @@
     <b>Date:</b> ______________________________________
   </div>
   <div class="cov-foot">
-    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.1 — Extension Pack update + AI Build Prompts appendix</b><br>
+    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.2 — Extension Pack update + full-stack AI Build Prompts (B.1–B.10)</b><br>
     Read the solution design (Sections 1–2) before the session. We build from it, we do not re-explain it.
   </div>
 </div>
@@ -869,7 +869,25 @@ a line the AI wrote, you are not finished with it.</div>
 1. Open a terminal in your <code>careerlaunch</code> project folder (created in Week 1).<br>
 2. Confirm the org connection: <code>sf org list</code> shows your org as default.<br>
 3. Start your AI assistant in that folder, paste one prompt, review, deploy, run the matching lab checkpoint.<br>
-4. Run the prompts <b>in order B.1 → B.5</b> — later layers depend on earlier ones.</div>
+4. Run the prompts <b>in order</b> — B.1 → B.5 rebuilds the core system (Weeks 1–3); B.6 → B.10 adds the Extension Pack. Later layers depend on earlier ones.</div>
+
+<h3>B.0 — Coverage map: every metadata type, and the prompt that builds it</h3>
+<table>
+<tr><th>Metadata type</th><th>Core system</th><th>Extension Pack</th></tr>
+<tr><td>Custom objects &amp; fields</td><td>B.1 (Course, Cohort, Enrolment, Contact field)</td><td>B.6 (Invoice, Error Log)</td></tr>
+<tr><td>Platform events</td><td>—</td><td>B.6 (Error_Log_Event__e)</td></tr>
+<tr><td>Custom tabs</td><td>B.1</td><td>B.6 (Invoices, Error Logs)</td></tr>
+<tr><td>Custom Metadata Types + records</td><td>—</td><td>B.6 (Exchange_Rate__mdt, Integration_Setting__mdt)</td></tr>
+<tr><td>Named Credentials</td><td>—</td><td>B.6 (Payment_Gateway)</td></tr>
+<tr><td>Validation rules</td><td>B.1</td><td>B.6 (Paid_Requires_Reference)</td></tr>
+<tr><td>Apex classes &amp; triggers</td><td>B.2 (7 files + tests)</td><td>B.7 (14 classes, 1 trigger, VF page, tests)</td></tr>
+<tr><td>Visualforce pages</td><td>—</td><td>B.7 (CertificatePdf)</td></tr>
+<tr><td>Custom Labels &amp; translations</td><td>—</td><td>B.8 (10 labels + French)</td></tr>
+<tr><td>Flows</td><td>B.4 (3 flows)</td><td>B.9 (certificate flow + fault-path logging)</td></tr>
+<tr><td>Lightning Web Components</td><td>B.3 (3 console LWCs)</td><td>B.10 (2 portal LWCs)</td></tr>
+<tr><td>FlexiPages (Lightning pages)</td><td>B.5 (Enrolment Console)</td><td>B.10 (portal pages are built in Experience Builder)</td></tr>
+<tr><td>Permission sets</td><td>B.5 (Enrolment_Console_User)</td><td>B.10 (Student_Portal_User + Invoice access update)</td></tr>
+</table>
 
 <h3>B.1 — Prompt: create all objects and fields</h3>
 <pre>You are working in a Salesforce DX project connected to my Developer org. Create the metadata
@@ -1036,17 +1054,172 @@ in Flow Builder.</pre>
 Finally, print a checklist of the manual steps that metadata cannot do: activate the app page,
 check email deliverability is All Email, and run the Lab 2-4 checkpoints.</pre>
 
-<div class="callout dark"><div class="ct">One-shot master prompt (rebuild everything)</div>
-For a fresh org, you can paste prompts B.1–B.5 into the assistant <b>one at a time, in order,
-deploying and checkpointing between each</b>. Resist the temptation to merge them into a single
-mega-prompt: layer-by-layer builds surface errors where they happen, exactly like the labs do —
-and reviewing five small diffs teaches you more than approving one huge one. The Extension Pack
-features (invoicing, payments, certificates, portal, error logging) have their own build path:
-follow the Complete Build Guide, whose Code Pack items are the source of truth for that code.</div>
+<h3>B.6 — Prompt: Extension data model (objects, event, tabs, custom metadata, named credential)</h3>
+<pre>Same project, core system (B.1-B.5) deployed. Create and deploy the Extension Pack data layer.
+Exact API names; British spelling.
+
+1) Custom object Error_Log__c: label Error Log/Error Logs, Name = AutoNumber "ERR-{00000}",
+   enable reports. Fields: Source_Type__c Picklist restricted (Apex default, Trigger, Flow,
+   Integration); Source_Name__c Text(255); Error_Message__c LongTextArea(32768, 5 lines);
+   Stack_Trace__c LongTextArea(32768, 10 lines); Record_Id__c Text(18);
+   Severity__c Picklist restricted (Info, Warning, Error default, Critical). Custom tab.
+
+2) Platform event Error_Log_Event__e: label Error Log Event(s), publish behavior
+   PUBLISH IMMEDIATELY. Fields: Source_Type__c Text(50); Source_Name__c Text(255);
+   Error_Message__c LongTextArea(32768); Stack_Trace__c LongTextArea(32768);
+   Record_Id__c Text(18); Severity__c Text(20).
+
+3) Custom object Invoice__c: label Invoice/Invoices, Name = AutoNumber "INV-{00000}",
+   reports + activities. Fields in order: Enrolment__c MasterDetail(Enrolment__c, related list
+   "Invoices"); Amount__c Currency(12,2) required; Currency_Code__c Picklist restricted
+   (GBP default, USD, EUR); Exchange_Rate__c Number(12,6) default 1; Amount_In_Currency__c
+   Formula Number(2dp) = Amount__c * Exchange_Rate__c (blanks as zero); Status__c Picklist
+   restricted (Draft default, Sent, Paid, Cancelled); Due_Date__c Date; Paid_Date__c Date;
+   Payment_Reference__c Text(100). Custom tab. Validation rule Paid_Requires_Reference:
+   AND(ISPICKVAL(Status__c, "Paid"), ISBLANK(Payment_Reference__c))
+   message "An invoice cannot be marked Paid without the gateway payment reference."
+
+4) Custom Metadata Type Exchange_Rate__mdt (label Exchange Rate/s) with fields
+   Rate_From_GBP__c Number(12,6) required and Symbol__c Text(5); records GBP=1.0/£,
+   USD=1.27/$, EUR=1.17/€.
+
+5) Custom Metadata Type Integration_Setting__mdt (label Integration Setting/s) with field
+   Implementation_Class__c Text(255) required; one record Payment_Gateway with value
+   "PaymentGatewayStub".
+
+6) Legacy Named Credential Payment_Gateway: label "Payment Gateway",
+   URL https://api.payments.example.com, identity Anonymous, protocol No Authentication.
+
+Deploy everything and list the files created. No Apex yet.</pre>
+
+<h3>B.7 — Prompt: Extension Apex, trigger and Visualforce</h3>
+<pre>Same project, B.6 deployed. Create per the CareerLaunch Complete Build Guide (Chapters 7, 9-11),
+deploy, then run all tests:
+
+Error logging: class ErrorLogger (without sharing; Apex overloads log(e, source[, recordId]) and
+log(type, source, msg, stack, recordId, severity); @InvocableMethod "Log Flow Error" taking
+flowName/errorMessage/recordId; every path publishes Error_Log_Event__e via EventBus - never a
+direct insert) and trigger ErrorLogEventTrigger on Error_Log_Event__e (after insert) copying
+events into Error_Log__c.
+
+Currency: class CurrencyService reading Exchange_Rate__mdt.getInstance (no SOQL): getRate,
+getSymbol, convertFromGBP (2dp half-up), format; UnknownCurrencyException for unknown codes.
+
+Payment stack (in order): PaymentRequest (plain DTO: invoiceId, invoiceNumber, amount,
+currencyCode, studentEmail, idempotencyKey); PaymentResult (success/transactionId/errorMessage
++ ok()/fail() factories, @AuraEnabled properties); interface IPaymentGateway { PaymentResult
+charge(PaymentRequest) }; PaymentGatewayStub (reject amount &lt;= 0; email containing "declined"
+fails; else ok("STUB-"+invoiceNumber+"-"+currencyCode)); PaymentGatewayFactory (reads
+Integration_Setting__mdt Payment_Gateway, Type.forName, verifies interface, @TestVisible
+gatewayOverride); PaymentGatewayHttpClient (POST callout:Payment_Gateway/v1/charges,
+Idempotency-Key header, 20s timeout, CalloutException -> ErrorLogger Critical + fail result,
+wire format in private inner classes); InvoiceService (inherited sharing;
+createForConfirmedEnrolments: one Sent invoice per Confirmed enrolment at the course fee,
+due +14 days, GBP rate stamped, skipping fee &lt;= 0 and enrolments with a live non-Cancelled
+invoice - idempotent, bulk-safe); PaymentService (without sharing with a comment why;
+payInvoice: load, refuse Paid/Cancelled, build request with idempotencyKey = invoiceId + "-" +
+Name, callout BEFORE DML, on success mark Paid + reference + date and add the GBP amount to
+Enrolment__c.Amount_Paid__c).
+
+Certificates: class CertificateController (reads ?id= page param, queries enrolment with
+student/cohort/course names, exposes today formatted); Visualforce page CertificatePdf
+(renderAs="pdf", A4 landscape, styled certificate using $Label.Certificate_* merge fields -
+create AFTER prompt B.8 labels, or create labels first); class CertificateService
+(@InvocableMethod "Issue Completion Certificate" category Oxfordable CareerLaunch; inner
+IssueJob implements Queueable, Database.AllowsCallouts: query Certificate_Issued__c = false,
+render Page.CertificatePdf via getContent (Test.isRunningTest() -> placeholder blob), insert
+ContentVersion with FirstPublishLocationId = enrolment, tick the flag, whole job try/catch ->
+ErrorLogger).
+
+Trigger wiring: in EnrolmentTriggerHandler.onAfterChange, after enqueueStudentSummary, add
+InvoiceService.createForConfirmedEnrolments(newEnrolments);
+
+Tests: add createStudent(String email) to TestDataFactory; classes ErrorLoggerTest (use
+Test.getEventBus().deliver()), CurrencyServiceTest, InvoicePaymentServicesTest (auto-invoice +
+idempotency, stub happy/declined/double-pay, HttpCalloutMock asserting the callout: endpoint and
+Idempotency-Key header, factory + override), CertificateServiceTest, StudentPortalControllerTest
+(after B.10). Real assertions, 85%+ coverage. Run everything and show the summary.</pre>
+
+<h3>B.8 — Prompt: Custom Labels and French translations</h3>
+<pre>Same project. Create labels/CustomLabels.labels-meta.xml with these ten labels (category
+CareerLaunch, language en_US, protected false) - names EXACT, they are imported by name:
+Certificate_Title = "Certificate of Completion"
+Certificate_Awarded_To = "This certificate is proudly awarded to"
+Certificate_Completion_Text = "for successfully completing"
+Certificate_Issued_On = "Issued on"
+Portal_My_Enrolments = "My Enrolments"
+Portal_My_Invoices = "My Invoices"
+Portal_Pay_Now = "Pay now"
+Portal_No_Records = "Nothing to show here yet."
+Portal_Payment_Success = "Payment received - thank you!"
+Portal_Download_Certificate = "Download certificate"
+
+Also create translations/fr.translation-meta.xml with the French for each:
+Certificat de réussite / Ce certificat est fièrement décerné à / pour avoir terminé avec succès /
+Délivré le / Mes inscriptions / Mes factures / Payer maintenant / Rien à afficher pour le moment. /
+Paiement reçu - merci ! / Télécharger le certificat
+
+Deploy the labels. Before deploying the translation file, remind me to enable French under
+Setup -&gt; Translation Language Settings (deploying translations for a language that is not
+enabled fails) - then deploy it.</pre>
+
+<h3>B.9 — Prompt: Extension flows</h3>
+<pre>Same project, B.7 deployed. Two flow changes, then deploy and confirm both are Active:
+
+1) New record-triggered flow Issue_Certificate_On_Completion on Enrolment__c: create-or-update,
+   entry Status__c = 'Completed', ONLY when updated to meet the condition, after-save; single
+   Apex action "Issue Completion Certificate" (CertificateService) passing enrolmentId =
+   $Record.Id. Status Active. Note in your summary: record-triggered flows never act
+   retroactively - records already Completed before deployment need a status nudge.
+
+2) Update Quick_Enrol_Student: insert an Apex action "Log Flow Error" (ErrorLogger) before the
+   error screen - inputs flowName = "Quick_Enrol_Student" (literal) and errorMessage =
+   $Flow.FaultMessage - and repoint every faultConnector to it; its connector continues to the
+   error screen. Keep everything else identical; deploy as a new active version.</pre>
+
+<h3>B.10 — Prompt: Portal LWCs, permission sets and pages</h3>
+<pre>Same project, B.7-B.9 deployed. Build the portal layer:
+
+1) Class StudentPortalController (without sharing WITH an explanatory comment: Enrolment__c is a
+   master-detail child so sharing sets cannot reach it; privacy = contact-scoped queries):
+   resolveContactId() from UserInfo.getUserId() -&gt; User.ContactId (@TestVisible
+   contactIdOverride; friendly AuraHandledException when null); @AuraEnabled(cacheable=true)
+   getMyEnrolments() returning view wrappers (id, courseName, cohortLabel, status, startDate,
+   certificateIssued, certificateUrl = "/sfc/servlet.shepherd/document/download/" + docId via
+   ContentDocumentLink where Title LIKE 'Certificate%'); getMyInvoices() (invoiceNumber,
+   courseName, amountDisplay = CurrencyService symbol + Amount_In_Currency + code, status,
+   dueDate, payable = Sent or Draft); @AuraEnabled payInvoice(Id) - COUNT() ownership check
+   against the caller's contact BEFORE delegating to PaymentService, PaymentStateException
+   rethrown as AuraHandledException.
+
+2) LWCs studentEnrolments and studentInvoices: lightning-card lists using the custom labels via
+   @salesforce/label/c.* imports; studentInvoices wires getMyInvoices, Pay now button calls
+   payInvoice imperatively, success toast with Portal_Payment_Success + reference, refreshApex;
+   meta targets lightningCommunity__Page, lightningCommunity__Default, lightning__AppPage,
+   lightning__HomePage; isExposed true.
+
+3) Permission set Student_Portal_User: read-only object + field access on Course__c, Cohort__c,
+   Enrolment__c, Invoice__c; Apex class access StudentPortalController ONLY. Also update
+   Enrolment_Console_User: Read/Create/Edit on Invoice__c, its field permissions, and the
+   Invoices tab.
+
+4) Deploy, then print the clicks-only checklist that metadata cannot do: enable Digital
+   Experiences + the "standard external profiles" setting; create the LWR site and drag both
+   components on (the site's pages replace a FlexiPage here); publish; give the admin a role;
+   add Customer Community User to site membership; Enable Customer User on a Contact with an
+   Account; assign Student_Portal_User; set the password; test in a private window.</pre>
+
+<div class="callout dark"><div class="ct">How to run the full rebuild</div>
+Fresh org, whole system: paste B.1 → B.10 <b>one at a time, in order, deploying and running the
+matching checkpoint between each</b>. Resist merging them into one mega-prompt: layer-by-layer
+builds surface errors where they happen — and reviewing ten small diffs teaches you more than
+approving one huge one. The Complete Build Guide remains the source of truth: its Code Pack items
+are the reference implementation your AI-generated code should match, and its Chapter 12 covers
+the Experience Cloud clicks no prompt can do for you.</div>
 
 <p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook ·
-Version 2.1 (August 2026: Extension Pack update + AI Build Prompts appendix). Companion documents:
-Week 1 and Week 3 workbooks · Extension Workbooks Parts A–C · CareerLaunch Complete Build Guide ·
-E2E Test Document · User Guide · Technical Guide.</p>
+Version 2.2 (August 2026: Extension Pack update + full-stack AI Build Prompts B.1–B.10). Companion
+documents: Week 1 and Week 3 workbooks · Extension Workbooks Parts A–C · CareerLaunch Complete Build
+Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>
