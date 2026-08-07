@@ -12,7 +12,7 @@ use the system day to day, see [USER_GUIDE.md](USER_GUIDE.md).
 ┌────────────────────────  Experience Cloud (students)  ───────────────────────┐
 │  studentEnrolments LWC        studentInvoices LWC (Pay now)                  │
 │              └──────────────┬───────────────┘                                │
-│                   StudentPortalController  (with sharing, contact-scoped)    │
+│                   StudentPortalController  (without sharing, contact-scoped) │
 └─────────────────────────────┼────────────────────────────────────────────────┘
                               │
 ┌───────────  Internal app (staff)  ───────────┐        ┌──── async ──────────┐
