@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CareerLaunch — Complete Build Guide</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: 'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; color:#22324a; font-size:10.2pt; line-height:1.5; }
+  .topbar { height: 14px; border-radius: 4px; background: linear-gradient(90deg,#16324f 0%,#1b5e63 55%,#1c8b74 100%); }
+  .page { page-break-after: always; }
+  .brand { display:flex; align-items:center; gap:10px; margin-top:60px; }
+  .brand .mark { width:44px;height:44px;border-radius:10px;background:#16324f;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px; }
+  .brand .name { font-size:15pt; font-weight:700; color:#16324f; }
+  .brand .name span { color:#1c8b74; }
+  .kicker { letter-spacing:3px; font-size:8.5pt; font-weight:700; color:#5a6b82; margin-top:70px; text-transform:uppercase; }
+  h1.cover { font-size:34pt; font-weight:800; color:#16324f; margin:8px 0 14px 0; line-height:1.1; }
+  .cover-sub { font-size:15pt; color:#33475f; font-weight:400; line-height:1.35; max-width:520px; }
+  .cover-blurb { margin-top:22px; color:#5a6b82; max-width:560px; }
+  .rule { width:56px; border-top:3px solid #1c8b74; margin:26px 0 22px 0; }
+  .chips { display:flex; gap:10px; flex-wrap:wrap; }
+  .chip { border:1px solid #d7dee8; border-radius:20px; padding:5px 14px; font-size:9pt; font-weight:700; color:#33475f; }
+  .chip::before { content:'● '; font-size:8pt; }
+  .chip.b::before{color:#2b6cb0}.chip.g::before{color:#1c8b74}.chip.p::before{color:#6b46c1}
+  .cover-foot { margin-top:30px; border-top:1px solid #e3e9f0; padding-top:10px; display:flex; justify-content:space-between; font-size:8.5pt; color:#5a6b82; }
+  .cover-foot b { color:#22324a; }
+  /* section headings */
+  .secnum { display:inline-flex; width:30px;height:30px;border-radius:7px;background:#16324f;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:12pt;margin-right:12px;vertical-align:middle; }
+  h2.sec { font-size:19pt; font-weight:800; color:#16324f; margin:6px 0 4px 0; page-break-after: avoid; }
+  h2.sec { break-before: page; padding-top: 6px; }
+  h2.first { break-before: auto; }
+  .sec-intro { color:#5a6b82; border-bottom:1px solid #e3e9f0; padding-bottom:10px; margin-bottom:14px; }
+  h3 { font-size:12.5pt; color:#16324f; margin:16px 0 6px 0; page-break-after: avoid; }
+  h3 .n { color:#1c8b74; font-size:10pt; font-weight:800; margin-right:6px; }
+  h4 { font-size:10.5pt; color:#16324f; margin:12px 0 4px 0; page-break-after: avoid; }
+  p { margin: 5px 0; }
+  ul, ol { margin: 5px 0 5px 20px; }
+  li { margin: 3px 0; }
+  code { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.6pt; background:#f1f4f8; border:1px solid #e3e9f0; border-radius:4px; padding:1px 5px; color:#1f3a56; }
+  pre { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.4pt; background:#f7f9fb; border:1px solid #e3e9f0; border-radius:8px; padding:10px 12px; margin:8px 0; white-space:pre-wrap; line-height:1.45; page-break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; margin:8px 0 12px 0; font-size:9.2pt; page-break-inside:auto; }
+  th { text-align:left; font-size:8pt; letter-spacing:1px; text-transform:uppercase; color:#5a6b82; background:#f1f4f8; padding:6px 9px; border-bottom:2px solid #d7dee8; }
+  td { padding:6px 9px; border-bottom:1px solid #e9eef4; vertical-align:top; }
+  tr { page-break-inside: avoid; }
+  .callout { border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid; border-left:4px solid; }
+  .callout .ct { font-size:8pt; letter-spacing:1.5px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+  .info { background:#eef4fb; border-color:#2b6cb0; } .info .ct{color:#2b6cb0}
+  .warn { background:#fdf3e7; border-color:#c05621; } .warn .ct{color:#c05621}
+  .ok   { background:#ebf7f1; border-color:#1c8b74; } .ok .ct{color:#1c8b74}
+  .dark { background:#16324f; color:#e8eef5; border-color:#1c8b74; } .dark .ct{color:#7fd1bd} .dark code{background:#22456b;border-color:#2d5580;color:#cfe3f5}
+  .steps { counter-reset: step; margin: 8px 0; }
+  .step { position:relative; padding-left:34px; margin:7px 0; page-break-inside:avoid; }
+  .step::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:1px; width:22px;height:22px; border-radius:50%; background:#e8f0ec; color:#1c8b74; font-weight:800; font-size:9.5pt; display:flex; align-items:center; justify-content:center; }
+  .done { color:#8494a8; font-size:9pt; margin:4px 0 10px 34px; }
+  .done::before { content:'☐ '; }
+  .codepack { display:inline-block; background:#16324f; color:#fff; border-radius:5px; padding:1px 8px; font-size:8.2pt; font-weight:700; }
+  /* contents */
+  .toc-title { font-size:22pt; font-weight:800; color:#16324f; margin:10px 0 18px 0; }
+  .toc-kicker { letter-spacing:3px; font-size:8.5pt; font-weight:700; color:#5a6b82; margin-top:26px; text-transform:uppercase; }
+  .toc-row { display:flex; align-items:baseline; gap:12px; margin:11px 0; }
+  .toc-row .tn { flex-shrink:0; width:26px;height:26px;border-radius:6px;background:#16324f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10.5pt; }
+  .toc-row .tt { font-weight:700; color:#16324f; font-size:11.5pt; }
+  .toc-row .td2 { color:#8494a8; font-size:9pt; }
+  .foot { position: static; }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+
+<!-- ============ COVER ============ -->
+<div class="page">
+  <div class="brand"><div class="mark">🚀</div><div class="name">Career<span>Launch</span></div></div>
+  <div class="kicker">Complete Build Guide</div>
+  <h1 class="cover">CareerLaunch</h1>
+  <div class="cover-sub">From business problem to live system —<br>every step, in order, no AI required.</div>
+  <p class="cover-blurb">A single, self-contained manual for rebuilding the entire CareerLaunch
+  application in a fresh Salesforce Developer Edition org: the org itself, every object and field,
+  every flow, the Apex and Lightning Web Components (referenced by name — source is supplied
+  separately as the <b>Code Pack</b>), the payment gateway, certificates, error logging,
+  multi-currency and multi-language, the Experience Cloud student portal, all permissions,
+  the tests, and the release.</p>
+  <div class="rule"></div>
+  <div class="chips">
+    <span class="chip b">Org &amp; data model</span>
+    <span class="chip g">Automation &amp; Apex</span>
+    <span class="chip g">Portal &amp; payments</span>
+    <span class="chip p">Security · tests · release</span>
+  </div>
+  <div class="cover-foot">
+    <div><b>CareerLaunch Platform</b><br>Enrolments · Invoicing · Certificates · Payments · Portal</div>
+    <div style="text-align:right"><b>Build Guide · Rev. August 2026</b><br>Oxfordable Careers — Salesforce Developer Programme</div>
+  </div>
+</div>
+
+<!-- ============ CONTENTS ============ -->
+<div class="page">
+  <div class="toc-kicker">Contents</div>
+  <div class="toc-title">How this guide is organised</div>
+  <div class="toc-row"><div class="tn">1</div><div><div class="tt">The business problem &amp; the solution</div><div class="td2">The client brief · what we build · architecture · how to use the Code Pack</div></div></div>
+  <div class="toc-row"><div class="tn">2</div><div><div class="tt">Workstation &amp; org setup</div><div class="td2">Developer Edition org · CLI · VS Code · Git · project · org settings</div></div></div>
+  <div class="toc-row"><div class="tn">3</div><div><div class="tt">The core data model</div><div class="td2">Course · Cohort · Enrolment · Contact field · formulas, roll-up, validation rules · sample data</div></div></div>
+  <div class="toc-row"><div class="tn">4</div><div><div class="tt">Core automation — Flows</div><div class="td2">Confirmation actions · Quick Enrol wizard · scheduled reminder</div></div></div>
+  <div class="toc-row"><div class="tn">5</div><div><div class="tt">Core Apex</div><div class="td2">Trigger + handler · queueable · invocable services · LWC controllers</div></div></div>
+  <div class="toc-row"><div class="tn">6</div><div><div class="tt">Core UI — the Enrolment Console</div><div class="td2">Three Lightning Web Components · the App Page</div></div></div>
+  <div class="toc-row"><div class="tn">7</div><div><div class="tt">Error logging framework</div><div class="td2">Error Log object · platform event · logger class · flow fault paths</div></div></div>
+  <div class="toc-row"><div class="tn">8</div><div><div class="tt">Invoicing data model &amp; configuration</div><div class="td2">Invoice object · validation · Exchange Rate &amp; Integration Setting custom metadata</div></div></div>
+  <div class="toc-row"><div class="tn">9</div><div><div class="tt">Multi-currency &amp; multi-language</div><div class="td2">CurrencyService · ten custom labels · French translations</div></div></div>
+  <div class="toc-row"><div class="tn">10</div><div><div class="tt">Payment gateway &amp; automatic invoicing</div><div class="td2">Named Credential · interface, factory, stub, HTTP client · services · trigger wiring</div></div></div>
+  <div class="toc-row"><div class="tn">11</div><div><div class="tt">Certificate PDF generation</div><div class="td2">Visualforce PDF page · controller · queueable service · completion flow</div></div></div>
+  <div class="toc-row"><div class="tn">12</div><div><div class="tt">The Experience Cloud student portal</div><div class="td2">Portal controller &amp; LWCs · site build · portal users · end-to-end checkpoint</div></div></div>
+  <div class="toc-row"><div class="tn">13</div><div><div class="tt">Security &amp; permissions reference</div><div class="td2">Both permission sets in full · the portal privacy model</div></div></div>
+  <div class="toc-row"><div class="tn">14</div><div><div class="tt">Tests, UAT &amp; release</div><div class="td2">Test suite · acceptance script · deployment · going live with payments</div></div></div>
+  <div class="toc-row"><div class="tn">A</div><div><div class="tt">Appendices</div><div class="td2">A — Code Pack manifest · B — master troubleshooting table · C — glossary</div></div></div>
+</div>
+<!-- ============ CH 1 — BUSINESS PROBLEM ============ -->
+<h2 class="sec first"><span class="secnum">1</span>The business problem &amp; the solution</h2>
+<p class="sec-intro">Every build starts with a client, not a click. Read this chapter before touching Setup — everything you create later traces back to a sentence here.</p>
+
+<h3>1.1 The client brief — "Oxfordable CareerLaunch"</h3>
+<div class="callout info"><div class="ct">Client: Oxfordable Careers</div>
+<p>Oxfordable Careers runs a growing catalogue of technology training courses. Each course runs several
+times a year as a <b>cohort</b> with a fixed start date, a delivery mode and a limited number of seats.
+Today the team tracks everything in spreadsheets and WhatsApp: students get double-booked, cohorts get
+oversold, welcome emails are forgotten, invoices are typed by hand, certificates are made in a word
+processor, and nobody can answer "how many seats are left?" without opening three files.</p>
+<p style="margin-top:6px">They want <b>one Salesforce application</b> that manages courses, cohorts and enrolments; stops
+overselling; automates welcome and reminders; <b>raises and takes payment for invoices</b>; issues
+<b>completion certificates as PDFs</b>; gives students a <b>self-service portal</b> in their own language
+and currency; records <b>every error</b> somewhere staff can see; and gives the admissions team a
+one-screen console.</p></div>
+
+<h3>1.2 What we build — the full scope</h3>
+<table>
+<tr><th>Layer</th><th>What gets built</th><th>Chapter</th></tr>
+<tr><td>Data model</td><td>Course, Cohort, Enrolment (+ Contact roll-up field), Invoice, Error Log, two custom metadata types</td><td>3 · 7 · 8</td></tr>
+<tr><td>Automation</td><td>Welcome/confirmation flow, Quick Enrol wizard, scheduled reminder, auto-invoicing, certificate-on-completion, error fault paths</td><td>4 · 10 · 11</td></tr>
+<tr><td>Apex</td><td>Trigger + handler (capacity, duplicates), async roll-up, invocable services, the payment layer, certificate job, error logger</td><td>5 · 7 · 10 · 11</td></tr>
+<tr><td>UI</td><td>Enrolment Console (3 LWCs) for staff; 2 portal LWCs for students; a Visualforce PDF certificate</td><td>6 · 11 · 12</td></tr>
+<tr><td>Integration</td><td>Payment gateway behind an interface — a deterministic <b>stub</b> in this org, a real HTTP client + Named Credential ready for production</td><td>10</td></tr>
+<tr><td>i18n</td><td>Multi-currency via custom metadata rates; multi-language via custom labels + French translations</td><td>9</td></tr>
+<tr><td>Delivery</td><td>Two permission sets, an Experience Cloud site, a test suite, a UAT script, CLI deployment</td><td>12 · 13 · 14</td></tr>
+</table>
+
+<h3>1.3 Architecture at a glance</h3>
+<pre>
+┌──────────────────── Experience Cloud (students) ───────────────────┐
+│  studentEnrolments LWC          studentInvoices LWC (Pay now)      │
+│               └───────────────┬───────────────┘                    │
+│                    StudentPortalController (contact-scoped)        │
+└───────────────────────────────┼────────────────────────────────────┘
+                                │
+┌────────── Internal app (staff) ──────────┐     ┌───── async ──────────┐
+│ cohortExplorer / enrolmentPanel /        │     │ StudentSummary       │
+│ enrolmentConsole LWCs                    │     │ Queueable            │
+│    └─ CohortController /                 │     │ CertificateService.  │
+│       EnrolmentController                │     │ IssueJob (queueable) │
+└──────────────┬───────────────────────────┘     └─────────┬────────────┘
+               │                                           │
+        Enrolment__c DML                          CertificatePdf.page
+               │                                  (renderAs="pdf")
+   EnrolmentTrigger → EnrolmentTriggerHandler
+        ├─ defaults, unique key, capacity check   (before save)
+        ├─ StudentSummaryQueueable                (after save)
+        └─ InvoiceService.createForConfirmedEnrolments (after save)
+               │
+          Invoice__c ──► PaymentService.payInvoice   (callout BEFORE DML)
+               │
+      PaymentGatewayFactory ── reads ── Integration_Setting__mdt
+           ├── PaymentGatewayStub          (this org)
+           └── PaymentGatewayHttpClient ── Named Credential "Payment_Gateway"
+
+Errors from anywhere ─► ErrorLogger ─► Error_Log_Event__e (publish immediately)
+                                          └─► ErrorLogEventTrigger ─► Error_Log__c
+</pre>
+<div class="callout dark"><div class="ct">The layering principle</div>
+The portal, the console and any future AI agent are only <b>channels</b>. They all call the same Apex
+service layer, over the same data model, protected by the same trigger. <b>Build the core once; expose
+it many times.</b></div>
+
+<h3>1.4 How code works in this guide</h3>
+<p>You build every <b>object, field, tab, flow, label, setting and permission with clicks</b> — those steps
+are written out in full. For <b>Apex classes, triggers, the Visualforce page and Lightning Web
+Components</b>, this guide names the file and a Code Pack item, like this:
+<span class="codepack">CODE PACK 10.4</span>. Ask your instructor for that item (or open the matching
+file in the project repository — Appendix A maps every item to its file), type or paste it exactly,
+and <i>read the comments</i> — they explain why the code is shaped the way it is.</p>
+<div class="callout warn"><div class="ct">Build in chapter order</div>
+Later code calls earlier code (for example, the payment client calls the error logger). Follow the
+chapters in order and nothing will ever fail to compile. Do not skip checkpoints — they are how you
+catch a problem while it is still one step old.</div>
+
+<!-- ============ CH 2 — SETUP ============ -->
+<h2 class="sec"><span class="secnum">2</span>Workstation &amp; org setup</h2>
+<p class="sec-intro">One-time setup: a free org that never expires, the professional toolchain, and a source-tracked project. Allow 45–60 minutes.</p>
+
+<h3>2.1 Create the org</h3>
+<div class="steps">
+<div class="step">Go to <code>developer.salesforce.com/signup</code> and sign up for a free <b>Developer Edition</b> org. Use an email address you have not used for Salesforce before (or add a plus-tag: <code>you+careerlaunch@gmail.com</code>).</div>
+<div class="step">Open the verification email, click the link, and set a password you will remember.</div>
+<div class="step">Write down your <b>username</b> — it looks like an email address but is not one.</div>
+<div class="step">Log in at <code>login.salesforce.com</code> and confirm you are in <b>Lightning Experience</b>.</div>
+</div>
+
+<h3>2.2 Org settings (do these now, forget them later)</h3>
+<div class="steps">
+<div class="step"><b>Email deliverability:</b> Setup → Quick Find <code>Deliverability</code> → Access level = <b>All Email</b> → Save. (Without this, no flow email ever arrives.)</div>
+<div class="step"><b>My Domain:</b> Setup → Quick Find <code>My Domain</code> — Developer orgs come with one; just note the domain name, you will see it in URLs.</div>
+</div>
+
+<h3>2.3 Install the toolchain</h3>
+<table>
+<tr><th>Tool</th><th>Where</th><th>Verify with</th></tr>
+<tr><td>Google Chrome</td><td><code>google.com/chrome</code></td><td>—</td></tr>
+<tr><td>Visual Studio Code</td><td><code>code.visualstudio.com</code></td><td>opens</td></tr>
+<tr><td>Salesforce Extension Pack</td><td>VS Code → Extensions → search "Salesforce Extension Pack" → Install</td><td>extension listed</td></tr>
+<tr><td>Salesforce CLI</td><td><code>developer.salesforce.com/tools/salesforcecli</code></td><td><code>sf --version</code></td></tr>
+<tr><td>Git + GitHub account</td><td><code>git-scm.com</code> · <code>github.com</code></td><td><code>git --version</code></td></tr>
+</table>
+
+<h3>2.4 Create the project and connect the org</h3>
+<pre>sf --version
+sf project generate --name careerlaunch
+cd careerlaunch
+sf org login web --alias devorg --set-default     # browser opens - log in
+sf org list                                       # devorg should be listed and default</pre>
+<p>Open the <code>careerlaunch</code> folder in VS Code (<b>File → Open Folder…</b>). From now on:
+clicks happen in the browser, code happens here, and the CLI moves things between the two.</p>
+<pre>git init && git add . && git commit -m "Empty CareerLaunch project"</pre>
+<div class="callout ok"><div class="ct">Checkpoint</div>
+<code>sf org open</code> opens your org in the browser without asking for a password. If it does, everything is connected.</div>
+<!-- ============ CH 3 — CORE DATA MODEL ============ -->
+<h2 class="sec"><span class="secnum">3</span>The core data model</h2>
+<p class="sec-intro">Three custom objects plus one field on Contact. Field API names must match this chapter <b>exactly</b> — every line of Apex depends on them. British spelling throughout: <code>Enrolment__c</code>, one&nbsp;l.</p>
+
+<h3>3.1 The relationships — and why</h3>
+<pre>Course__c  1 ──&lt; N  Cohort__c  1 ──&lt; N  Enrolment__c  N &gt;── 1  Contact
+            (Lookup)         (Master-Detail)          (Lookup)</pre>
+<table>
+<tr><th>Relationship</th><th>Type</th><th>Why</th></tr>
+<tr><td>Cohort → Course</td><td><b>Lookup</b></td><td>A cohort should survive independently; no cascade delete, no roll-up needed here.</td></tr>
+<tr><td>Enrolment → Cohort</td><td><b>Master-Detail</b></td><td>We want a roll-up of enrolments on the cohort; an enrolment is meaningless without its cohort; cascade delete is desirable; sharing is controlled by the parent.</td></tr>
+<tr><td>Enrolment → Contact</td><td><b>Lookup</b></td><td>A contact may exist with no enrolments and must never be deleted when one is.</td></tr>
+</table>
+
+<h3><span class="n">3.2</span>Create the Course object</h3>
+<p><b>Setup → Object Manager → Create ▾ → Custom Object.</b></p>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Label / Plural</td><td><code>Course</code> / <code>Courses</code></td></tr>
+<tr><td>Record Name / Type</td><td><code>Course Name</code> · Text</td></tr>
+<tr><td>Tick</td><td>Allow Reports · Allow Activities · Track Field History · <b>Launch New Custom Tab Wizard</b></td></tr>
+</table>
+<p>Save → in the tab wizard pick any style → Next → Next → Save. Then <b>Fields &amp; Relationships → New</b> for each row (each field walks four screens: type → details → field-level security (defaults) → layouts (ticked); use <i>Save &amp; New</i>):</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name created</th></tr>
+<tr><td>Course Level</td><td>Picklist</td><td>Values one per line: <code>Introductory</code>, <code>Advanced</code>. Restricted.</td><td><code>Course_Level__c</code></td></tr>
+<tr><td>Duration (Weeks)</td><td>Number</td><td>Length 2, decimals 0</td><td><code>Duration_Weeks__c</code></td></tr>
+<tr><td>Fee</td><td>Currency</td><td>Length 10, decimals 2</td><td><code>Fee__c</code></td></tr>
+<tr><td>Active</td><td>Checkbox</td><td>Default: Checked</td><td><code>Active__c</code></td></tr>
+<tr><td>Description</td><td>Text Area (Long)</td><td>Length 1000</td><td><code>Description__c</code></td></tr>
+</table>
+
+<h3><span class="n">3.3</span>Create the Cohort object</h3>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Label / Plural</td><td><code>Cohort</code> / <code>Cohorts</code></td></tr>
+<tr><td>Record Name / Type</td><td><code>Cohort Number</code> · Auto Number · format <code>CO-{0000}</code> · start 1</td></tr>
+<tr><td>Tick</td><td>Allow Reports · Allow Activities · Launch New Custom Tab Wizard</td></tr>
+</table>
+<p>Fields — leave the three calculated ones for §3.5 (they cannot be built until the master-detail exists):</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td>Course</td><td>Lookup Relationship</td><td>Related To: <b>Course</b> · tick Required</td><td><code>Course__c</code></td></tr>
+<tr><td>Start Date</td><td>Date</td><td>tick Required</td><td><code>Start_Date__c</code></td></tr>
+<tr><td>End Date</td><td>Date</td><td>—</td><td><code>End_Date__c</code></td></tr>
+<tr><td>Delivery Mode</td><td>Picklist</td><td><code>Online</code>, <code>In-Person</code>, <code>Hybrid</code></td><td><code>Delivery_Mode__c</code></td></tr>
+<tr><td>Capacity</td><td>Number</td><td>Length 3, decimals 0, default <code>20</code>, Required</td><td><code>Capacity__c</code></td></tr>
+<tr><td>Status</td><td>Picklist</td><td><code>Planned</code>, <code>Open</code>, <code>Full</code>, <code>Running</code>, <code>Completed</code>, <code>Cancelled</code></td><td><code>Status__c</code></td></tr>
+</table>
+
+<h3><span class="n">3.4</span>Create the Enrolment object</h3>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Label / Plural</td><td><code>Enrolment</code> / <code>Enrolments</code></td></tr>
+<tr><td>Record Name / Type</td><td><code>Enrolment Number</code> · Auto Number · format <code>ENR-{00000}</code></td></tr>
+<tr><td>Tick</td><td>Allow Reports · Allow Activities · Launch New Custom Tab Wizard</td></tr>
+</table>
+<p>Fields — <b>in this order</b> (the Master-Detail must exist before the roll-up can be built):</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td><b>Cohort</b></td><td>Master-Detail</td><td>Related To: <b>Cohort</b> · accept sharing defaults</td><td><code>Cohort__c</code></td></tr>
+<tr><td>Student</td><td>Lookup Relationship</td><td>Related To: <b>Contact</b> · tick Required</td><td><code>Student__c</code></td></tr>
+<tr><td>Status</td><td>Picklist</td><td><code>Applied</code> (default), <code>Confirmed</code>, <code>Waitlisted</code>, <code>Cancelled</code>, <code>Completed</code>. Restricted.</td><td><code>Status__c</code></td></tr>
+<tr><td>Enrolment Date</td><td>Date</td><td>—</td><td><code>Enrolment_Date__c</code></td></tr>
+<tr><td>Amount Paid</td><td>Currency</td><td>Length 10, decimals 2, default <code>0</code></td><td><code>Amount_Paid__c</code></td></tr>
+<tr><td>Enrolment Key</td><td>Text</td><td>Length 64 · tick <b>External ID</b> and <b>Unique</b> (case-insensitive)</td><td><code>Enrolment_Key__c</code></td></tr>
+<tr><td>Attendance %</td><td>Percent</td><td>Length 3, decimals 0</td><td><code>Attendance_Percent__c</code></td></tr>
+<tr><td>Certificate Issued</td><td>Checkbox</td><td>Default: Unchecked</td><td><code>Certificate_Issued__c</code></td></tr>
+</table>
+<div class="callout info"><div class="ct">Pause — what the master-detail just changed</div>
+The Cohort now <b>owns</b> the Enrolment: deleting a Cohort cascade-deletes its Enrolments, roll-up
+summaries become possible on Cohort, and <b>who can see an Enrolment is controlled by the parent</b>.
+That last fact matters again in Chapter 12.</div>
+
+<h3><span class="n">3.5</span>Back on Cohort — the three calculated fields</h3>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td>Enrolled Count</td><td>Roll-Up Summary</td><td>Summarised object <b>Enrolments</b> · COUNT · filter: Status <i>not equal to</i> <code>Cancelled</code></td><td><code>Enrolled_Count__c</code></td></tr>
+<tr><td>Seats Remaining</td><td>Formula → Number, 0 dp</td><td><code>Capacity__c - Enrolled_Count__c</code></td><td><code>Seats_Remaining__c</code></td></tr>
+<tr><td>Cohort Label</td><td>Formula → Text</td><td><code>Course__r.Name &amp; " - " &amp; TEXT(Start_Date__c)</code></td><td><code>Cohort_Label__c</code></td></tr>
+</table>
+
+<h3><span class="n">3.6</span>The Contact field &amp; the two validation rules</h3>
+<div class="steps">
+<div class="step"><b>Object Manager → Contact → Fields &amp; Relationships → New</b> → Number, length 3, decimals 0, label <code>Total Enrolments</code> → creates <code>Total_Enrolments__c</code>.</div>
+<div class="step"><b>Object Manager → Cohort → Validation Rules → New</b> — name <code>End_Date_After_Start_Date</code>, formula <code>AND(NOT(ISBLANK(End_Date__c)), End_Date__c &lt; Start_Date__c)</code>, message <i>End Date cannot be earlier than Start Date.</i></div>
+<div class="step"><b>Object Manager → Enrolment → Validation Rules → New</b> — name <code>Payment_Not_Above_Fee</code>, formula <code>Amount_Paid__c &gt; Cohort__r.Course__r.Fee__c</code>, message <i>Amount Paid cannot exceed the course fee.</i> (A cross-object formula spanning two relationships.)</div>
+<div class="step"><b>Page layouts:</b> on Cohort drag <i>Enrolled Count, Seats Remaining, Cohort Label</i> onto the layout and confirm the <i>Enrolments</i> related list is present. On Enrolment, confirm the <i>Invoices</i> related list once Chapter 8 exists.</div>
+</div>
+
+<h3><span class="n">3.7</span>Sample data — do not skip</h3>
+<table>
+<tr><th>Object</th><th>Create</th></tr>
+<tr><td>Course</td><td><code>Salesforce Developer — Introductory</code> (Introductory, 3 wks, fee 500, Active) and <code>Salesforce Developer — Advanced</code> (Advanced, 10 wks, fee 1500, Active)</td></tr>
+<tr><td>Cohort</td><td><b>CO-0001</b> — Introductory course · starts today + 14 · <b>Capacity 3</b> · Open<br><b>CO-0002</b> — Advanced course · starts today + 30 · Capacity 10 · Open</td></tr>
+<tr><td>Contact</td><td>Three students with real-looking <b>email addresses</b> (automation searches on them)</td></tr>
+</table>
+<div class="callout ok"><div class="ct">Checkpoint</div>
+Create one Enrolment linking a Contact to CO-0001. Open CO-0001: <b>Enrolled Count = 1</b> and
+<b>Seats Remaining = 2</b> — with no automation at all. Then try a Cohort whose End Date is before its
+Start Date: the validation rule must block it.</div>
+
+<!-- ============ CH 4 — FLOWS ============ -->
+<h2 class="sec"><span class="secnum">4</span>Core automation — Flows</h2>
+<p class="sec-intro">Declarative first: use clicks where clicks are enough, code where code is necessary. These three flows are the "clicks are enough" half; Chapter 5 is the other half.</p>
+
+<h3><span class="n">4.1</span>Record-triggered flow — <code>Enrolment_Confirmed_Actions</code></h3>
+<p><b>Setup → Flows → New Flow → Record-Triggered Flow.</b></p>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Object / Trigger</td><td><code>Enrolment__c</code> · created or updated</td></tr>
+<tr><td>Entry conditions</td><td><code>Status__c</code> Equals <code>Confirmed</code> · run <i>only when updated to meet the conditions</i></td></tr>
+<tr><td>Optimise for</td><td><b>Actions and Related Records</b> (after-save — we touch other records)</td></tr>
+</table>
+<div class="steps">
+<div class="step"><b>Get Records</b> <code>Get_Cohort</code> — Cohort__c where Id = <code>{!$Record.Cohort__c}</code>; first record only; fields <code>Seats_Remaining__c, Status__c, Start_Date__c</code>.</div>
+<div class="step"><b>Action → Send Email</b> — to <code>{!$Record.Student__r.Email}</code>; subject <code>Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}</code>; body: welcome text + start date.</div>
+<div class="step"><b>Create Records</b> — a Task: subject <code>Send welcome pack to {!$Record.Student__r.Name}</code>, WhatId <code>{!$Record.Id}</code>, OwnerId <code>{!$Record.OwnerId}</code>, due <code>{!$Flow.CurrentDate}</code>, priority High.</div>
+<div class="step"><b>Decision</b> <code>Is_Cohort_Now_Full</code> — Yes when <code>{!Get_Cohort.Seats_Remaining__c}</code> ≤ 0.</div>
+<div class="step"><b>Update Records</b> on Yes — update the record from <code>Get_Cohort</code>, set <code>Status__c = Full</code>.</div>
+<div class="step"><b>Save</b> as <code>Enrolment Confirmed Actions</code> → <b>Activate</b>. A saved flow that is not activated does nothing.</div>
+</div>
+
+<h3><span class="n">4.2</span>Screen flow — <code>Quick_Enrol_Student</code></h3>
+<table>
+<tr><th>Element</th><th>Content</th></tr>
+<tr><td>Screen 1</td><td>Picklist choice set from active <code>Course__c</code> records — "Which course?"</td></tr>
+<tr><td>Get Records</td><td><code>Cohort__c</code> where Course = selection AND <code>Status__c = Open</code>, sorted by Start Date, all records</td></tr>
+<tr><td>Screen 2</td><td>Radio buttons from the cohort collection — show <code>Cohort_Label__c</code>, seats remaining in help text</td></tr>
+<tr><td>Screen 3</td><td>Lookup component for <b>Contact</b> — "Which student?"</td></tr>
+<tr><td>Action</td><td>Apex action <b>Find Available Cohorts</b> (built in Chapter 5) — re-check seats before writing</td></tr>
+<tr><td>Decision + Create</td><td>Seats available? → Create <code>Enrolment__c</code> (Cohort, Student, Status = Confirmed)</td></tr>
+<tr><td>Screen 4 (Yes / No)</td><td>Confirmation with the enrolment number / "that cohort just filled up" with Back</td></tr>
+<tr><td>Fault paths</td><td>Every Get/Create gets a Fault connector to an error screen showing <code>{!$Flow.FaultMessage}</code> — Chapter 7 adds error logging here too</td></tr>
+</table>
+<p>Save as <code>Quick Enrol Student</code>, <b>Activate</b>, and surface it with a button or from the App Launcher. (If you have not built Chapter 5 yet, leave the Apex Action out and add it afterwards.)</p>
+
+<h3><span class="n">4.3</span>Scheduled flow — <code>Cohort_Start_Reminder</code></h3>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Trigger</td><td>Schedule-Triggered · daily 07:00</td></tr>
+<tr><td>Object + conditions</td><td><code>Enrolment__c</code> where <code>Status__c = Confirmed</code> AND <code>Cohort__r.Start_Date__c</code> = today + 3 (formula resource)</td></tr>
+<tr><td>Actions</td><td>Send a reminder email and create a Task</td></tr>
+</table>
+<div class="callout ok"><div class="ct">Checkpoint</div>
+Set an existing enrolment's Status to <b>Confirmed</b>: the student's email arrives (deliverability = All Email!),
+a Task appears on the record — and when the last seat of CO-0001 fills, the Cohort flips itself to <b>Full</b>.</div>
+<!-- ============ CH 5 — CORE APEX ============ -->
+<h2 class="sec"><span class="secnum">5</span>Core Apex</h2>
+<p class="sec-intro">The code half of the automation matrix: things clicks genuinely cannot do — counting sibling records in bulk, database-enforced duplicate prevention, asynchronous aggregation, and services that Flow (and later a portal) can call.</p>
+
+<h3>5.1 Which tool, and why — the decision matrix</h3>
+<table>
+<tr><th>Requirement</th><th>Tool chosen</th><th>Why not the alternative</th></tr>
+<tr><td>Seat count on a cohort</td><td>Roll-up + formula</td><td>No automation needed at all — always ask "can a field do this?" first</td></tr>
+<tr><td>Welcome email + task</td><td>Record-triggered flow</td><td>Declarative, no test class, admin-editable. Apex would be over-engineering</td></tr>
+<tr><td><b>Prevent overbooking</b></td><td><b>Apex trigger (before)</b></td><td>A validation rule cannot count sibling records; Flow cannot cleanly block a 200-record load per record</td></tr>
+<tr><td><b>Prevent duplicates</b></td><td><b>Apex + unique External ID</b></td><td>Database-enforced, bulk-safe, free at runtime</td></tr>
+<tr><td>Contact roll-up count</td><td>Queueable Apex</td><td>Aggregate after the transaction commits, with fresh governor limits</td></tr>
+<tr><td>Availability / status Q&amp;A</td><td>Invocable Apex</td><td>One method, many consumers: screen flow, agent, anything</td></tr>
+</table>
+
+<h3>5.2 How to create an Apex class or trigger</h3>
+<p><b>VS Code:</b> Command Palette (<code>Cmd/Ctrl-Shift-P</code>) → <code>SFDX: Create Apex Class</code> (or <i>Apex Trigger</i>) → name it → file opens → replace the skeleton with the Code Pack item → save → right-click the file → <b>SFDX: Deploy Source to Org</b>.
+<b>Developer Console</b> (fallback): File → New → Apex Class / Apex Trigger.</p>
+
+<h3>5.3 Build these seven, in order</h3>
+<table>
+<tr><th>#</th><th>Create</th><th>Code Pack</th><th>What it does — read for these things</th></tr>
+<tr><td>1</td><td>Trigger <code>EnrolmentTrigger</code> on <code>Enrolment__c</code> (before/after, insert/update)</td><td><span class="codepack">5.1</span></td><td>Routing only — <b>no logic in triggers</b>; every branch calls the handler</td></tr>
+<tr><td>2</td><td>Class <code>EnrolmentTriggerHandler</code></td><td><span class="codepack">5.2</span></td><td><code>setDefaults</code> (date/status/amount) · <code>buildUniqueKey</code> = CohortId-StudentId into the unique External ID (duplicates die at the database) · <code>preventOverbooking</code> — the bulk shape to memorise: <b>collect ids → ONE query → allocate in memory → addError()</b> · <code>enqueueStudentSummary</code></td></tr>
+<tr><td>3</td><td>Class <code>StudentSummaryQueueable</code></td><td><span class="codepack">5.3</span></td><td>Aggregate query → update <code>Contact.Total_Enrolments__c</code>; asynchronous = fresh governor limits</td></tr>
+<tr><td>4</td><td>Class <code>CohortAvailabilityService</code></td><td><span class="codepack">5.4</span></td><td><code>@InvocableMethod</code> "Find Available Cohorts" — the bridge Flow (and any agent) calls</td></tr>
+<tr><td>5</td><td>Class <code>EnrolmentStatusService</code></td><td><span class="codepack">5.5</span></td><td><code>@InvocableMethod</code> "Check Enrolment Status" by student email</td></tr>
+<tr><td>6</td><td>Class <code>CohortController</code></td><td><span class="codepack">5.6</span></td><td><code>@AuraEnabled(cacheable=true)</code> reads for the LWCs — cacheable is what makes <code>@wire</code> possible</td></tr>
+<tr><td>7</td><td>Class <code>EnrolmentController</code></td><td><span class="codepack">5.7</span></td><td>Plain <code>@AuraEnabled</code> write; DmlException → readable sentence via <code>AuraHandledException</code>, never a stack trace</td></tr>
+</table>
+<div class="callout ok"><div class="ct">Checkpoint — two acceptance criteria, live</div>
+Enrol a 4th student onto CO-0001 (capacity 3): the save must fail with <i>your</i> capacity message.
+Enrol the same student onto the same cohort twice: blocked by the duplicate key. Then finish §4.2 —
+add the <b>Find Available Cohorts</b> Apex action to the Quick Enrol flow.</div>
+
+<!-- ============ CH 6 — CORE UI ============ -->
+<h2 class="sec"><span class="secnum">6</span>Core UI — the Enrolment Console</h2>
+<p class="sec-intro">Three Lightning Web Components on one App Page. An LWC is three files — template (.html), class (.js), metadata (.js-meta.xml) — and it can only be created from VS Code, never from Setup.</p>
+
+<h3>6.1 Create the components</h3>
+<p>VS Code → Command Palette → <code>SFDX: Create Lightning Web Component</code> → folder <code>force-app/main/default/lwc</code>. Create each, replace all three generated files with the Code Pack item, then deploy the <code>lwc</code> folder.</p>
+<table>
+<tr><th>Component</th><th>Code Pack</th><th>Teaching beat</th></tr>
+<tr><td><code>cohortExplorer</code></td><td><span class="codepack">6.1</span></td><td><code>@wire</code> for reactive reads; datatable; row selection dispatches a <code>cohortselected</code> CustomEvent — <b>data down, events up</b></td></tr>
+<tr><td><code>enrolmentPanel</code></td><td><span class="codepack">6.2</span></td><td><code>@api</code> public property receives the cohort; imperative Apex for the write; <code>ShowToastEvent</code>; <code>NavigationMixin</code></td></tr>
+<tr><td><code>enrolmentConsole</code></td><td><span class="codepack">6.3</span></td><td>Thin wrapper wiring the two siblings; calls <code>explorer.refresh()</code> (which calls <code>refreshApex</code>) after an enrolment</td></tr>
+</table>
+
+<h3>6.2 The App Page</h3>
+<div class="steps">
+<div class="step"><b>Setup → Lightning App Builder → New → App Page</b> → name <code>Enrolment Console</code> → two-column layout.</div>
+<div class="step">Drag <b>enrolmentConsole</b> onto the page → Save → <b>Activate</b> → add to navigation (e.g. the Sales app), so it appears in the App Launcher.</div>
+</div>
+<div class="callout ok"><div class="ct">Checkpoint — the whole architecture in one action</div>
+Enrol a student from the console: a toast appears, the seat count drops, and an attempted overbook is
+still blocked — the Chapter 5 trigger, surfaced through the new UI. The console is just another
+channel on the same protected core.</div>
+
+<!-- ============ CH 7 — ERROR LOGGING ============ -->
+<h2 class="sec"><span class="secnum">7</span>Error logging framework</h2>
+<p class="sec-intro">One front door for every error — flows, triggers, Apex, integrations — that survives transaction rollback. Built now because Chapters 10 and 11 call it.</p>
+
+<h3>7.1 The idea</h3>
+<div class="callout info"><div class="ct">Why an event, not an insert</div>
+If a failing transaction rolls back, a plain <code>insert Error_Log__c</code> rolls back with it — the
+error erases its own evidence. So the code publishes a <b>publish-immediately platform event</b>
+(which escapes the rollback); a trigger on the event then writes the permanent record in a fresh
+transaction, as the Automated Process user.</div>
+<pre>code / flow fault ─► ErrorLogger ─► Error_Log_Event__e (publish immediately)
+                                        └─► ErrorLogEventTrigger ─► Error_Log__c (+ tab)</pre>
+
+<h3><span class="n">7.2</span>Create the Error Log object</h3>
+<p><b>Object Manager → Create ▾ → Custom Object</b> — Label <code>Error Log</code>/<code>Error Logs</code>, Record Name <code>Error Number</code>, Auto Number <code>ERR-{00000}</code>, tick Allow Reports + <b>tab wizard</b>. Then the fields:</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td>Source Type</td><td>Picklist</td><td><code>Apex</code> (default), <code>Trigger</code>, <code>Flow</code>, <code>Integration</code> — restricted</td><td><code>Source_Type__c</code></td></tr>
+<tr><td>Source Name</td><td>Text</td><td>255</td><td><code>Source_Name__c</code></td></tr>
+<tr><td>Error Message</td><td>Text Area (Long)</td><td>32768 · 5 lines</td><td><code>Error_Message__c</code></td></tr>
+<tr><td>Stack Trace</td><td>Text Area (Long)</td><td>32768 · 10 lines</td><td><code>Stack_Trace__c</code></td></tr>
+<tr><td>Record Id</td><td>Text</td><td>18</td><td><code>Record_Id__c</code></td></tr>
+<tr><td>Severity</td><td>Picklist</td><td><code>Info</code>, <code>Warning</code>, <code>Error</code> (default), <code>Critical</code> — restricted</td><td><code>Severity__c</code></td></tr>
+</table>
+
+<h3><span class="n">7.3</span>Create the platform event</h3>
+<p><b>Setup → Quick Find <code>Platform Events</code> → New Platform Event</b> — Label <code>Error Log Event</code>/<code>Error Log Events</code>, Object Name <code>Error_Log_Event</code>, Publish Behavior = <b>Publish Immediately</b>. Then its fields (platform events offer fewer types — that is normal):</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td>Source Type</td><td>Text</td><td>50</td><td><code>Source_Type__c</code></td></tr>
+<tr><td>Source Name</td><td>Text</td><td>255</td><td><code>Source_Name__c</code></td></tr>
+<tr><td>Error Message</td><td>Text Area (Long)</td><td>32768</td><td><code>Error_Message__c</code></td></tr>
+<tr><td>Stack Trace</td><td>Text Area (Long)</td><td>32768</td><td><code>Stack_Trace__c</code></td></tr>
+<tr><td>Record Id</td><td>Text</td><td>18</td><td><code>Record_Id__c</code></td></tr>
+<tr><td>Severity</td><td>Text</td><td>20</td><td><code>Severity__c</code></td></tr>
+</table>
+
+<h3><span class="n">7.4</span>The logger and its trigger</h3>
+<div class="steps">
+<div class="step">Create class <code>ErrorLogger</code> — <span class="codepack">7.1</span>. Find the three entry points: Apex overloads <code>log(e, 'ClassName'[, recordId])</code>; the <code>@InvocableMethod</code> <b>Log Flow Error</b>; and the single private publisher — every path ends in <code>EventBus.publish</code>, never <code>insert</code>.</div>
+<div class="step">Create trigger <code>ErrorLogEventTrigger</code> on <code>Error_Log_Event__e</code> (after insert) — <span class="codepack">7.2</span>. It copies each event into an <code>Error_Log__c</code> row.</div>
+<div class="step"><b>Wire the flow fault paths:</b> in <code>Quick_Enrol_Student</code> (and any flow with fault connectors), drag an Action → <b>Log Flow Error</b> onto each fault path before the error screen: Flow Name = the flow's name as text, Error Message = <code>{!$Flow.FaultMessage}</code>. Save as new version → Activate.</div>
+</div>
+<div class="callout ok"><div class="ct">Checkpoint — prove the rollback survival</div>
+Developer Console → Debug → Open Execute Anonymous Window:
+<pre style="margin:6px 0">try { Integer boom = 1 / 0; }
+catch (Exception e) { ErrorLogger.log(e, 'CheckpointTest'); }</pre>
+Open the <b>Error Logs</b> tab: ERR-00001 exists with type Apex, source CheckpointTest, message
+"Divide by 0" and a stack trace.</div>
+<!-- ============ CH 8 — INVOICE DATA MODEL ============ -->
+<h2 class="sec"><span class="secnum">8</span>Invoicing data model &amp; configuration</h2>
+<p class="sec-intro">The Invoice object that Chapter 10 automates, plus two Custom Metadata Types that turn currency rates and the gateway choice into admin-editable configuration.</p>
+
+<h3><span class="n">8.1</span>Create the Invoice object</h3>
+<p><b>Object Manager → Create ▾ → Custom Object</b> — Label <code>Invoice</code>/<code>Invoices</code>, Record Name <code>Invoice Number</code>, Auto Number <code>INV-{00000}</code>, tick Allow Reports · Allow Activities · <b>tab wizard</b>. Fields, <b>Master-Detail first</b>:</p>
+<table>
+<tr><th>Field Label</th><th>Type</th><th>Settings</th><th>API name</th></tr>
+<tr><td><b>Enrolment</b></td><td>Master-Detail</td><td>Related To <b>Enrolment</b> · related list label <code>Invoices</code> · accept sharing defaults</td><td><code>Enrolment__c</code></td></tr>
+<tr><td>Amount (GBP)</td><td>Currency</td><td>12,2 · tick <b>Required</b></td><td><code>Amount__c</code></td></tr>
+<tr><td>Currency Code</td><td>Picklist</td><td><code>GBP</code> (default), <code>USD</code>, <code>EUR</code> — restricted</td><td><code>Currency_Code__c</code></td></tr>
+<tr><td>Exchange Rate</td><td>Number</td><td>12,6 · default <code>1</code> · description: <i>rate frozen at issue time — 1 GBP = this many units</i></td><td><code>Exchange_Rate__c</code></td></tr>
+<tr><td>Amount (Invoice Currency)</td><td>Formula → Number, 2 dp</td><td><code>Amount__c * Exchange_Rate__c</code> · blanks as zeroes</td><td><code>Amount_In_Currency__c</code></td></tr>
+<tr><td>Status</td><td>Picklist</td><td><code>Draft</code> (default), <code>Sent</code>, <code>Paid</code>, <code>Cancelled</code> — restricted</td><td><code>Status__c</code></td></tr>
+<tr><td>Due Date / Paid Date</td><td>Date · Date</td><td>—</td><td><code>Due_Date__c</code> / <code>Paid_Date__c</code></td></tr>
+<tr><td>Payment Reference</td><td>Text</td><td>100 · description: <i>gateway transaction id</i></td><td><code>Payment_Reference__c</code></td></tr>
+</table>
+<div class="callout info"><div class="ct">Why two amounts and a frozen rate</div>
+<code>Amount__c</code> is always GBP, the org's one true currency. The rate is <b>stamped onto the
+invoice at issue time</b> and the display amount is a formula over the two — so an admin editing
+tomorrow's rates can never change what an already-issued invoice is worth.</div>
+<p><b>Validation rule</b> — name <code>Paid_Requires_Reference</code>, formula
+<code>AND(ISPICKVAL(Status__c, "Paid"), ISBLANK(Payment_Reference__c))</code>, message
+<i>An invoice cannot be marked Paid without the gateway payment reference.</i></p>
+
+<h3><span class="n">8.2</span>Custom Metadata Type — Exchange Rate</h3>
+<div class="steps">
+<div class="step"><b>Setup → Quick Find <code>Custom Metadata Types</code> → New Custom Metadata Type</b> — Label <code>Exchange Rate</code>/<code>Exchange Rates</code>, Object Name <code>Exchange_Rate</code> → Save.</div>
+<div class="step"><b>Custom Fields → New</b>: <code>Rate From GBP</code> — Number 12,6, Required → <code>Rate_From_GBP__c</code>; and <code>Symbol</code> — Text 5 → <code>Symbol__c</code>.</div>
+<div class="step"><b>Manage Exchange Rates → New</b>, three records: <b>GBP</b> = 1.0 / £ · <b>USD</b> = 1.27 / $ · <b>EUR</b> = 1.17 / € (label and name identical, e.g. <code>USD</code>).</div>
+</div>
+
+<h3><span class="n">8.3</span>Custom Metadata Type — Integration Setting</h3>
+<div class="steps">
+<div class="step">Same route — Label <code>Integration Setting</code>/<code>Integration Settings</code>, Object Name <code>Integration_Setting</code>.</div>
+<div class="step">One field: <code>Implementation Class</code> — Text 255, Required → <code>Implementation_Class__c</code>.</div>
+<div class="step">One record — Label <code>Payment Gateway</code>, Name <code>Payment_Gateway</code>, Implementation Class = <code>PaymentGatewayStub</code>. (That class does not exist until Chapter 10 — the record is just text until the factory reads it. This record is the <b>switch</b> that one day flips the org from stub to a real provider with zero code changes.)</div>
+</div>
+
+<h3><span class="n">8.4</span>Give staff access</h3>
+<p>Open <b>Setup → Permission Sets → Enrolment Console User</b> (created in Chapter 13 if you have not made it yet — you can return here): Object Settings → <b>Invoices</b> → Read/Create/Edit (no Delete), Read on all fields (Edit on the editable ones), tab Available + Visible.</p>
+<div class="callout ok"><div class="ct">Checkpoint</div>
+Invoices tab → New → pick an Enrolment, Amount 500, Save: Currency defaults GBP, rate 1.000000,
+<b>Amount (Invoice Currency) = 500.00</b>. Edit → Status = Paid → Save: <b>blocked</b> — no payment
+reference. Delete this manual test invoice.</div>
+
+<!-- ============ CH 9 — CURRENCY & LANGUAGE ============ -->
+<h2 class="sec"><span class="secnum">9</span>Multi-currency &amp; multi-language</h2>
+<p class="sec-intro">A service class over the rate records, and every piece of student-facing text moved into Custom Labels so the app can speak French without touching code.</p>
+
+<h3><span class="n">9.1</span>CurrencyService</h3>
+<p>Create class <code>CurrencyService</code> — <span class="codepack">9.1</span>. Note: custom metadata is read with <code>Exchange_Rate__mdt.getInstance('USD')</code> — <b>no SOQL</b>; money is rounded 2 dp half-up; unknown currencies throw a named exception. Quick test in Execute Anonymous:</p>
+<pre>System.debug(CurrencyService.convertFromGBP(100, 'USD'));   // 127.00
+System.debug(CurrencyService.format(1250, 'GBP'));          // £1,250.00</pre>
+
+<h3><span class="n">9.2</span>The ten custom labels</h3>
+<p><b>Setup → Quick Find <code>Custom Labels</code> → New Custom Label</b> — create each row exactly (Chapters 11–12 import them <b>by name</b>; a typo here is a compile error there). Category <code>CareerLaunch</code> on all.</p>
+<table>
+<tr><th>Name (exact)</th><th>Value</th><th>Name (exact)</th><th>Value</th></tr>
+<tr><td><code>Certificate_Title</code></td><td>Certificate of Completion</td><td><code>Portal_My_Enrolments</code></td><td>My Enrolments</td></tr>
+<tr><td><code>Certificate_Awarded_To</code></td><td>This certificate is proudly awarded to</td><td><code>Portal_My_Invoices</code></td><td>My Invoices</td></tr>
+<tr><td><code>Certificate_Completion_Text</code></td><td>for successfully completing</td><td><code>Portal_Pay_Now</code></td><td>Pay now</td></tr>
+<tr><td><code>Certificate_Issued_On</code></td><td>Issued on</td><td><code>Portal_No_Records</code></td><td>Nothing to show here yet.</td></tr>
+<tr><td><code>Portal_Download_Certificate</code></td><td>Download certificate</td><td><code>Portal_Payment_Success</code></td><td>Payment received - thank you!</td></tr>
+</table>
+
+<h3><span class="n">9.3</span>Enable French and translate</h3>
+<div class="steps">
+<div class="step"><b>Setup → Quick Find <code>Translation Language Settings</code></b> → Enable Translation Workbench → <b>Add</b> → French → tick Active → add yourself as translator → Save.</div>
+<div class="step"><b>Setup → Quick Find <code>Translate</code></b> → Language French · Component <b>Custom Labels</b> → double-click the Translation column per row:</div>
+</div>
+<table>
+<tr><th>Label</th><th>French</th><th>Label</th><th>French</th></tr>
+<tr><td>Certificate_Title</td><td>Certificat de réussite</td><td>Portal_My_Enrolments</td><td>Mes inscriptions</td></tr>
+<tr><td>Certificate_Awarded_To</td><td>Ce certificat est fièrement décerné à</td><td>Portal_My_Invoices</td><td>Mes factures</td></tr>
+<tr><td>Certificate_Completion_Text</td><td>pour avoir terminé avec succès</td><td>Portal_Pay_Now</td><td>Payer maintenant</td></tr>
+<tr><td>Certificate_Issued_On</td><td>Délivré le</td><td>Portal_No_Records</td><td>Rien à afficher pour le moment.</td></tr>
+<tr><td>Portal_Download_Certificate</td><td>Télécharger le certificat</td><td>Portal_Payment_Success</td><td>Paiement reçu - merci !</td></tr>
+</table>
+<div class="callout info"><div class="ct">How this pays off</div>
+A label used as <code>{!$Label.Certificate_Title}</code> in Visualforce, or imported into an LWC via
+<code>@salesforce/label/c.…</code>, resolves <b>in the viewing user's language</b> automatically.
+One codebase, every language you translate.</div>
+
+<!-- ============ CH 10 — PAYMENTS ============ -->
+<h2 class="sec"><span class="secnum">10</span>Payment gateway &amp; automatic invoicing</h2>
+<p class="sec-intro">The full payment stack: an interface, a metadata-driven factory, a deterministic stub for this org, a production-ready HTTP client, and the services that raise and settle invoices. The most interview-valuable chapter in the guide.</p>
+
+<div class="callout dark"><div class="ct">The seam principle — say it out loud</div>
+Everything above the interface knows nothing about HTTP; everything below it knows nothing about
+enrolments. Swapping the stub for a real provider is a <b>custom-metadata edit</b>, not a code change.
+This is how real teams stub an external system they cannot reach from a training org.</div>
+
+<h3><span class="n">10.1</span>The Named Credential</h3>
+<div class="steps">
+<div class="step"><b>Setup → Quick Find <code>Named Credentials</code></b> → dropdown next to New → <b>New Legacy</b>.</div>
+<div class="step">Label <code>Payment Gateway</code> · Name <code>Payment_Gateway</code> · URL <code>https://api.payments.example.com</code> · Identity Type <b>Anonymous</b> · Protocol <b>No Authentication</b> → Save.</div>
+</div>
+<p>The credential owns the URL and (in production) the secrets, so Apex never contains either. The URL is a placeholder — nothing calls it while the stub is configured.</p>
+
+<h3><span class="n">10.2</span>Build the eight pieces, in order</h3>
+<table>
+<tr><th>#</th><th>Create</th><th>Code Pack</th><th>Read the code for…</th></tr>
+<tr><td>1</td><td>Class <code>PaymentRequest</code></td><td><span class="codepack">10.1</span></td><td>A plain data bag — amount, currency, invoice number, email, <b>idempotency key</b>. No SObjects: the gateway layer must not know the data model</td></tr>
+<tr><td>2</td><td>Class <code>PaymentResult</code></td><td><span class="codepack">10.2</span></td><td><code>success / transactionId / errorMessage</code> + factory methods <code>ok()</code> and <code>fail()</code></td></tr>
+<tr><td>3</td><td>Class <code>IPaymentGateway</code></td><td><span class="codepack">10.3</span></td><td>The contract: one method, <code>charge(request)</code>, zero implementation</td></tr>
+<tr><td>4</td><td>Class <code>PaymentGatewayStub</code></td><td><span class="codepack">10.4</span></td><td>Deterministic: rejects amount ≤ 0; an email containing <code>declined</code> simulates a failed card; else succeeds with <code>STUB-&lt;invoice&gt;-&lt;ccy&gt;</code></td></tr>
+<tr><td>5</td><td>Class <code>PaymentGatewayFactory</code></td><td><span class="codepack">10.5</span></td><td>Reads the §8.3 record → <code>Type.forName().newInstance()</code> → verifies the interface → clear error on admin typo. <code>@TestVisible</code> override for tests</td></tr>
+<tr><td>6</td><td>Class <code>PaymentGatewayHttpClient</code></td><td><span class="codepack">10.6</span></td><td>Endpoint <code>callout:Payment_Gateway/v1/charges</code> — never a raw URL; the <b>Idempotency-Key header</b> (a retry after a timeout can never double-charge); <code>CalloutException</code> → <code>ErrorLogger</code> Critical; wire format hidden in private inner classes</td></tr>
+<tr><td>7</td><td>Class <code>InvoiceService</code></td><td><span class="codepack">10.7</span></td><td>For every <b>Confirmed</b> enrolment: one <code>Sent</code> invoice, course fee, due +14 days — skipping free courses and enrolments that already hold a live invoice, so it is <b>idempotent</b>. Bulk shape: ids → one query → build → one insert</td></tr>
+<tr><td>8</td><td>Class <code>PaymentService</code></td><td><span class="codepack">10.8</span></td><td>Load → refuse Paid/Cancelled → build request → factory → <code>charge()</code> → on success mark Paid + roll into <code>Amount_Paid__c</code>. Notice: <b>callout before DML</b> (platform rule), and <code>without sharing</code> with a comment explaining why (system action; amount always from the invoice, never the caller)</td></tr>
+</table>
+
+<h3><span class="n">10.3</span>One line in the trigger handler</h3>
+<p>Open <code>EnrolmentTriggerHandler</code> and inside <code>onAfterChange</code>, directly after
+<code>enqueueStudentSummary(newEnrolments);</code>, add the call to
+<code>InvoiceService.createForConfirmedEnrolments(newEnrolments);</code> — <span class="codepack">10.9</span>
+shows the exact two lines (call + comment). Deploy.</p>
+
+<div class="callout ok"><div class="ct">Checkpoint 1 — the invoice raises itself</div>
+Create an Enrolment with Status <b>Confirmed</b> → its Invoices related list shows one invoice: Sent,
+fee amount, due +14, rate 1. Re-save the enrolment with any edit → <b>still exactly one invoice</b>.</div>
+<div class="callout ok"><div class="ct">Checkpoint 2 — pay it, decline it, double-pay it</div>
+Execute Anonymous (use your invoice's id): <code>PaymentResult r = PaymentService.payInvoice('a0X…'); System.debug(r.success + ' / ' + r.transactionId);</code><br>
+Expected <code>true / STUB-INV-0000x-GBP</code>; the invoice flips to Paid with reference and date; the
+enrolment's Amount Paid equals the fee. Then enrol a contact whose email contains <code>declined</code>
+and pay their invoice: <code>false</code>, invoice stays Sent. Pay the first invoice again: a clear
+<i>already paid</i> exception.</div>
+<!-- ============ CH 11 — CERTIFICATES ============ -->
+<h2 class="sec"><span class="secnum">11</span>Certificate PDF generation</h2>
+<p class="sec-intro">A designed A4 certificate rendered as a real PDF, stored as a File on the enrolment, triggered by a flow when the student completes.</p>
+
+<div class="callout info"><div class="ct">The pattern in one paragraph</div>
+A Visualforce page with <code>renderAs="pdf"</code> is the platform's built-in PDF engine. Turning the
+page into a <b>stored file</b> uses <code>getContent()</code>, which counts as a callout and is banned in
+triggers — so the render happens <b>asynchronously</b>, in a Queueable that declares
+<code>Database.AllowsCallouts</code>. Failures are logged via Chapter 7 (async work has no user watching).</div>
+
+<h3><span class="n">11.1</span>Build the three pieces</h3>
+<div class="steps">
+<div class="step">Create class <code>CertificateController</code> — <span class="codepack">11.1</span>. It reads the <code>?id=</code> page parameter and queries the enrolment with student, cohort and course names. Thin on purpose.</div>
+<div class="step">Create the Visualforce page: <b>Setup → Quick Find <code>Visualforce Pages</code> → New</b> — Label <code>Certificate PDF</code>, Name <b>exactly</b> <code>CertificatePdf</code> (the Queueable references <code>Page.CertificatePdf</code>). Replace the markup with <span class="codepack">11.2</span>. Find in it: <code>renderAs="pdf"</code>, the A4-landscape <code>@page</code> CSS, and the four <code>{!$Label.Certificate_…}</code> merge fields — a French student receives a French certificate.</div>
+<div class="step"><b>See it now:</b> browse to <code>https://&lt;your-domain&gt;/apex/CertificatePdf?id=&lt;enrolment id&gt;</code> (copy the 18-character id from any Enrolment URL) — a PDF renders in the browser.</div>
+<div class="step">Create class <code>CertificateService</code> — <span class="codepack">11.3</span>. Find: the <code>@InvocableMethod</code> <b>Issue Completion Certificate</b>; the inner <code>IssueJob</code> queueable; the <code>Certificate_Issued__c = false</code> filter (never issued twice); <code>ContentVersion</code> with <code>FirstPublishLocationId</code> (files <i>and</i> links the PDF in one insert); try/catch → <code>ErrorLogger</code>; and the <code>Test.isRunningTest()</code> guard (<code>getContent()</code> is blocked in unit tests).</div>
+</div>
+
+<h3><span class="n">11.2</span>The completion flow</h3>
+<div class="steps">
+<div class="step"><b>Setup → Flows → New Flow → Record-Triggered Flow</b> — Object <code>Enrolment__c</code>; created or updated; entry <code>Status__c = Completed</code>; only when updated to meet conditions; after-save.</div>
+<div class="step">One element: <b>Action → Issue Completion Certificate</b>, Enrolment Id = <code>{!$Record.Id}</code>.</div>
+<div class="step">Fault connector from the action → <b>Log Flow Error</b> (flow name + <code>{!$Flow.FaultMessage}</code>).</div>
+<div class="step">Save as <code>Issue_Certificate_On_Completion</code> → <b>Activate</b>.</div>
+</div>
+<div class="callout ok"><div class="ct">Checkpoint</div>
+Set a Confirmed enrolment to <b>Completed</b> → wait a few seconds → refresh: <i>Certificate Issued</i>
+ticked · Files holds <code>Certificate ENR-0000x</code> · the PDF shows the student's name, the course and
+today's date. Flip the status away and back: <b>no second file</b>. If nothing appears, the answer is in
+the Error Logs tab — that is what it is for.</div>
+
+<!-- ============ CH 12 — PORTAL ============ -->
+<h2 class="sec"><span class="secnum">12</span>The Experience Cloud student portal</h2>
+<p class="sec-intro">A public-facing site where each student sees only their own records, pays with one click, and downloads their certificate. Read the security model first — it is the design decision of the chapter.</p>
+
+<div class="callout dark"><div class="ct">The security model — three rules, all server-side</div>
+<b>1.</b> Every query starts from the <b>logged-in user's Contact</b> — the browser never says whose data to load.
+<b>2.</b> <code>payInvoice</code> re-checks ownership on the server before money moves.
+<b>3.</b> The controller is <code>without sharing</code>, deliberately: <code>Enrolment__c</code> is a
+master-detail child (sharing controlled by its parent Cohort, which has no contact field), so
+Experience Cloud <i>sharing sets cannot reach it</i>. Row-level privacy lives in the contact-scoped
+WHERE clauses instead — and there is a test that proves it in Chapter 14.</div>
+
+<h3><span class="n">12.1</span>Controller and components</h3>
+<div class="steps">
+<div class="step">Create class <code>StudentPortalController</code> — <span class="codepack">12.1</span>. Find: <code>resolveContactId()</code> (User → ContactId); two <code>@AuraEnabled(cacheable=true)</code> reads returning small view-wrapper classes; the ownership <code>COUNT()</code> gate inside <code>payInvoice</code>; the <code>@TestVisible contactIdOverride</code> for tests.</div>
+<div class="step">VS Code → <code>SFDX: Create Lightning Web Component</code> → <code>studentEnrolments</code>; replace all three files with <span class="codepack">12.2</span>.</div>
+<div class="step">Repeat for <code>studentInvoices</code> — <span class="codepack">12.3</span>. Deploy the <code>lwc</code> folder.</div>
+</div>
+<p>In the code, find: label imports (<code>@salesforce/label/c.Portal_Pay_Now</code> — Chapter 9 arriving in
+JavaScript); the meta-XML target <code>lightningCommunity__Page</code> — <b>the line that makes a component
+appear in Experience Builder</b>; wire-for-read + imperative-write with <code>refreshApex</code>; and the
+certificate link <code>/sfc/servlet.shepherd/document/download/&lt;docId&gt;</code>.</p>
+
+<h3><span class="n">12.2</span>The Student Portal permission set</h3>
+<div class="steps">
+<div class="step"><b>Setup → Permission Sets → New</b> — Label <code>Student Portal User</code>, API <code>Student_Portal_User</code>.</div>
+<div class="step"><b>Apex Class Access</b> → add <code>StudentPortalController</code> only (entry points need access; classes they call do not).</div>
+<div class="step"><b>Object Settings</b> → <b>Read only</b> on Courses, Cohorts, Enrolments, Invoices — and Read on every field of each. No Create/Edit anywhere: the only writer on a student's behalf is <code>PaymentService</code>, in system mode, after the gateway says yes.</div>
+</div>
+
+<h3><span class="n">12.3</span>Enable Digital Experiences and build the site</h3>
+<div class="steps">
+<div class="step"><b>Setup → Quick Find <code>Digital Experiences</code> → Settings</b> → tick <b>Enable Digital Experiences</b> → accept/adjust the domain → Save.</div>
+<div class="step">On the same page tick <b>“Allow using standard external profiles for self-registration, user creation, and login”</b> → Save. <span style="color:#c05621"><b>Skip this and step 12.5 fails</b></span> with a FIELD_INTEGRITY error.</div>
+<div class="step"><b>All Sites → New</b> → template <b>Build Your Own (LWR)</b> (any works) → name <code>CareerLaunch Portal</code> → Create → wait for provisioning → open <b>Builder</b>.</div>
+<div class="step">Components panel (⚡, top of the left toolbar) → under <b>Custom Components</b> drag <b>Student Enrolments</b> and <b>Student Invoices</b> onto Home, side by side. Delete the template placeholders.</div>
+<div class="step"><b>Preview</b> shows <i>“Your user is not linked to a student record”</i> — that is the component <b>working</b>: an admin has no Contact. Click <b>Publish</b> (also activates the site).</div>
+</div>
+
+<h3><span class="n">12.4</span>Two one-time org facts</h3>
+<div class="steps">
+<div class="step"><b>The account owner needs a role:</b> Setup → Quick Find <code>Roles</code> → Set Up Roles → Expand → Add Role (e.g. <code>CareerLaunch Admin</code> under CEO) → Save. Then Setup → Users → your user → Edit → Role = CareerLaunch Admin.</div>
+<div class="step"><b>The profile must be a site member:</b> Experience Builder → Settings → <b>Administration → Members</b> → add profile <b>Customer Community User</b> → Save (re-publish if asked).</div>
+</div>
+
+<h3><span class="n">12.5</span>Create the demo student's login</h3>
+<div class="steps">
+<div class="step">Create Account <code>Oxfordable Students</code> (portal contacts must belong to an account), and under it Contact <code>Amina Bello</code>, email <code>amina.bello@oxfordable.test</code>.</div>
+<div class="step">Enrol Amina (Status Confirmed) on an open cohort — Chapter 10 raises her invoice automatically.</div>
+<div class="step">On the Contact: action menu (▾) → <b>Enable Customer User</b>.</div>
+<div class="step">Profile = <b>Customer Community User</b> · Username = globally unique, e.g. <code>amina.bello@careerlaunch.portal</code> (a username only <i>looks</i> like an email) · Email = <b>your real inbox</b> (password mails land there) → Save.</div>
+<div class="step">Assign the permission set: Setup → Permission Sets → Student Portal User → <b>Manage Assignments</b> → Add → Amina.</div>
+<div class="step">Set her password via the emailed link, or Setup → Users → Amina → <b>Reset Password</b>.</div>
+</div>
+
+<div class="callout ok"><div class="ct">Checkpoint — the full loop, as the student</div>
+In a <b>private/incognito window</b>, open the site URL + <code>/login</code> and sign in as Amina.
+<b>My Enrolments</b> shows her course (Confirmed); <b>My Invoices</b> shows one payable invoice →
+<b>Pay now</b> → toast <i>“Payment received - thank you!”</i> with a STUB reference → badge flips to Paid.
+As admin: invoice Paid + reference, Amount Paid = fee, zero Error Logs. Mark her Completed → the
+certificate flow runs → a <b>Download certificate</b> link appears in her portal. Finally switch her user
+language to <code>Français</code> and reload: <i>Mes inscriptions · Payer maintenant</i>.</div>
+
+<!-- ============ CH 13 — SECURITY ============ -->
+<h2 class="sec"><span class="secnum">13</span>Security &amp; permissions reference</h2>
+<p class="sec-intro">Everything access-related in one place. Rule NFR-05 from the original backlog still stands: access by permission set, never by editing a profile.</p>
+
+<h3>13.1 Permission set — Enrolment Console User (staff)</h3>
+<table>
+<tr><th>Area</th><th>Grant</th></tr>
+<tr><td>Objects</td><td>Course, Cohort, Enrolment: Read/Create/Edit · Contact: Read · Invoice: Read/Create/Edit (no Delete)</td></tr>
+<tr><td>Fields</td><td>Read+Edit on custom fields (Read only on formulas/roll-ups: Enrolled Count, Seats Remaining, Cohort Label, Amount In Currency)</td></tr>
+<tr><td>Apex classes</td><td><code>CohortController</code> · <code>EnrolmentController</code> · <code>CohortAvailabilityService</code> · <code>EnrolmentStatusService</code></td></tr>
+<tr><td>Tabs</td><td>Courses · Cohorts · Enrolments · Invoices (· Error Logs for team leads)</td></tr>
+<tr><td>Flows</td><td><code>Quick_Enrol_Student</code></td></tr>
+</table>
+
+<h3>13.2 Permission set — Student Portal User (students)</h3>
+<table>
+<tr><th>Area</th><th>Grant</th></tr>
+<tr><td>Objects + fields</td><td>Read only: Course, Cohort, Enrolment, Invoice (+ all their fields, read)</td></tr>
+<tr><td>Apex classes</td><td><code>StudentPortalController</code> only</td></tr>
+<tr><td>Everything else</td><td>Nothing. Writes happen inside <code>PaymentService (without sharing)</code> as a system action</td></tr>
+</table>
+
+<h3>13.3 The portal privacy model — summary</h3>
+<ul>
+<li><b>Sharing sets cannot target Enrolment</b> (master-detail child of Cohort; Cohort has no contact field). Row privacy is enforced in Apex: contact-scoped queries + the payInvoice ownership check.</li>
+<li><b>Fresh-org gotcha:</b> metadata deploys grant <b>no field-level security</b>. After any deploy to a clean org, assign both permission sets to the admin first, or <code>WITH SECURITY_ENFORCED</code> queries throw.</li>
+<li>Portal user prerequisites, in one line: standard-external-profiles setting ON · account owner has a role · profile is a site member · contact has an account.</li>
+</ul>
+<!-- ============ CH 14 — TESTS / UAT / RELEASE ============ -->
+<h2 class="sec"><span class="secnum">14</span>Tests, UAT &amp; release</h2>
+<p class="sec-intro">Prove it works, prove it keeps working, ship it. Coverage below 75% cannot deploy to production — but coverage is the floor, not the goal: tests exist so the next person to change this code finds out immediately if they broke it.</p>
+
+<h3><span class="n">14.1</span>The test suite</h3>
+<p>First add one method to the existing data factory: open <code>TestDataFactory</code> and add
+<code>createStudent(String email)</code> — <span class="codepack">14.1</span> (the payment tests need a
+student with a <i>specific</i> email: <code>declined@…</code> drives the stub's failure path). Then create
+each test class and run it alone before moving on
+(<code>sf apex run test --tests &lt;Name&gt; --result-format human --wait 10</code>):</p>
+<table>
+<tr><th>Class</th><th>Code Pack</th><th>What its assertions prove</th></tr>
+<tr><td><code>EnrolmentTriggerTest</code></td><td><span class="codepack">14.2</span></td><td>Core: defaults · overbooking blocked (negative test) · 200-record bulk · duplicate blocked · queueable updates the Contact (<code>Test.startTest/stopTest</code> forces async)</td></tr>
+<tr><td><code>CohortServicesTest</code></td><td><span class="codepack">14.3</span></td><td>Core: controllers + both invocable services, including error paths</td></tr>
+<tr><td><code>ErrorLoggerTest</code></td><td><span class="codepack">14.4</span></td><td>Apex, Flow and custom paths all end as Error_Log__c rows — note <code>Test.getEventBus().deliver()</code> forces platform-event processing</td></tr>
+<tr><td><code>CurrencyServiceTest</code></td><td><span class="codepack">14.5</span></td><td>Rates, 2-dp half-up rounding, unknown-currency exception, formatting</td></tr>
+<tr><td><code>InvoicePaymentServicesTest</code></td><td><span class="codepack">14.6</span></td><td>Invoice auto-creation + idempotency · stub happy/declined/double-pay · <b>HTTP client via HttpCalloutMock</b> (asserts the <code>callout:</code> endpoint and the Idempotency-Key header, no network) · factory + override</td></tr>
+<tr><td><code>CertificateServiceTest</code></td><td><span class="codepack">14.7</span></td><td>File created + linked, flag ticked, never twice, the Flow invocable path</td></tr>
+<tr><td><code>StudentPortalControllerTest</code></td><td><span class="codepack">14.8</span></td><td>A student sees <b>only their own</b> records, pays their own invoice, and <b>cannot pay someone else's</b> — the security test that matters most</td></tr>
+</table>
+<pre>sf apex run test --code-coverage --result-format human --wait 10</pre>
+<div class="callout ok"><div class="ct">Target</div>
+Everything green, overall coverage <b>75%+</b> (the reference build sits above 85%). Write your numbers
+here:&nbsp; passed ____ / ____ · coverage ____ %</div>
+
+<h3><span class="n">14.2</span>User Acceptance Test script</h3>
+<table>
+<tr><th>ID</th><th>Test step</th><th>Expected result</th><th>✓</th></tr>
+<tr><td>UAT-01</td><td>Create Course + linked Cohort; then set End Date before Start Date</td><td>Save works; then validation error</td><td>☐</td></tr>
+<tr><td>UAT-02</td><td>One enrolment on a capacity-3 cohort</td><td>Enrolled Count 1 · Seats Remaining 2</td><td>☐</td></tr>
+<tr><td>UAT-03</td><td>Enrol a 4th student on the capacity-3 cohort</td><td>Blocked with the custom capacity message</td><td>☐</td></tr>
+<tr><td>UAT-04</td><td>Enrol the same student twice on one cohort</td><td>Blocked (duplicate key)</td><td>☐</td></tr>
+<tr><td>UAT-05</td><td>Set an enrolment to Confirmed</td><td>Email + Task created; last seat flips Cohort to Full</td><td>☐</td></tr>
+<tr><td>UAT-06</td><td>Run Quick Enrol end to end</td><td>Enrolment created; confirmation screen shows the number</td><td>☐</td></tr>
+<tr><td>UAT-07</td><td>Enrol from the Enrolment Console</td><td>Toast · seat count refreshes · record created</td><td>☐</td></tr>
+<tr><td>UAT-08</td><td>Confirm an enrolment on a fee-paying course; re-save it</td><td>Exactly one Sent invoice, fee amount, due +14</td><td>☐</td></tr>
+<tr><td>UAT-09</td><td>Set an invoice to Paid with no reference</td><td>Validation rule blocks the save</td><td>☐</td></tr>
+<tr><td>UAT-10</td><td>Pay an invoice (portal button or Apex)</td><td>Paid + STUB reference + Amount Paid updated</td><td>☐</td></tr>
+<tr><td>UAT-11</td><td>Pay a <code>declined@…</code> student's invoice</td><td>Failure; invoice stays Sent; nothing written</td><td>☐</td></tr>
+<tr><td>UAT-12</td><td>Pay the same invoice twice</td><td>Clear "already paid" error</td><td>☐</td></tr>
+<tr><td>UAT-13</td><td>Execute Anonymous: <code>convertFromGBP(100,'USD')</code></td><td>127.00 (or 100 × your rate)</td><td>☐</td></tr>
+<tr><td>UAT-14</td><td>Set an enrolment to Completed; flip status away and back</td><td>PDF filed + flag ticked, exactly once</td><td>☐</td></tr>
+<tr><td>UAT-15</td><td>Force an error (divide-by-zero; a flow fault)</td><td>ERR- records with source, message, stack trace</td><td>☐</td></tr>
+<tr><td>UAT-16</td><td>Log in to the portal as the demo student</td><td>Only their own enrolments and invoices</td><td>☐</td></tr>
+<tr><td>UAT-17</td><td>Pay now in the portal</td><td>Success toast + reference; badge flips to Paid</td><td>☐</td></tr>
+<tr><td>UAT-18</td><td>Completed course, in the portal</td><td>Download certificate opens the PDF</td><td>☐</td></tr>
+<tr><td>UAT-19</td><td>Switch the portal user to French</td><td>Mes inscriptions · Payer maintenant</td><td>☐</td></tr>
+<tr><td>UAT-20</td><td>Full test run</td><td>All pass · ≥75% coverage</td><td>☐</td></tr>
+</table>
+
+<h3><span class="n">14.3</span>Version control &amp; deployment to a second org</h3>
+<pre># retrieve anything built with clicks, then commit
+sf project retrieve start --source-dir force-app
+git add . && git commit -m "CareerLaunch complete build" && git push -u origin main
+git tag v2.0 && git push --tags
+
+# validate first (deploys nothing), then deploy
+sf org login web --alias targetorg
+sf project deploy start --source-dir force-app -o targetorg -l RunLocalTests --dry-run
+sf project deploy start --source-dir force-app -o targetorg -l RunLocalTests</pre>
+<h4>Post-deploy checklist — deployment is never finished at "the deploy succeeded"</h4>
+<table>
+<tr><th>#</th><th>Action</th></tr>
+<tr><td>1</td><td><b>Assign both permission sets to the admin first</b> — fresh deploys grant no FLS; <code>WITH SECURITY_ENFORCED</code> queries fail until you do</td></tr>
+<tr><td>2</td><td>Confirm every Flow is <b>Active</b> (they can deploy inactive)</td></tr>
+<tr><td>3</td><td>Load reference data — Courses, Cohorts, Contacts (records never deploy)</td></tr>
+<tr><td>4</td><td>French: enable the language before deploying translations, or add them after</td></tr>
+<tr><td>5</td><td>The Experience Cloud site is <b>clicks, not metadata</b> — repeat §12.3–12.5 in the target org</td></tr>
+<tr><td>6</td><td>Email deliverability = All Email</td></tr>
+<tr><td>7</td><td>Smoke-test UAT-08, UAT-10 and UAT-16 in the target org</td></tr>
+</table>
+<div class="callout dark"><div class="ct">Going live with payments — no code changes</div>
+Repoint the <code>Payment_Gateway</code> Named Credential at the real provider and configure its
+authentication, then set <code>Integration_Setting__mdt → Payment_Gateway → Implementation_Class__c =
+PaymentGatewayHttpClient</code>. If the provider's JSON differs, write one new class implementing
+<code>IPaymentGateway</code> and point the record at that instead.</div>
+
+<!-- ============ APPENDIX A ============ -->
+<h2 class="sec"><span class="secnum">A</span>Appendix A — Code Pack manifest</h2>
+<p class="sec-intro">Every coded artefact, by chapter. Your instructor supplies each item as a handout; in the project repository each maps to the file shown.</p>
+<table>
+<tr><th>Item</th><th>Type</th><th>Name</th><th>Repository file</th></tr>
+<tr><td>5.1</td><td>Trigger</td><td>EnrolmentTrigger</td><td>force-app/…/triggers/EnrolmentTrigger.trigger</td></tr>
+<tr><td>5.2</td><td>Class</td><td>EnrolmentTriggerHandler</td><td>force-app/…/classes/EnrolmentTriggerHandler.cls</td></tr>
+<tr><td>5.3</td><td>Class</td><td>StudentSummaryQueueable</td><td>force-app/…/classes/StudentSummaryQueueable.cls</td></tr>
+<tr><td>5.4</td><td>Class</td><td>CohortAvailabilityService</td><td>force-app/…/classes/CohortAvailabilityService.cls</td></tr>
+<tr><td>5.5</td><td>Class</td><td>EnrolmentStatusService</td><td>force-app/…/classes/EnrolmentStatusService.cls</td></tr>
+<tr><td>5.6</td><td>Class</td><td>CohortController</td><td>force-app/…/classes/CohortController.cls</td></tr>
+<tr><td>5.7</td><td>Class</td><td>EnrolmentController</td><td>force-app/…/classes/EnrolmentController.cls</td></tr>
+<tr><td>6.1–6.3</td><td>LWC ×3</td><td>cohortExplorer · enrolmentPanel · enrolmentConsole</td><td>force-app/…/lwc/&lt;name&gt;/</td></tr>
+<tr><td>7.1</td><td>Class</td><td>ErrorLogger</td><td>force-app/…/classes/ErrorLogger.cls</td></tr>
+<tr><td>7.2</td><td>Trigger</td><td>ErrorLogEventTrigger</td><td>force-app/…/triggers/ErrorLogEventTrigger.trigger</td></tr>
+<tr><td>9.1</td><td>Class</td><td>CurrencyService</td><td>force-app/…/classes/CurrencyService.cls</td></tr>
+<tr><td>10.1–10.8</td><td>Class ×8</td><td>PaymentRequest · PaymentResult · IPaymentGateway · PaymentGatewayStub · PaymentGatewayFactory · PaymentGatewayHttpClient · InvoiceService · PaymentService</td><td>force-app/…/classes/&lt;Name&gt;.cls</td></tr>
+<tr><td>10.9</td><td>Edit</td><td>EnrolmentTriggerHandler — the onAfterChange addition</td><td>same file as 5.2</td></tr>
+<tr><td>11.1</td><td>Class</td><td>CertificateController</td><td>force-app/…/classes/CertificateController.cls</td></tr>
+<tr><td>11.2</td><td>VF page</td><td>CertificatePdf</td><td>force-app/…/pages/CertificatePdf.page</td></tr>
+<tr><td>11.3</td><td>Class</td><td>CertificateService</td><td>force-app/…/classes/CertificateService.cls</td></tr>
+<tr><td>12.1</td><td>Class</td><td>StudentPortalController</td><td>force-app/…/classes/StudentPortalController.cls</td></tr>
+<tr><td>12.2–12.3</td><td>LWC ×2</td><td>studentEnrolments · studentInvoices</td><td>force-app/…/lwc/&lt;name&gt;/</td></tr>
+<tr><td>14.1</td><td>Edit</td><td>TestDataFactory — add createStudent</td><td>force-app/…/classes/TestDataFactory.cls</td></tr>
+<tr><td>14.2–14.8</td><td>Test ×7</td><td>EnrolmentTriggerTest · CohortServicesTest · ErrorLoggerTest · CurrencyServiceTest · InvoicePaymentServicesTest · CertificateServiceTest · StudentPortalControllerTest</td><td>force-app/…/classes/&lt;Name&gt;.cls</td></tr>
+</table>
+<p style="color:#5a6b82;font-size:9pt">Reference only (never handed out — students build these with clicks): objects/fields under
+<code>objects/</code>, tabs, permission sets, flows, custom labels (<code>labels/</code>), French translations
+(<code>translations/</code>), the Named Credential and custom-metadata records.</p>
+
+<!-- ============ APPENDIX B ============ -->
+<h2 class="sec"><span class="secnum">B</span>Appendix B — Master troubleshooting table</h2>
+<table>
+<tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Compile error on a field name</td><td>Spelling — <code>Enrollment__c</code> vs <code>Enrolment__c</code>, or an API name differing from Chapter 3/7/8</td><td>British spelling, one <b>l</b>; recreate the field with the exact API name</td></tr>
+<tr><td>Roll-Up Summary not offered</td><td>Child related by Lookup, not Master-Detail</td><td>Recreate the relationship as Master-Detail</td></tr>
+<tr><td>Flow saved but nothing happens</td><td>Flows do nothing until activated</td><td>Open the flow → Activate</td></tr>
+<tr><td>Emails never arrive</td><td>Deliverability is "System email only"</td><td>Setup → Deliverability → All Email</td></tr>
+<tr><td><code>Too many SOQL queries: 101</code></td><td>A query inside a loop</td><td>Collect ids first, query once — the Chapter 5 shape</td></tr>
+<tr><td>LWC missing from App Builder / Experience Builder</td><td><code>isExposed</code> false or wrong target</td><td>Check the .js-meta.xml targets (<code>lightning__AppPage</code> / <code>lightningCommunity__Page</code>), redeploy, hard-refresh</td></tr>
+<tr><td>LWC shows "no access"</td><td>Missing Apex class access</td><td>Add the controller to the permission set</td></tr>
+<tr><td>"Log Flow Error" absent from Flow actions</td><td>ErrorLogger not compiled / invocable block missing</td><td>Re-check Code Pack 7.1</td></tr>
+<tr><td>No Error_Log__c after the Chapter 7 checkpoint</td><td>Event trigger inactive, or event not publish-immediately</td><td>Setup → Apex Triggers; re-check §7.3</td></tr>
+<tr><td>Factory error "names a class that does not exist"</td><td>Custom-metadata record typo</td><td>Value must be exactly <code>PaymentGatewayStub</code></td></tr>
+<tr><td>No invoice after confirming</td><td>Fee blank/0, or the 10.3 handler edit missing</td><td>Set a fee; re-check the one-line edit</td></tr>
+<tr><td>Two invoices appeared</td><td>Service called twice or its existing-invoice query mistyped</td><td>Re-check Code Pack 10.7 / 10.9</td></tr>
+<tr><td>Certificate never appears</td><td>Flow inactive — or the real cause is in Error Logs</td><td>Activate; then read the Error Logs tab</td></tr>
+<tr><td>FIELD_INTEGRITY "standard external profiles" on portal user save</td><td>§12.3 step 2 skipped</td><td>Enable the setting, retry</td></tr>
+<tr><td>"…account owner must have a role"</td><td>§12.4 step 1 skipped</td><td>Create + assign the role</td></tr>
+<tr><td>Portal login invalid/locked</td><td>Profile not a site member, or site unpublished</td><td>§12.4 step 2; Publish</td></tr>
+<tr><td>Portal cards show "not linked to a student record" for the student</td><td>User has no ContactId</td><td>Create via <b>Enable Customer User</b> on the Contact, not as a plain user</td></tr>
+<tr><td>Queueable does not run in a test</td><td>Missing <code>Test.stopTest()</code></td><td>Async completes at stopTest</td></tr>
+<tr><td><code>WITH SECURITY_ENFORCED</code> throws after deploy</td><td>Fresh deploys grant no FLS</td><td>Assign both permission sets to the admin</td></tr>
+<tr><td>Deployment fails on coverage</td><td>Below 75%</td><td>Cover untested branches with real assertions — never empty tests</td></tr>
+</table>
+
+<!-- ============ APPENDIX C ============ -->
+<h2 class="sec"><span class="secnum">C</span>Appendix C — Glossary</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Bulkification</td><td>Code that behaves correctly for 1 record and for 200 in one transaction: collect → one query → loop in memory</td></tr>
+<tr><td>Custom Metadata Type</td><td>Admin-editable configuration records that deploy with code and are readable without SOQL</td></tr>
+<tr><td>Factory</td><td>A class whose only job is deciding which implementation to hand back — here, driven by custom metadata</td></tr>
+<tr><td>FLS</td><td>Field-Level Security — which fields a user can see or edit; not granted by deploys</td></tr>
+<tr><td>Frozen rate</td><td>Stamping a conversion rate onto a record at creation so later edits never rewrite history</td></tr>
+<tr><td>Idempotency key</td><td>A stable identifier sent with a charge so a retry can never duplicate a payment</td></tr>
+<tr><td>Idempotent automation</td><td>Automation safe to re-run — e.g. the invoice service skipping enrolments that already hold a live invoice</td></tr>
+<tr><td>Interface</td><td>An Apex contract with no implementation; callers depend on it instead of concrete classes</td></tr>
+<tr><td>Invocable method</td><td><code>@InvocableMethod</code> Apex that Flow (and agents) can call</td></tr>
+<tr><td>Master-Detail</td><td>Tight parent-child: cascade delete, inherited sharing, roll-ups possible</td></tr>
+<tr><td>Named Credential</td><td>Org record owning an endpoint + auth; Apex says <code>callout:Name</code>, never a URL or secret</td></tr>
+<tr><td>Platform event (publish immediately)</td><td>Event-bus message that survives its transaction's rollback — the backbone of Chapter 7</td></tr>
+<tr><td>Queueable (+ AllowsCallouts)</td><td>Async Apex with fresh limits; the only place <code>getContent()</code> may run</td></tr>
+<tr><td>renderAs="pdf"</td><td>Visualforce attribute rendering the page through the platform PDF engine</td></tr>
+<tr><td>Sharing set</td><td>Experience Cloud record-access grant for community users — cannot target master-detail children, hence the Chapter 12 design</td></tr>
+<tr><td>Stub</td><td>A deterministic fake implementation used where the real system is unreachable or unwanted</td></tr>
+<tr><td>UAT</td><td>User Acceptance Testing — the business confirming the solution does what was asked</td></tr>
+</table>
+<p style="margin-top:26px;color:#5a6b82;font-size:9pt;border-top:1px solid #e3e9f0;padding-top:8px">
+Oxfordable Careers — Salesforce Developer Programme · CareerLaunch Complete Build Guide · Rev. August 2026.
+Companion documents: User Guide · Technical Guide · PATTERNS.md · the three Extension Workbooks (Parts A–C).</p>
+</body>
+</html>
