@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oxfordable — Week 2 Participant Workbook · Design &amp; Build Part 1</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: 'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; color:#22324a; font-size:10pt; line-height:1.5; }
+  .page { page-break-after: always; }
+  /* dark cover */
+  .coverwrap { background:#152238; color:#e8eef5; border-radius:10px; padding:34mm 16mm 14mm 16mm; min-height:255mm; position:relative; }
+  .cov-kicker { letter-spacing:4px; font-size:9pt; color:#9fb3cc; font-weight:700; }
+  .cov-week { letter-spacing:3px; font-size:9.5pt; color:#7fd1bd; font-weight:700; margin-top:46mm; }
+  h1.cov { font-size:30pt; font-weight:800; color:#ffffff; margin:8px 0 6px 0; line-height:1.15; }
+  .cov-sub { font-size:13pt; color:#b9c7d9; }
+  .cov-rule { width:52px; border-top:3px solid #2bbf9c; margin:22mm 0 10mm 0; }
+  .cov-fields { font-size:10.5pt; color:#dfe7f1; line-height:2.1; }
+  .cov-fields b { color:#fff; }
+  .cov-foot { position:absolute; bottom:12mm; left:16mm; right:16mm; border-top:1px solid #2c3d58; padding-top:8px; font-size:8.5pt; color:#9fb3cc; }
+  .rev { display:inline-block; background:#2bbf9c; color:#0d1b2e; font-weight:800; border-radius:4px; padding:1px 8px; font-size:8.5pt; margin-left:8px; }
+  /* headings */
+  h2.sec { font-size:18pt; font-weight:800; color:#152238; border-bottom:2px solid #2bbf9c; padding-bottom:6px; margin:4px 0 10px 0; break-before:page; page-break-after:avoid; }
+  h2.first { break-before:auto; }
+  h3 { font-size:12pt; color:#0f6b5c; margin:14px 0 6px 0; page-break-after:avoid; }
+  h4 { font-size:10.5pt; color:#152238; margin:10px 0 4px 0; page-break-after:avoid; }
+  p { margin:5px 0; }
+  ul, ol { margin:5px 0 5px 20px; } li { margin:3px 0; }
+  code { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.5pt; background:#f1f4f8; border:1px solid #e3e9f0; border-radius:4px; padding:1px 5px; color:#1f3a56; }
+  pre { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:7.9pt; background:#f7f9fb; border:1px solid #e3e9f0; border-radius:8px; padding:10px 12px; margin:8px 0; white-space:pre-wrap; line-height:1.42; }
+  pre.code { page-break-inside:auto; }
+  table { width:100%; border-collapse:collapse; margin:8px 0 12px 0; font-size:9.1pt; }
+  th { text-align:left; font-size:7.8pt; letter-spacing:1px; text-transform:uppercase; color:#fff; background:#152238; padding:6px 9px; }
+  td { padding:6px 9px; border-bottom:1px solid #e9eef4; vertical-align:top; }
+  tr { page-break-inside:avoid; }
+  tr:nth-child(even) td { background:#f8fafc; }
+  .callout { border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid; border-left:4px solid; }
+  .callout .ct { font-size:7.8pt; letter-spacing:1.5px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+  .info { background:#eef2fb; border-color:#4c63b6; } .info .ct{color:#4c63b6}
+  .warn { background:#fdf1ec; border-color:#c0392b; } .warn .ct{color:#c0392b}
+  .amber{ background:#fdf6e7; border-color:#b7791f; } .amber .ct{color:#b7791f}
+  .dark { background:#152238; color:#e8eef5; border-color:#2bbf9c; } .dark .ct{color:#7fd1bd} .dark code{background:#24385a;border-color:#314970;color:#cfe3f5}
+  .new  { background:#ebf7f1; border-color:#0f8a6d; } .new .ct{color:#0f8a6d}
+  .steps { counter-reset: step; margin:8px 0; }
+  .step { position:relative; padding-left:32px; margin:8px 0; page-break-inside:avoid; }
+  .step::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:1px; width:21px;height:21px;border-radius:50%; background:#152238; color:#7fd1bd; font-weight:800; font-size:9.5pt; display:flex;align-items:center;justify-content:center; }
+  .lab { background:#152238; color:#fff; border-radius:8px; padding:12px 16px; margin:4px 0 12px 0; page-break-inside:avoid; }
+  .lab .lk { letter-spacing:2px; font-size:8pt; color:#7fd1bd; font-weight:800; }
+  .lab .lt { font-size:15pt; font-weight:800; }
+  .lab .ld { color:#b9c7d9; font-size:9.3pt; margin-top:2px; }
+  .tick { color:#8494a8; font-size:9pt; margin:4px 0 10px 0; } .tick::before{content:'☐ ';}
+  .footer-note { color:#8494a8; font-size:8.5pt; border-top:1px solid #e3e9f0; margin-top:20px; padding-top:6px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page">
+<div class="coverwrap">
+  <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
+  <div class="cov-week">WEEK 2 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
+  <h1 class="cov">Design &amp; Build<br>Part 1</h1>
+  <div class="cov-sub">Data, Automation and Code</div>
+  <div class="cov-rule"></div>
+  <div class="cov-fields">
+    <b>Name:</b> ______________________________________<br>
+    <b>Cohort:</b> ____________________________________<br>
+    <b>Date:</b> ______________________________________
+  </div>
+  <div class="cov-foot">
+    Salesforce Developer Introductory Programme · Labs 2, 3 and 4 · <b>Version 2.0 — updated for the Extension Pack</b><br>
+    Read the solution design (Sections 1–2) before the session. We build from it, we do not re-explain it.
+  </div>
+</div>
+</div>
+
+<!-- WELCOME -->
+<h2 class="sec first">Welcome to Week 2</h2>
+<p><b>Last week you learnt what the job is. This week you do it:</b> a designed data model, working
+automation, and your first Apex trigger — written by you, understood by you.</p>
+
+<div class="callout new"><div class="ct">What changed in version 2.0 of this workbook</div>
+The features listed as <i>out of scope</i> in Section 1 are no longer a dead end. After Week 3, the same
+project continues into the <b>CareerLaunch Extension Pack</b> — payments, invoicing, certificates,
+multi-currency/multi-language, error logging and a student portal — documented in the
+<b>Complete Build Guide</b> and the three Extension Workbooks (Parts A–C). Nothing you build today is
+throwaway: the Enrolment trigger you write in Lab 4 is the exact one the Extension Pack later
+extends by a single line.</div>
+
+<h3>Read before the session</h3>
+<p>Sections 1 and 2 of this workbook are the <b>requirements and solution design</b>. On a real project this
+is the document a developer receives before writing anything. Please read it before we meet — we will
+walk through it in the first 25 minutes rather than reading it aloud from cold.</p>
+
+<h3>Before you arrive — checklist</h3>
+<div class="tick">My Developer Edition org opens and still contains the <b>Course</b> object and both Course records from Lab 1.</div>
+<div class="tick">VS Code is installed with the <b>Salesforce Extension Pack</b>.</div>
+<div class="tick">Running <code>sf --version</code> in a terminal returns a version number.</div>
+<div class="tick">Git is installed and I have a GitHub account.</div>
+<div class="tick">I have completed the Trailhead <b>Platform Basics</b> and <b>Data Modeling</b> modules.</div>
+<div class="tick">I have read Sections 1–2 of this workbook.</div>
+<div class="callout warn"><div class="ct">If anything above is not ticked</div>
+Message the group <b>before</b> the session, not during it. Lab 2 is the foundation for everything in
+Weeks 2 and 3 — nobody is left behind on the data model, but we can only fix a broken install in advance.</div>
+
+<h3>What today covers</h3>
+<table>
+<tr><th>Time</th><th>Block</th><th>What you will do</th></tr>
+<tr><td>0:00–0:10</td><td>Recap &amp; homework check</td><td>Org health check, blockers</td></tr>
+<tr><td>0:10–0:35</td><td>Solution design walkthrough</td><td>Architecture, the data model, why each relationship was chosen</td></tr>
+<tr><td>0:35–1:15</td><td><b>Lab 2 — Build the data model</b></td><td>Cohort, Enrolment, relationships, roll-up, formulas, validation rules</td></tr>
+<tr><td>1:15–1:25</td><td>Break</td><td>—</td></tr>
+<tr><td>1:25–2:00</td><td><b>Lab 3 — Declarative automation</b></td><td>A record-triggered Flow and a screen Flow</td></tr>
+<tr><td>2:00–2:50</td><td><b>Lab 4 — Apex</b></td><td>Trigger, handler, bulkification, Queueable, invocable Apex</td></tr>
+<tr><td>2:50–3:00</td><td>Wrap-up &amp; Homework 2</td><td>What breaks without tests — which sets up Week 3</td></tr>
+</table>
+<div class="callout dark"><div class="ct">By the end of today you will be able to say</div>
+“I designed and built a three-object data model with the right relationships. I automated a business
+process with Flow. I wrote a bulkified Apex trigger with a handler class that enforces a capacity rule
+and blocks duplicates — and I can explain why each of those was the correct tool.”</div>
+<!-- SECTION 1 — BACKLOG -->
+<h2 class="sec">1 — The Requirements Backlog</h2>
+<p>Here is the official backlog for the CareerLaunch project. Compare it with the stories you wrote in
+pairs last week. Each story has an ID used throughout this workbook, in the code comments, and in the
+Week 3 acceptance test script.</p>
+
+<h3>Scope — version 1 (Weeks 2–3)</h3>
+<table>
+<tr><th>In scope — what we build now</th><th>Extension scope — deferred, then delivered</th></tr>
+<tr><td>
+• Course, Cohort and Enrolment data model, with Contact as the Student<br>
+• Seat capacity tracking and automatic prevention of overbooking<br>
+• Automated welcome task and confirmation email<br>
+• Automatic cohort status change to Full<br>
+• A “Quick Enrol” screen-flow wizard<br>
+• A scheduled reminder three days before the cohort starts<br>
+• An Enrolment Console built from two custom LWCs<br>
+• An Agentforce agent answering availability and status questions<br>
+• Apex unit tests at 75% coverage or better<br>
+• A permission set and a CLI deployment to a second org
+</td><td>
+• Payment gateway integration and invoicing<br>
+• An Experience Cloud student portal<br>
+• Certificate PDF generation<br>
+• Multi-currency and multi-language<br>
+• Org-wide error logging<br>
+• Real external system integration — stubbed, with the pattern explained<br><br>
+<b>New in v2.0:</b> every one of these is now built after Week 3 as the
+<b>CareerLaunch Extension Pack</b> — see the <i>Complete Build Guide</i> (Chapters 7–12) and
+Extension Workbooks Parts A–C.
+</td></tr>
+</table>
+<div class="callout amber"><div class="ct">Scope control is still the lesson</div>
+Being able to explain <i>why</i> something is out of a two-week version 1 is itself part of the job.
+The client got a working v1 on time <b>because</b> the right-hand column waited. Deferred is not
+deleted — it is sequenced.</div>
+
+<h3>User stories</h3>
+<table>
+<tr><th>ID</th><th>User story</th><th>Acceptance criteria</th><th>Priority</th></tr>
+<tr><td><b>US-01</b></td><td>As an admissions officer, I want to record courses and the cohorts that run them, so that our catalogue lives in one place.</td><td>Course and Cohort objects exist; a Cohort must belong to a Course; a Cohort has start date, delivery mode, capacity and status.</td><td>Must</td></tr>
+<tr><td><b>US-02</b></td><td>As an admissions officer, I want to enrol a student onto a cohort, so that attendance and payment can be tracked.</td><td>An Enrolment links one Contact to one Cohort; enrolment date defaults to today; status defaults to Applied.</td><td>Must</td></tr>
+<tr><td><b>US-03</b></td><td>As an operations manager, I want to see how many seats remain on a cohort, so that I know what we can still sell.</td><td>Cohort shows Enrolled Count (excluding cancelled) and Seats Remaining = Capacity − Enrolled Count, both without manual entry.</td><td>Must</td></tr>
+<tr><td><b>US-04</b></td><td>As an operations manager, I want the system to stop us overselling a cohort, so that we never promise a seat we do not have.</td><td>Saving an enrolment that would exceed capacity fails with a clear error; the rule holds when 200 records are loaded at once.</td><td>Must</td></tr>
+<tr><td><b>US-05</b></td><td>As an admissions officer, I want a student to be prevented from being enrolled twice on the same cohort, so that our numbers are accurate.</td><td>A second enrolment for the same Contact and Cohort is rejected.</td><td>Must</td></tr>
+<tr><td><b>US-06</b></td><td>As a student, I want a welcome message and next steps when my place is confirmed, so that I know what to do.</td><td>When Status changes to Confirmed: an email is sent to the student and a follow-up Task is created for the cohort owner.</td><td>Must</td></tr>
+<tr><td><b>US-07</b></td><td>As an operations manager, I want a cohort marked Full automatically when the last seat is taken, so that it stops appearing as available.</td><td>When Seats Remaining reaches 0, Cohort Status becomes Full without manual intervention.</td><td>Must</td></tr>
+<tr><td><b>US-08</b></td><td>As an admissions officer, I want a guided wizard to enrol a student in a few clicks, so that I do not have to create records manually.</td><td>A screen flow collects course → cohort → student and creates the enrolment, showing an error if the cohort is full.</td><td>Should</td></tr>
+<tr><td><b>US-09</b></td><td>As a student, I want a reminder shortly before my cohort starts, so that I do not miss the first session.</td><td>A scheduled job creates a reminder three days before Start Date, for confirmed enrolments only.</td><td>Should</td></tr>
+<tr><td><b>US-13</b></td><td>As an operations manager, I want each Contact to show how many active enrolments they hold, so that I can spot repeat students.</td><td>Contact shows a Total Enrolments count, updated automatically after enrolment changes.</td><td>Could</td></tr>
+</table>
+<p style="color:#5a6b82;font-size:9pt">US-10 to US-12 (the Enrolment Console and the AI agent) and US-14 (testing and deployment) are
+delivered in Session 3 and appear in your Week 3 workbook. The Extension Pack continues the numbering
+with invoicing, payments, certificates, error logging and the portal.</p>
+
+<h3>Non-functional requirements</h3>
+<table>
+<tr><th>ID</th><th>Requirement</th></tr>
+<tr><td>NFR-01</td><td>All Apex must be bulk-safe: correct behaviour for 1 record and for 200 records in a single transaction.</td></tr>
+<tr><td>NFR-02</td><td>No SOQL queries or DML statements inside loops.</td></tr>
+<tr><td>NFR-03</td><td>Apex code coverage of 75% or more (our target is 90%), with meaningful assertions — not coverage padding.</td></tr>
+<tr><td>NFR-04</td><td>Errors surfaced to users must be human-readable, never a raw stack trace.</td></tr>
+<tr><td>NFR-05</td><td>Access granted by permission set, never by editing the System Administrator profile.</td></tr>
+<tr><td>NFR-06</td><td>All metadata must be retrievable and deployable via Salesforce CLI.</td></tr>
+</table>
+
+<h3>Assumptions</h3>
+<ul>
+<li>The Student is a standard <b>Contact</b>. We do not build a custom Student object — reusing standard objects is good practice.</li>
+<li>One student holds at most one active enrolment per cohort.</li>
+<li>Payment is recorded as an amount only in <b>version 1</b>; the full gateway integration, invoicing and a Pay-now portal arrive in the Extension Pack (Build Guide Chapters 8–10 and 12).</li>
+<li>Email uses standard Salesforce email; deliverability is set to <i>All Email</i> in the Developer org.</li>
+</ul>
+
+<!-- SECTION 2 — SOLUTION DESIGN -->
+<h2 class="sec">2 — Solution Design</h2>
+<p>This is the design document you would hand to a client. We design first and build second — that is the
+habit this programme is trying to install.</p>
+
+<h3>Solution overview</h3>
+<pre>
++--------------------------------------------------------------+
+|                     USERS AND CHANNELS                       |
+|        Admissions team          |          Students          |
++--------------------------------------------------------------+
+          |                                   |
+          v                                   v
++-----------------------------+  +-----------------------------+
+|      ENROLMENT CONSOLE      |  |      AGENTFORCE AGENT       |
+|    (Lightning App Page)     |  |     "Student Assistant"     |
+|    cohortExplorer (LWC)     |  | Topic: Enrolment Enquiries  |
+|    enrolmentPanel (LWC)     |  |  + Quick Enrol screen flow  |
++-----------------------------+  +-----------------------------+
+          | @AuraEnabled                      | @InvocableMethod
+          v                                   v
++--------------------------------------------------------------+
+|                     APEX SERVICE LAYER                       |
+|   CohortController            EnrolmentController            |
+|   CohortAvailabilityService   EnrolmentStatusService         |
+|   EnrolmentTriggerHandler     StudentSummaryQueueable        |
++--------------------------------------------------------------+
+                              |
+        +---------------------+----------------------+
+        |                     |                      |
+        v                     v                      v
++------------------+ +----------------------+ +--------------------+
+|   DECLARATIVE    | |     DATA MODEL       | |     PLATFORM       |
+|   AUTOMATION     | |   Course__c          | |     SERVICES       |
+|  Record-triggered|&lt;-&gt;|  Cohort__c        | |   Email alerts     |
+|  Screen flow     | |   Enrolment__c       | |   Tasks            |
+|  Scheduled flow  | |   Contact (standard) | |   Reports          |
++------------------+ +----------------------+ +--------------------+
+</pre>
+<div class="callout dark"><div class="ct">The layering principle</div>
+The Lightning Web Component and the AI agent are only <b>channels</b>. Both call the same Apex service
+layer, which sits over the same data model, which is protected by the same automation.
+<b>Build the core once; expose it many times.</b> This one idea is worth more in an interview than any
+single piece of syntax — and it is why the Extension Pack can later add a whole student portal without
+touching this core.</div>
+
+<h3>2.1 The data model</h3>
+<pre>Course__c  1 ----&lt; N  Cohort__c  1 ----&lt; N  Enrolment__c  N &gt;---- 1  Contact
+            (Lookup)             (Master-Detail)              (Lookup)</pre>
+<table>
+<tr><th>Relationship</th><th>Type</th><th>Why</th></tr>
+<tr><td>Cohort → Course</td><td><b>Lookup</b></td><td>A cohort should survive independently. We do not want cohorts deleted with a course, and we do not need a roll-up here.</td></tr>
+<tr><td>Enrolment → Cohort</td><td><b>Master-Detail</b></td><td>We <i>do</i> want a roll-up summary of enrolments on the cohort, and an enrolment is meaningless without its cohort. Cascade delete is desirable.</td></tr>
+<tr><td>Enrolment → Contact</td><td><b>Lookup</b></td><td>A contact may exist with no enrolments and must not be deleted when one is.</td></tr>
+</table>
+<div class="callout amber"><div class="ct">Be ready to answer this out loud</div>
+“Why master-detail here and lookup there?” — the single most examined design decision in PD1, asked
+in almost every junior interview. Have your answer before the session starts.</div>
+
+<h4>Object: Course__c — you built this in Lab 1</h4>
+<table>
+<tr><th>Field label</th><th>API name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>Course Name</td><td><code>Name</code></td><td>Text</td><td>Standard name field</td></tr>
+<tr><td>Course Level</td><td><code>Course_Level__c</code></td><td>Picklist</td><td>Introductory, Advanced</td></tr>
+<tr><td>Duration (Weeks)</td><td><code>Duration_Weeks__c</code></td><td>Number(2,0)</td><td></td></tr>
+<tr><td>Fee</td><td><code>Fee__c</code></td><td>Currency(10,2)</td><td></td></tr>
+<tr><td>Active</td><td><code>Active__c</code></td><td>Checkbox</td><td>Default: true</td></tr>
+<tr><td>Description</td><td><code>Description__c</code></td><td>Long Text Area(1000)</td><td></td></tr>
+</table>
+
+<h4>Object: Cohort__c — built in Lab 2</h4>
+<table>
+<tr><th>Field label</th><th>API name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>Cohort Number</td><td><code>Name</code></td><td>Auto Number</td><td>Format <code>CO-{0000}</code></td></tr>
+<tr><td>Course</td><td><code>Course__c</code></td><td>Lookup(Course__c)</td><td>Required</td></tr>
+<tr><td>Start Date</td><td><code>Start_Date__c</code></td><td>Date</td><td>Required</td></tr>
+<tr><td>End Date</td><td><code>End_Date__c</code></td><td>Date</td><td></td></tr>
+<tr><td>Delivery Mode</td><td><code>Delivery_Mode__c</code></td><td>Picklist</td><td>Online, In-Person, Hybrid</td></tr>
+<tr><td>Capacity</td><td><code>Capacity__c</code></td><td>Number(3,0)</td><td>Required, default 20</td></tr>
+<tr><td>Status</td><td><code>Status__c</code></td><td>Picklist</td><td>Planned, Open, Full, Running, Completed, Cancelled</td></tr>
+<tr><td>Enrolled Count</td><td><code>Enrolled_Count__c</code></td><td>Roll-Up Summary</td><td>COUNT of Enrolment__c where Status ≠ Cancelled</td></tr>
+<tr><td>Seats Remaining</td><td><code>Seats_Remaining__c</code></td><td>Formula (Number)</td><td><code>Capacity__c - Enrolled_Count__c</code></td></tr>
+<tr><td>Cohort Label</td><td><code>Cohort_Label__c</code></td><td>Formula (Text)</td><td><code>Course__r.Name &amp; " - " &amp; TEXT(Start_Date__c)</code></td></tr>
+</table>
+<p><b>Validation rule — <code>End_Date_After_Start_Date</code></b></p>
+<pre>AND(
+  NOT(ISBLANK(End_Date__c)),
+  End_Date__c &lt; Start_Date__c
+)</pre>
+<p style="color:#5a6b82">Error message: <i>End Date cannot be earlier than Start Date.</i></p>
+
+<h4>Object: Enrolment__c — built in Lab 2</h4>
+<table>
+<tr><th>Field label</th><th>API name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>Enrolment Number</td><td><code>Name</code></td><td>Auto Number</td><td>Format <code>ENR-{00000}</code></td></tr>
+<tr><td>Cohort</td><td><code>Cohort__c</code></td><td>Master-Detail(Cohort__c)</td><td>Required</td></tr>
+<tr><td>Student</td><td><code>Student__c</code></td><td>Lookup(Contact)</td><td>Required</td></tr>
+<tr><td>Status</td><td><code>Status__c</code></td><td>Picklist</td><td>Applied, Confirmed, Waitlisted, Cancelled, Completed. Default: Applied</td></tr>
+<tr><td>Enrolment Date</td><td><code>Enrolment_Date__c</code></td><td>Date</td><td>Defaulted by Apex to today</td></tr>
+<tr><td>Amount Paid</td><td><code>Amount_Paid__c</code></td><td>Currency(10,2)</td><td>Default 0 · the Extension Pack later writes this on payment</td></tr>
+<tr><td>Enrolment Key</td><td><code>Enrolment_Key__c</code></td><td>Text(64) — External ID, Unique</td><td>Set by Apex to CohortId-StudentId. This is how we enforce US-05.</td></tr>
+<tr><td>Attendance %</td><td><code>Attendance_Percent__c</code></td><td>Percent(3,0)</td><td></td></tr>
+<tr><td>Certificate Issued</td><td><code>Certificate_Issued__c</code></td><td>Checkbox</td><td>Ticked automatically by the Extension Pack's certificate job</td></tr>
+</table>
+<p><b>Validation rule — <code>Payment_Not_Above_Fee</code></b></p>
+<pre>Amount_Paid__c &gt; Cohort__r.Course__r.Fee__c</pre>
+<p style="color:#5a6b82">Error message: <i>Amount Paid cannot exceed the course fee.</i></p>
+<div class="callout info"><div class="ct">Notice what that rule does</div>
+It reaches across <b>two relationships</b> in a single formula: Enrolment → Cohort → Course. This is a
+cross-object formula; Salesforce allows up to five levels.</div>
+
+<h4>Standard object: Contact (the Student)</h4>
+<table>
+<tr><th>Field label</th><th>API name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>Total Enrolments</td><td><code>Total_Enrolments__c</code></td><td>Number(3,0)</td><td>Maintained by the Queueable Apex job (US-13)</td></tr>
+</table>
+
+<h3>2.2 Automation design — which tool, and why</h3>
+<p><b>This is the most valuable table in the programme.</b> You must be able to justify every choice in it —
+in the exam, and in an interview.</p>
+<table>
+<tr><th>#</th><th>Requirement</th><th>Tool chosen</th><th>Why not the alternative</th></tr>
+<tr><td>A1</td><td>Seat count on a cohort (US-03)</td><td>Roll-up summary + formula field</td><td>No automation needed at all. Always ask “can a field do this?” first.</td></tr>
+<tr><td>A2</td><td>Welcome email and follow-up task on confirmation (US-06)</td><td>Record-triggered Flow (after save)</td><td>Declarative, no test class required, easily changed by an admin. Apex would be over-engineering.</td></tr>
+<tr><td>A3</td><td>Set Cohort to Full when seats hit zero (US-07)</td><td>Record-triggered Flow (after save) updating the parent</td><td>Same reasoning as A2. Also demonstrates updating a related record from Flow.</td></tr>
+<tr><td>A4</td><td>Prevent overbooking (US-04)</td><td><b>Apex trigger</b> (before insert/update)</td><td>A validation rule cannot count sibling records. Flow cannot reliably block a bulk load with a clean per-record error. This needs cross-record logic and <code>addError()</code>.</td></tr>
+<tr><td>A5</td><td>Prevent duplicate enrolment (US-05)</td><td><b>Apex trigger</b> populating a unique external ID field</td><td>Elegant, database-enforced, bulk-safe and free at runtime. A great interview answer.</td></tr>
+<tr><td>A6</td><td>Guided enrolment wizard (US-08)</td><td>Screen Flow calling invocable Apex</td><td>Screens are a Flow strength; the seat-availability lookup is reused from Apex.</td></tr>
+<tr><td>A7</td><td>Pre-start reminder (US-09)</td><td>Scheduled-triggered Flow</td><td>Runs daily on a filtered set. A Schedulable Apex class would be needless code.</td></tr>
+<tr><td>A10</td><td>Keep the Contact enrolment count fresh (US-13)</td><td>Queueable Apex called from the trigger</td><td>Aggregation is best done after the transaction commits. Also demonstrates asynchronous Apex and why we use it.</td></tr>
+</table>
+<div class="callout dark"><div class="ct">The rule of thumb to memorise</div>
+<b>Field → Validation Rule → Flow → Apex.</b> Move down the list only when the level above genuinely
+cannot do the job. Reaching for Apex first is the most common junior mistake. (The Extension Pack obeys
+the same rule: invoicing is Apex only because it needs idempotent cross-record logic; the
+certificate <i>trigger</i> is a Flow because a Flow is enough.)</div>
+<!-- LAB 2 -->
+<h2 class="sec">Lab 2 — Build the Data Model</h2>
+<div class="lab"><div class="lk">LAB 2 · 40 MINUTES · HANDS-ON</div><div class="lt">Build the Data Model</div>
+<div class="ld">Create Cohort and Enrolment, wire up the relationships, add the calculated fields and validation rules, and load sample data.</div></div>
+<div class="callout warn"><div class="ct">Nobody moves on until this lab is finished</div>
+Everything in the rest of the programme depends on this data model being correct. If you fall behind,
+say so — we will wait. Two spellings matter enormously: it is <code>Enrolment__c</code> with one <b>l</b>
+(British spelling) throughout, and field API names must match this workbook exactly or the Apex in
+Lab 4 will not compile.</div>
+
+<div class="steps">
+<div class="step"><b>Create the Cohort object.</b> Setup → Object Manager → Create ▾ → Custom Object. Label/Plural <code>Cohort</code>/<code>Cohorts</code> · Record Name <code>Cohort Number</code> · Auto Number · format <code>CO-{0000}</code> · starting number 1 · tick Allow Reports, Allow Activities, <b>Launch New Custom Tab Wizard</b>.</div>
+<div class="step"><b>Add the Cohort fields</b> (Fields &amp; Relationships → New). Leave <i>Enrolled Count, Seats Remaining, Cohort Label</i> until step 5 — they cannot be built yet.
+<table>
+<tr><th>Field</th><th>Type</th><th>Settings</th></tr>
+<tr><td>Course</td><td>Lookup Relationship</td><td>Related To: <b>Course</b>; tick Required</td></tr>
+<tr><td>Start Date</td><td>Date</td><td>Tick Required</td></tr>
+<tr><td>End Date</td><td>Date</td><td>—</td></tr>
+<tr><td>Delivery Mode</td><td>Picklist</td><td>Online, In-Person, Hybrid</td></tr>
+<tr><td>Capacity</td><td>Number</td><td>Length 3, Decimals 0, Default <code>20</code>, tick Required</td></tr>
+<tr><td>Status</td><td>Picklist</td><td>Planned, Open, Full, Running, Completed, Cancelled</td></tr>
+</table></div>
+<div class="step"><b>Create the Enrolment object.</b> Same route. Label/Plural <code>Enrolment</code>/<code>Enrolments</code> · Record Name <code>Enrolment Number</code> · Auto Number <code>ENR-{00000}</code> · tick Allow Reports, Allow Activities, tab wizard.</div>
+<div class="step"><b>Add the Enrolment fields — in this order.</b> The master-detail must exist before the roll-up can be built.
+<table>
+<tr><th>Field</th><th>Type</th><th>Settings</th></tr>
+<tr><td><b>Cohort</b></td><td>Master-Detail Relationship</td><td>Related To: <b>Cohort</b>. Accept the sharing defaults.</td></tr>
+<tr><td>Student</td><td>Lookup Relationship</td><td>Related To: <b>Contact</b>; tick Required</td></tr>
+<tr><td>Status</td><td>Picklist</td><td>Applied, Confirmed, Waitlisted, Cancelled, Completed. Default <b>Applied</b>.</td></tr>
+<tr><td>Enrolment Date</td><td>Date</td><td>—</td></tr>
+<tr><td>Amount Paid</td><td>Currency</td><td>Length 10, Decimals 2, Default <code>0</code></td></tr>
+<tr><td>Enrolment Key</td><td>Text</td><td>Length 64; tick <b>External ID</b> and <b>Unique</b>; case-sensitive unticked</td></tr>
+<tr><td>Attendance %</td><td>Percent</td><td>Length 3, Decimals 0</td></tr>
+<tr><td>Certificate Issued</td><td>Checkbox</td><td>Default: Unchecked</td></tr>
+</table>
+<div class="callout info"><div class="ct">Pause here — what just happened</div>
+Creating that master-detail changed four things at once: the Cohort now <b>owns</b> the Enrolment;
+deleting a Cohort will <b>cascade delete</b> its Enrolments; <b>roll-up summaries</b> become possible on
+Cohort; and who can see an Enrolment is now <b>controlled by the parent</b> Cohort.</div></div>
+<div class="step"><b>Back on Cohort — add the three calculated fields.</b>
+<table>
+<tr><th>Field</th><th>Type</th><th>Settings</th></tr>
+<tr><td>Enrolled Count</td><td>Roll-Up Summary</td><td>Summarised object <b>Enrolments</b> · COUNT · filter: Status <i>not equal to</i> Cancelled</td></tr>
+<tr><td>Seats Remaining</td><td>Formula → Number, 0 dp</td><td><code>Capacity__c - Enrolled_Count__c</code></td></tr>
+<tr><td>Cohort Label</td><td>Formula → Text</td><td><code>Course__r.Name &amp; " - " &amp; TEXT(Start_Date__c)</code></td></tr>
+</table></div>
+<div class="step"><b>Add the Contact field.</b> Object Manager → Contact → Fields &amp; Relationships → New → Number, Length 3, Decimals 0, Label <code>Total Enrolments</code>.</div>
+<div class="step"><b>Add the two validation rules</b> — copy the formulas and messages from Section 2.1 exactly. On Cohort: <code>End_Date_After_Start_Date</code>. On Enrolment: <code>Payment_Not_Above_Fee</code>.</div>
+<div class="step"><b>Tidy the page layouts.</b> Cohort layout: drag Enrolled Count, Seats Remaining, Cohort Label on; confirm the Enrolments related list. Confirm the Cohorts and Enrolments tabs appear in the App Launcher.</div>
+<div class="step"><b>Create the sample data.</b> Every later lab depends on this — do not skip.
+<table>
+<tr><th>Object</th><th>Records</th></tr>
+<tr><td>Contact</td><td>Three students with real-looking <b>email addresses</b> — Week 3's agent searches on them.</td></tr>
+<tr><td>Cohort</td><td><b>CO-0001</b> — Introductory course · today + 14 · <b>Capacity 3</b> · Open<br><b>CO-0002</b> — Advanced course · today + 30 · Capacity 10 · Open</td></tr>
+</table>
+<p style="color:#5a6b82;font-size:9pt">The capacity of 3 on CO-0001 is deliberate — it makes the overbooking test in Lab 4 fast.</p></div>
+</div>
+<div class="callout amber"><div class="ct">Checkpoint</div>
+Create <b>one</b> Enrolment linking a Contact to CO-0001, then open CO-0001: <b>Enrolled Count = 1</b>
+and <b>Seats Remaining = 2</b> — without anybody typing a number. That is US-03 delivered, with no
+automation at all.</div>
+
+<!-- LAB 3 -->
+<h2 class="sec">Lab 3 — Declarative Automation with Flow</h2>
+<div class="lab"><div class="lk">LAB 3 · 35 MINUTES · HANDS-ON</div><div class="lt">Declarative Automation with Flow</div>
+<div class="ld">A record-triggered Flow that welcomes a confirmed student and closes a full cohort, then a screen Flow that guides an admissions officer through enrolling somebody.</div></div>
+
+<h3>3a — Record-triggered Flow: <code>Enrolment_Confirmed_Actions</code> (US-06, US-07)</h3>
+<p>Setup → search <b>Flows</b> → New Flow → <b>Record-Triggered Flow</b>.</p>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Object / Trigger</td><td><code>Enrolment__c</code> · A record is created or updated</td></tr>
+<tr><td>Entry conditions</td><td><code>Status__c</code> Equals <code>Confirmed</code></td></tr>
+<tr><td>When to run</td><td>Only when a record is <b>updated to meet</b> the condition requirements</td></tr>
+<tr><td>Optimise for</td><td><b>Actions and Related Records</b> (after-save)</td></tr>
+</table>
+<div class="steps">
+<div class="step"><b>Get Records</b> — label <code>Get_Cohort</code>. Object <code>Cohort__c</code>, condition Id Equals <code>{!$Record.Cohort__c}</code>. Store only the first record; fields <code>Seats_Remaining__c</code>, <code>Status__c</code>, <code>Start_Date__c</code>.</div>
+<div class="step"><b>Action → Send Email.</b> Recipient <code>{!$Record.Student__r.Email}</code> · Subject <code>Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}</code> · Body: welcome text, start date, joining instructions.</div>
+<div class="step"><b>Create Records</b> — a Task. Subject <code>Send welcome pack to {!$Record.Student__r.Name}</code> · <code>WhatId = {!$Record.Id}</code> · <code>OwnerId = {!$Record.OwnerId}</code> · <code>ActivityDate = {!$Flow.CurrentDate}</code> · Priority High.</div>
+<div class="step"><b>Decision</b> — <code>Is_Cohort_Now_Full</code>. Outcome “Yes”: <code>{!Get_Cohort.Seats_Remaining__c}</code> less than or equal to 0.</div>
+<div class="step"><b>Update Records</b> on Yes — update the Cohort from <code>Get_Cohort</code>, set <code>Status__c = Full</code>.</div>
+<div class="step"><b>Save</b> as <code>Enrolment Confirmed Actions</code>, then <b>Activate</b>. A saved flow that is not activated does nothing at all.</div>
+</div>
+<div class="callout info"><div class="ct">Why after-save, not before-save</div>
+We touch <i>other</i> records — an email, a Task, the parent Cohort. A before-save flow is faster but can
+only change fields on the triggering record. Classic PD1 question; you now own a concrete example.</div>
+<div class="callout amber"><div class="ct">Test it</div>
+Change an existing Enrolment's Status to <b>Confirmed</b>: a Task appears, the email arrives, and filling
+the final seat on CO-0001 flips the Cohort to <b>Full</b>.</div>
+
+<h3>3b — Screen Flow: <code>Quick_Enrol_Student</code> (US-08)</h3>
+<table>
+<tr><th>Screen / element</th><th>Content</th></tr>
+<tr><td>Screen 1</td><td>Picklist choice set from active <code>Course__c</code> records — “Which course?”</td></tr>
+<tr><td>Get Records</td><td><code>Cohort__c</code> where Course = <code>{!selectedCourse}</code> AND Status = Open, sorted by Start Date, all records</td></tr>
+<tr><td>Screen 2</td><td>Radio buttons from the cohort collection — display Cohort Label, seats remaining in help text</td></tr>
+<tr><td>Screen 3</td><td>Lookup component for <b>Contact</b> — “Which student?”</td></tr>
+<tr><td>Action</td><td>Apex Action → <b>Find Available Cohorts</b> (from <code>CohortAvailabilityService</code>) to re-check seats before writing</td></tr>
+<tr><td>Decision / Create</td><td>Seats available? → Create <code>Enrolment__c</code> (Cohort, Student, Status = Confirmed)</td></tr>
+<tr><td>Screen 4 (Yes / No)</td><td>Confirmation with the enrolment number / “Sorry — that cohort just filled up”, with Back</td></tr>
+<tr><td>Fault paths</td><td>Every Get and Create gets a <b>Fault</b> connector to an error screen showing <code>{!$Flow.FaultMessage}</code>. <i>(The Extension Pack later adds a “Log Flow Error” action on these same paths.)</i></td></tr>
+</table>
+<p>Save, activate, and surface it with a <b>Quick Enrol</b> button on the Cohort page or from the App Launcher.</p>
+<div class="callout info"><div class="ct">Sequencing note</div>
+The Apex Action needs the class you write in Lab 4. If we are short of time we build screens 1–3 and the
+Create element live; the Apex Action and fault handling become Homework 2, item 3.</div>
+
+<h3>3c — Scheduled Flow: <code>Cohort_Start_Reminder</code> (US-09) — demonstration, then homework</h3>
+<table>
+<tr><th>Setting</th><th>Value</th></tr>
+<tr><td>Trigger</td><td>Schedule-Triggered · daily at 07:00</td></tr>
+<tr><td>Object</td><td><code>Enrolment__c</code></td></tr>
+<tr><td>Entry conditions</td><td><code>Status__c = Confirmed</code> AND <code>Cohort__r.Start_Date__c</code> equals today + 3 (build a formula resource)</td></tr>
+<tr><td>Action</td><td>Send a reminder email and create a Task</td></tr>
+</table>
+
+<!-- LAB 4 -->
+<h2 class="sec">Lab 4 — Apex: Trigger, Handler, Async and Invocable</h2>
+<div class="lab"><div class="lk">LAB 4 · 50 MINUTES · HANDS-ON</div><div class="lt">Apex: Trigger, Handler, Async and Invocable</div>
+<div class="ld">Write the code that enforces the seat capacity rule, blocks duplicate enrolments, updates the Contact asynchronously, and exposes a service that both Flow and an AI agent can call.</div></div>
+<div class="callout warn"><div class="ct">How this lab runs</div>
+We <b>type the code together</b>, line by line. Please do not paste it in from Appendix A beforehand —
+watching code appear character by character is what demystifies it, and the errors you make while
+typing are the most useful part of the exercise. Appendix A is for catching up and revising.</div>
+
+<h3>4a — Apex in ten minutes</h3>
+<p>Developer Console → <b>Debug → Open Execute Anonymous Window</b>. We type and run this together:</p>
+<pre>// Variables, collections, loops, SOQL and DML in one page
+String greeting = 'Hello Salesforce';
+Integer capacity = 20;
+
+List&lt;String&gt; levels = new List&lt;String&gt;{ 'Introductory', 'Advanced' };
+
+Map&lt;Id, Cohort__c&gt; cohortsById = new Map&lt;Id, Cohort__c&gt;(
+    [SELECT Id, Name, Capacity__c FROM Cohort__c WHERE Status__c = 'Open']
+);
+
+for (Cohort__c c : cohortsById.values()) {
+    System.debug(greeting + ' - ' + c.Name + ' has capacity ' + c.Capacity__c);
+}
+
+Course__c newCourse = new Course__c(Name = 'Data Cloud Fundamentals',
+                                    Course_Level__c = 'Introductory');
+insert newCourse;</pre>
+<table>
+<tr><th>Concept</th><th>What to take away</th></tr>
+<tr><td>Strongly typed</td><td>Every variable declares its type. The compiler catches mistakes before your users do.</td></tr>
+<tr><td>List, Set, Map</td><td>The three collections you will use constantly. A <b>Map</b> is a lookup table — keys to values — and the key to efficient Apex.</td></tr>
+<tr><td>SOQL / DML</td><td>SOQL reads data (in square brackets); DML (<code>insert, update, delete, upsert</code>) writes it.</td></tr>
+<tr><td><b>Governor limits</b></td><td>100 SOQL queries, 150 DML statements per transaction. This is <i>why</i> we bulkify.</td></tr>
+</table>
+
+<h3>4b — The trigger and the handler (US-04, US-05)</h3>
+<p>Two files: a <b>trigger</b> that does nothing but route (Appendix A.1), and a <b>handler class</b> that holds all the logic (Appendix A.2).</p>
+<table>
+<tr><th>Beat</th><th>The point being made</th></tr>
+<tr><td>One trigger per object</td><td>With more than one, the order they run in is unpredictable.</td></tr>
+<tr><td>No logic in the trigger</td><td>Handler classes can be unit tested, reused and read. Triggers cannot be called from anywhere else.</td></tr>
+<tr><td><code>Trigger.new</code>, <code>Trigger.oldMap</code></td><td>Context variables — the records as they will be, and as they were.</td></tr>
+<tr><td>Collect IDs → one query → loop in memory</td><td><b>The bulkification pattern.</b> Learn this shape; it is most of what separates working Apex from Apex that fails in production.</td></tr>
+<tr><td><code>addError()</code></td><td>Blocks the individual record with a readable message, rather than failing the whole batch.</td></tr>
+<tr><td>Unique External ID field</td><td>Duplicate prevention enforced by the database itself, at no runtime cost.</td></tr>
+</table>
+<p>Methods we build inside <code>EnrolmentTriggerHandler</code>: <code>setDefaults</code> (US-02) ·
+<code>buildUniqueKey</code> (US-05) · <code>preventOverbooking</code> (US-04, NFR-01) ·
+<code>enqueueStudentSummary</code> (US-13).</p>
+
+<h3>4c — Asynchronous Apex: <code>StudentSummaryQueueable</code> (US-13)</h3>
+<p>Aggregating a Contact's enrolments is best done <b>after</b> the transaction commits — and an
+asynchronous job gets its own fresh set of governor limits. That is the whole argument for asynchronous
+Apex, in one sentence. (Appendix A.3.)</p>
+
+<h3>4d — Invocable Apex: <code>CohortAvailabilityService</code> (US-08, US-11)</h3>
+<p>The bridge class: <b>one method, three consumers</b> — the screen flow from Lab 3, the Agentforce agent
+in Week 3, and (with a wrapper) any external system. (Appendix A.4.)</p>
+<pre>@InvocableMethod(label='Find Available Cohorts' ...)</pre>
+<div class="callout dark"><div class="ct">Say this one out loud</div>
+That single annotation is what makes an AI agent able to use your code — arguably the most commercially
+valuable line in the whole project. In Week 3 you watch an agent call it; in the Extension Pack the same
+idea (invocable Apex) powers flow-driven certificates and error logging.</div>
+<div class="callout amber"><div class="ct">Checkpoint — two acceptance criteria proven live</div>
+☐ Enrol a fourth student onto CO-0001 (capacity 3): the save must fail with <i>your</i> message.<br>
+☐ Enrol an existing student onto the same cohort twice: that must fail too.<br>
+US-04 and US-05, demonstrably delivered.</div>
+
+<!-- HOMEWORK -->
+<h2 class="sec">Homework 2 — due before Session 3</h2>
+<p>Roughly 2 hours 30 minutes. Session 3 assumes the data model, the flows and the Apex from today are all working in your org.</p>
+<table>
+<tr><th>#</th><th>Task</th><th>Estimate</th></tr>
+<tr><td>1</td><td>Finish anything unfinished from Labs 2, 3 and 4. Use Appendix A to catch up.</td><td>30 min</td></tr>
+<tr><td>2</td><td>Build the scheduled flow <code>Cohort_Start_Reminder</code> (Lab 3c)</td><td>20 min</td></tr>
+<tr><td>3</td><td>Add the Apex Action and the fault paths to <code>Quick_Enrol_Student</code></td><td>20 min</td></tr>
+<tr><td>4</td><td>Trailhead: complete the <b>Apex Basics &amp; Database</b> module</td><td>45 min</td></tr>
+<tr><td>5</td><td><b>Write one test method</b> for <code>EnrolmentTriggerHandler</code> — any method, however rough. Do not look up how first. Just try.</td><td>20 min</td></tr>
+<tr><td>6</td><td>Push your work to GitHub: <code>sf project retrieve start</code>, then commit</td><td>15 min</td></tr>
+</table>
+<div class="callout info"><div class="ct">About task 5</div>
+You have deliberately been asked to write a test before anybody has taught you testing. Struggling with
+it for twenty minutes is the point — you will arrive at Session 3 having already felt the problem, which
+is what makes the lesson land. Bring whatever you produce, working or not.</div>
+
+<h3>Troubleshooting — this week's greatest hits</h3>
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Roll-Up Summary is not offered as a field type</td><td>The child is related by Lookup, not Master-Detail</td><td>Recreate the relationship on <code>Enrolment__c</code> as Master-Detail</td></tr>
+<tr><td>I cannot change a Lookup to Master-Detail</td><td>Some child records have a blank parent</td><td>Populate the parent on every child record first</td></tr>
+<tr><td>“field integrity exception” on a formula</td><td>Referencing a relationship that does not exist</td><td>Check the relationship name: <code>Course__r.Name</code>, not <code>Course__c.Name</code></td></tr>
+<tr><td>My trigger does not fire</td><td>Inactive, or the event is missing from the signature</td><td>Check <code>(before insert, before update, ...)</code> and that it is Active</td></tr>
+<tr><td>Flow saved but nothing happens</td><td>Flows do nothing until activated</td><td>Open the flow and click <b>Activate</b></td></tr>
+<tr><td>The welcome email never arrives</td><td>Deliverability is “System email only”</td><td>Setup → Deliverability → Access level: <b>All Email</b></td></tr>
+<tr><td><code>Too many SOQL queries: 101</code></td><td>A query inside a loop</td><td>Collect the IDs first, then query once</td></tr>
+<tr><td>Compile error on a field name</td><td><code>Enrollment__c</code> vs <code>Enrolment__c</code></td><td>British spelling, one <b>l</b>, everywhere</td></tr>
+</table>
+
+<h3>Key terms from this session</h3>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Lookup</td><td>A loose relationship; the child survives the parent.</td></tr>
+<tr><td>Master-Detail</td><td>Tight parent-child: cascade delete, inherited sharing, roll-up summaries.</td></tr>
+<tr><td>Roll-Up Summary</td><td>A master-record field that counts, sums, or takes min/max of its details.</td></tr>
+<tr><td>Validation rule</td><td>A formula that blocks a save when it evaluates to true.</td></tr>
+<tr><td>External ID</td><td>An outside-system identifier field; can be unique and used for upsert.</td></tr>
+<tr><td>Flow</td><td>Declarative automation: record-triggered, screen, scheduled, autolaunched.</td></tr>
+<tr><td>Apex / Trigger</td><td>Salesforce's Java-like server language / Apex that runs before or after saves.</td></tr>
+<tr><td>Bulkification</td><td>Correct, efficient behaviour when processing many records at once.</td></tr>
+<tr><td>Governor limit</td><td>Per-transaction caps that keep a multi-tenant platform fair.</td></tr>
+<tr><td>SOQL / DML</td><td>How Apex reads data / writes data.</td></tr>
+<tr><td>Queueable Apex</td><td>An asynchronous job with fresh limits, enqueued with <code>System.enqueueJob</code>.</td></tr>
+<tr><td>Invocable method</td><td><code>@InvocableMethod</code> Apex that Flow, Agentforce and REST can call.</td></tr>
+</table>
+<div class="callout dark"><div class="ct">See you next week — and after that</div>
+<b>Session 3 — Build (Part 2), Test, Deploy &amp; Demo:</b> two Lightning Web Components, an Agentforce
+agent calling today's Apex, a test suite, a deployment and a demo. <b>Then the Extension Pack:</b>
+payments &amp; invoicing, certificates, error logging, multi-currency/multi-language and the Experience
+Cloud student portal — the entire right-hand column of Section 1, built on the exact core you finished
+today. Reserve a place on the Advanced Course — WhatsApp +44 7448 717334 · +234 704 916 5925.</div>
+<!-- APPENDIX A -->
+<h2 class="sec">Appendix A — Apex Source Code</h2>
+<div class="callout warn"><div class="ct">Please read this first</div>
+This appendix is for <b>catching up and revising</b>, not for reading ahead. In Lab 4 you type this code
+with the instructor. If you paste it in beforehand you will get a working org and learn considerably
+less. If you fall behind during the lab, copy from here and rejoin the group. All classes use the
+British spelling <code>Enrolment__c</code> consistently. Copy exactly.</div>
+
+<h3>A.1 &nbsp;EnrolmentTrigger</h3>
+<pre class="code">trigger EnrolmentTrigger on Enrolment__c (before insert, before update, after insert, after update) {
+    if (Trigger.isBefore) {
+        if (Trigger.isInsert) {
+            EnrolmentTriggerHandler.onBeforeInsert(Trigger.new);
+        } else if (Trigger.isUpdate) {
+            EnrolmentTriggerHandler.onBeforeUpdate(Trigger.new, Trigger.oldMap);
+        }
+    }
+    if (Trigger.isAfter &amp;&amp; (Trigger.isInsert || Trigger.isUpdate)) {
+        EnrolmentTriggerHandler.onAfterChange(Trigger.new);
+    }
+}
+</pre>
+<p style="color:#5a6b82;font-size:9pt">The trigger contains routing only. All logic lives in a class that can be unit tested, reused and read.</p>
+
+<h3>A.2 &nbsp;EnrolmentTriggerHandler</h3>
+<pre class="code">public with sharing class EnrolmentTriggerHandler {
+
+    @TestVisible
+    private static final String ERR_FULL =
+        &#x27;This cohort is full. Please choose another cohort or add the student to the waiting list.&#x27;;
+
+    // ---------- Entry points ----------
+    public static void onBeforeInsert(List&lt;Enrolment__c&gt; newEnrolments) {
+        setDefaults(newEnrolments);
+        buildUniqueKey(newEnrolments);
+        preventOverbooking(newEnrolments, null);
+    }
+
+    public static void onBeforeUpdate(List&lt;Enrolment__c&gt; newEnrolments,
+                                      Map&lt;Id, Enrolment__c&gt; oldMap) {
+        buildUniqueKey(newEnrolments);
+        preventOverbooking(newEnrolments, oldMap);
+    }
+
+    public static void onAfterChange(List&lt;Enrolment__c&gt; newEnrolments) {
+        enqueueStudentSummary(newEnrolments);
+    }
+
+    // ---------- US-02: sensible defaults ----------
+    private static void setDefaults(List&lt;Enrolment__c&gt; newEnrolments) {
+        for (Enrolment__c enr : newEnrolments) {
+            if (enr.Enrolment_Date__c == null) {
+                enr.Enrolment_Date__c = Date.today();
+            }
+            if (String.isBlank(enr.Status__c)) {
+                enr.Status__c = &#x27;Applied&#x27;;
+            }
+            if (enr.Amount_Paid__c == null) {
+                enr.Amount_Paid__c = 0;
+            }
+        }
+    }
+
+    // ---------- US-05: duplicate prevention via a unique External ID ----------
+    private static void buildUniqueKey(List&lt;Enrolment__c&gt; newEnrolments) {
+        for (Enrolment__c enr : newEnrolments) {
+            if (enr.Cohort__c != null &amp;&amp; enr.Student__c != null) {
+                enr.Enrolment_Key__c =
+                    String.valueOf(enr.Cohort__c).left(15) + &#x27;-&#x27; +
+                    String.valueOf(enr.Student__c).left(15);
+            }
+        }
+    }
+
+    // ---------- US-04: capacity enforcement, bulk safe ----------
+    private static void preventOverbooking(List&lt;Enrolment__c&gt; newEnrolments,
+                                           Map&lt;Id, Enrolment__c&gt; oldMap) {
+
+        // 1. Work out which enrolments newly consume a seat, and how many per cohort.
+        Map&lt;Id, Integer&gt; incomingSeatsByCohort = new Map&lt;Id, Integer&gt;();
+
+        for (Enrolment__c enr : newEnrolments) {
+            if (enr.Cohort__c == null) {
+                continue;
+            }
+            Boolean consumesSeat = enr.Status__c != &#x27;Cancelled&#x27;;
+            Boolean isNewlyConsuming;
+
+            if (oldMap == null) {
+                isNewlyConsuming = consumesSeat;                       // insert
+            } else {
+                Enrolment__c older = oldMap.get(enr.Id);
+                Boolean wasConsuming = older.Status__c != &#x27;Cancelled&#x27;
+                                    &amp;&amp; older.Cohort__c == enr.Cohort__c;
+                isNewlyConsuming = consumesSeat &amp;&amp; !wasConsuming;      // update
+            }
+
+            if (isNewlyConsuming) {
+                Integer running = incomingSeatsByCohort.containsKey(enr.Cohort__c)
+                    ? incomingSeatsByCohort.get(enr.Cohort__c) : 0;
+                incomingSeatsByCohort.put(enr.Cohort__c, running + 1);
+            }
+        }
+
+        if (incomingSeatsByCohort.isEmpty()) {
+            return;
+        }
+
+        // 2. ONE query for every cohort involved - never inside the loop.
+        Map&lt;Id, Cohort__c&gt; cohortsById = new Map&lt;Id, Cohort__c&gt;([
+            SELECT Id, Name, Capacity__c, Enrolled_Count__c
+            FROM Cohort__c
+            WHERE Id IN :incomingSeatsByCohort.keySet()
+        ]);
+
+        // 3. Allocate seats in order and error on the ones that do not fit.
+        Map&lt;Id, Integer&gt; allocated = new Map&lt;Id, Integer&gt;();
+
+        for (Enrolment__c enr : newEnrolments) {
+            if (enr.Cohort__c == null || !incomingSeatsByCohort.containsKey(enr.Cohort__c)) {
+                continue;
+            }
+            Cohort__c cohort = cohortsById.get(enr.Cohort__c);
+            if (cohort == null) {
+                continue;
+            }
+
+            Decimal capacity  = cohort.Capacity__c == null ? 0 : cohort.Capacity__c;
+            Decimal committed = cohort.Enrolled_Count__c == null ? 0 : cohort.Enrolled_Count__c;
+            Integer used      = allocated.containsKey(enr.Cohort__c)
+                                ? allocated.get(enr.Cohort__c) : 0;
+
+            if (committed + used + 1 &gt; capacity) {
+                enr.addError(ERR_FULL);
+            } else {
+                allocated.put(enr.Cohort__c, used + 1);
+            }
+        }
+    }
+
+    // ---------- US-13: asynchronous aggregation onto the Contact ----------
+    private static void enqueueStudentSummary(List&lt;Enrolment__c&gt; newEnrolments) {
+        Set&lt;Id&gt; studentIds = new Set&lt;Id&gt;();
+        for (Enrolment__c enr : newEnrolments) {
+            if (enr.Student__c != null) {
+                studentIds.add(enr.Student__c);
+            }
+        }
+        if (studentIds.isEmpty()) {
+            return;
+        }
+        // Respect the asynchronous job limit for the transaction.
+        if (Limits.getQueueableJobs() &lt; Limits.getLimitQueueableJobs()) {
+            System.enqueueJob(new StudentSummaryQueueable(studentIds));
+        }
+    }
+}</pre>
+<div class="callout new"><div class="ct">Version 2.0 note</div>
+In the Extension Pack, <code>onAfterChange</code> gains exactly <b>one more line</b> — a call to
+<code>InvoiceService.createForConfirmedEnrolments(newEnrolments)</code> that raises an invoice whenever
+an enrolment is confirmed. Do <b>not</b> add it this week (the class does not exist yet); see the
+Complete Build Guide, Chapter 10.</div>
+
+<h3>A.3 &nbsp;StudentSummaryQueueable</h3>
+<pre class="code">public with sharing class StudentSummaryQueueable implements Queueable {
+
+    private final Set&lt;Id&gt; studentIds;
+
+    public StudentSummaryQueueable(Set&lt;Id&gt; studentIds) {
+        this.studentIds = studentIds;
+    }
+
+    public void execute(QueueableContext context) {
+        Map&lt;Id, Contact&gt; contactsToUpdate = new Map&lt;Id, Contact&gt;();
+
+        // Start everyone at zero so cancellations are reflected too.
+        for (Id studentId : studentIds) {
+            contactsToUpdate.put(studentId, new Contact(Id = studentId, Total_Enrolments__c = 0));
+        }
+
+        for (AggregateResult ar : [
+            SELECT Student__c studentId, COUNT(Id) total
+            FROM Enrolment__c
+            WHERE Student__c IN :studentIds
+              AND Status__c != &#x27;Cancelled&#x27;
+            GROUP BY Student__c
+        ]) {
+            Id studentId  = (Id) ar.get(&#x27;studentId&#x27;);
+            Integer total = (Integer) ar.get(&#x27;total&#x27;);
+            contactsToUpdate.put(studentId, new Contact(Id = studentId, Total_Enrolments__c = total));
+        }
+
+        if (!contactsToUpdate.isEmpty()) {
+            try {
+                update contactsToUpdate.values();
+            } catch (DmlException e) {
+                System.debug(LoggingLevel.ERROR, &#x27;Student summary update failed: &#x27; + e.getMessage());
+            }
+        }
+    }
+}
+</pre>
+
+<h3>A.4 &nbsp;CohortAvailabilityService — invocable; used by Flow and Agentforce</h3>
+<pre class="code">public with sharing class CohortAvailabilityService {
+
+    public class Request {
+        @InvocableVariable(
+            label=&#x27;Course Name&#x27;
+            description=&#x27;All or part of the course name, for example &quot;Advanced&quot; or &quot;Salesforce Developer&quot;.&#x27;
+            required=true)
+        public String courseName;
+    }
+
+    public class Result {
+        @InvocableVariable(
+            label=&#x27;Answer&#x27;
+            description=&#x27;A short, human-readable summary of the cohorts that still have seats.&#x27;)
+        public String answer;
+
+        @InvocableVariable(
+            label=&#x27;Available Cohorts&#x27;
+            description=&#x27;The matching cohort records that still have seats available.&#x27;)
+        public List&lt;Cohort__c&gt; cohorts;
+
+        @InvocableVariable(label=&#x27;Seats Available&#x27; description=&#x27;True if at least one seat was found.&#x27;)
+        public Boolean seatsAvailable;
+    }
+
+    @InvocableMethod(
+        label=&#x27;Find Available Cohorts&#x27;
+        description=&#x27;Returns open cohorts that still have seats for a given course name.&#x27;
+        category=&#x27;Oxfordable CareerLaunch&#x27;)
+    public static List&lt;Result&gt; findAvailableCohorts(List&lt;Request&gt; requests) {
+
+        List&lt;Result&gt; results = new List&lt;Result&gt;();
+
+        for (Request req : requests) {
+            String searchTerm = &#x27;%&#x27; + (String.isBlank(req.courseName) ? &#x27;&#x27; : req.courseName.trim()) + &#x27;%&#x27;;
+
+            List&lt;Cohort__c&gt; candidates = [
+                SELECT Id, Name, Cohort_Label__c, Course__r.Name, Start_Date__c,
+                       Delivery_Mode__c, Capacity__c, Enrolled_Count__c, Seats_Remaining__c
+                FROM Cohort__c
+                WHERE Status__c = &#x27;Open&#x27;
+                  AND Start_Date__c &gt;= TODAY
+                  AND Course__r.Name LIKE :searchTerm
+                ORDER BY Start_Date__c ASC
+                LIMIT 20
+            ];
+
+            List&lt;Cohort__c&gt; withSeats = new List&lt;Cohort__c&gt;();
+            for (Cohort__c c : candidates) {
+                if (c.Seats_Remaining__c != null &amp;&amp; c.Seats_Remaining__c &gt; 0) {
+                    withSeats.add(c);
+                }
+            }
+
+            Result res         = new Result();
+            res.cohorts        = withSeats;
+            res.seatsAvailable = !withSeats.isEmpty();
+            res.answer         = buildAnswer(req.courseName, withSeats);
+            results.add(res);
+        }
+        return results;
+    }
+
+    private static String buildAnswer(String courseName, List&lt;Cohort__c&gt; cohorts) {
+        if (cohorts.isEmpty()) {
+            return &#x27;There are currently no cohorts with available seats matching &quot;&#x27;
+                 + courseName + &#x27;&quot;. Please ask about another course or a later date.&#x27;;
+        }
+        List&lt;String&gt; lines = new List&lt;String&gt;();
+        for (Cohort__c c : cohorts) {
+            lines.add(c.Course__r.Name + &#x27; starting &#x27; + c.Start_Date__c.format()
+                    + &#x27; (&#x27; + c.Delivery_Mode__c + &#x27;) - &#x27;
+                    + String.valueOf(c.Seats_Remaining__c.intValue()) + &#x27; seat(s) remaining&#x27;);
+        }
+        return &#x27;Cohorts with availability: &#x27; + String.join(lines, &#x27;; &#x27;) + &#x27;.&#x27;;
+    }
+}
+</pre>
+
+<p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook ·
+Version 2.0 (updated August 2026 for the CareerLaunch Extension Pack). Companion documents: Week 1 and
+Week 3 workbooks · Extension Workbooks Parts A–C · CareerLaunch Complete Build Guide · User Guide ·
+Technical Guide.</p>
+</body>
+</html>
