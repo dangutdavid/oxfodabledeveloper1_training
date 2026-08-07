@@ -5,12 +5,20 @@
                 <span class="mark">🚀</span>
                 <span class="name">Career<span class="accent">Launch</span></span>
             </div>
-            <a class="auth-link" href={authUrl}>{authLabel}</a>
+            <nav class="nav">
+                <a class={homeLinkClass} href={homeUrl}>{labels.home}</a>
+                <template lwc:if={isGuest}>
+                    <a class="auth-link" href={authUrl}>{authLabel}</a>
+                </template>
+                <template lwc:else>
+                    <a class={profileLinkClass} href={profileUrl}>{labels.profile}</a>
+                    <a class="auth-link" href={authUrl}>{authLabel}</a>
+                </template>
+            </nav>
         </div>
         <div class="hero-copy">
-            <h1>Your learning, in one place.</h1>
-            <p>Track your enrolments, settle your invoices, and download your
-               certificates — whenever you need them.</p>
+            <h1>{heroTitle}</h1>
+            <p>{heroSubtitle}</p>
         </div>
     </header>
 </template>

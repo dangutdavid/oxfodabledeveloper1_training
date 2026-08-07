@@ -3,9 +3,17 @@
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Portal Header</masterLabel>
-    <description>CareerLaunch branded hero header with built-in log in / log out.</description>
+    <description>CareerLaunch branded hero header: navigation (Home / My Profile) and log in / log out.</description>
     <targets>
         <target>lightningCommunity__Page</target>
         <target>lightningCommunity__Default</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="heroTitle" type="String" label="Hero title"
+                      default="Your learning, in one place." />
+            <property name="heroSubtitle" type="String" label="Hero subtitle"
+                      default="Track your enrolments, settle your invoices, and download your certificates - whenever you need them." />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

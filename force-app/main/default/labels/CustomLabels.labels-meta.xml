@@ -81,6 +81,22 @@
         <value>My Profile</value>
     </labels>
     <labels>
+        <fullName>Portal_Nav_Home</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal header nav: Home</shortDescription>
+        <value>Home</value>
+    </labels>
+    <labels>
+        <fullName>Portal_Nav_Profile</fullName>
+        <categories>CareerLaunch,Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal header nav: My Profile</shortDescription>
+        <value>My Profile</value>
+    </labels>
+    <labels>
         <fullName>Portal_Log_Out</fullName>
         <categories>CareerLaunch,Portal</categories>
         <language>en_US</language>

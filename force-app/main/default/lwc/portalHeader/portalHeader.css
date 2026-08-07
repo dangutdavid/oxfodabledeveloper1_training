@@ -3,13 +3,15 @@
     background: linear-gradient(120deg, #16324f 0%, #1b5e63 60%, #1c8b74 100%);
     border-radius: 14px;
     color: #ffffff;
-    padding: 22px 28px 30px 28px;
+    padding: 20px 28px 30px 28px;
     font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .hero-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 .brand {
     display: flex;
@@ -32,16 +34,35 @@
     letter-spacing: 0.2px;
 }
 .accent { color: #7fd1bd; }
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+.nav-link {
+    color: #d7e6ef;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+}
+.nav-link:hover { color: #ffffff; }
+.nav-link.active { color: #ffffff; border-bottom-color: #7fd1bd; }
+
 .auth-link {
     padding: 8px 18px;
     border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 8px;
     color: #ffffff;
     font-weight: 700;
+    font-size: 14px;
     text-decoration: none;
 }
 .auth-link:hover { background: rgba(255, 255, 255, 0.12); }
-.hero-copy { margin-top: 26px; max-width: 640px; }
+
+.hero-copy { margin-top: 24px; max-width: 640px; }
 .hero-copy h1 {
     margin: 0 0 6px 0;
     font-size: 30px;
