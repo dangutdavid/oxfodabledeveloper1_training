@@ -147,8 +147,11 @@ enabled under Translation Language Settings before they apply).
 - **Students**: `Student_Portal_User` — read-only objects/fields + `StudentPortalController`
   only. Post-payment writes happen in `PaymentService (without sharing)` as a
   deliberate system action.
-- **Record access for portal users** comes from a Sharing Set
-  (Enrolment where `Student__c = User.Contact`); Invoice inherits via master-detail.
+- **Record access for portal users**: sharing sets cannot target `Enrolment__c`
+  (master-detail child of Cohort, which has no contact field), so
+  `StudentPortalController` runs `without sharing` and enforces row-level
+  privacy itself — every query is scoped to the logged-in user's Contact and
+  `payInvoice` re-checks ownership before any write.
 - Fresh-org gotcha: metadata deploys grant **no FLS**. Assign both permission
   sets to the admin user or `WITH SECURITY_ENFORCED` queries throw.
 

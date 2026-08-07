@@ -4,8 +4,14 @@
  * Every method starts from the LOGGED-IN user's Contact - the client never
  * passes "whose data" as a parameter, so one student can never request
  * another student's enrolments or pay against another student's invoice.
+ *
+ * without sharing, deliberately: Enrolment__c is a master-detail child of
+ * Cohort__c (sharing controlled by parent), and Cohort has no contact field,
+ * so sharing sets cannot grant community users record access here. Row-level
+ * privacy is enforced instead by the contact-scoped WHERE clauses below and
+ * the explicit ownership check in payInvoice.
  */
-public with sharing class StudentPortalController {
+public without sharing class StudentPortalController {
 
     // Tests set this instead of creating a full Experience Cloud user.
     @TestVisible

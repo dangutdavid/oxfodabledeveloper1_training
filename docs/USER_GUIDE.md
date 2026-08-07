@@ -82,9 +82,11 @@ setting (English and French are available today).
 ### 3.1 Access
 - Staff → assign permission set **Enrolment Console User**.
 - Portal students → Contact (with an Account) → **Enable Customer User** →
-  assign permission set **Student Portal User**.
-- A **Sharing Set** on the community profile must grant Enrolment access where
-  `Enrolment__c.Student__c = User.Contact` (invoices follow automatically).
+  assign permission set **Student Portal User**. No sharing set is needed:
+  the portal controller scopes every query to the logged-in student itself.
+- The community profile must be added to the site's membership
+  (Experience Builder → Administration → Members, or it is added automatically
+  the first time you pick that profile for a user).
 
 ### 3.2 Portal (one-time)
 Setup → **Digital Experiences → Settings** → enable → create a site → in
