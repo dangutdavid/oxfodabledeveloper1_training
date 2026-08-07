@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CareerLaunch — End-to-End Test Document</title>
+<style>
+  @page { size: A4; margin: 15mm 14mm 17mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family:'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; color:#22324a; font-size:9.8pt; line-height:1.48; }
+  .topbar { height:14px; border-radius:4px; background:linear-gradient(90deg,#16324f 0%,#1b5e63 55%,#1c8b74 100%); }
+  .page { page-break-after: always; }
+  .brand { display:flex; align-items:center; gap:10px; margin-top:56px; }
+  .brand .mark { width:44px;height:44px;border-radius:10px;background:#16324f;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px; }
+  .brand .name { font-size:15pt; font-weight:700; color:#16324f; } .brand .name span{color:#1c8b74;}
+  .kicker { letter-spacing:3px; font-size:8.5pt; font-weight:700; color:#5a6b82; margin-top:64px; text-transform:uppercase; }
+  h1.cover { font-size:32pt; font-weight:800; color:#16324f; margin:8px 0 12px 0; line-height:1.12; }
+  .cover-sub { font-size:14pt; color:#33475f; max-width:540px; line-height:1.35; }
+  .cover-blurb { margin-top:20px; color:#5a6b82; max-width:560px; }
+  .rule { width:56px; border-top:3px solid #1c8b74; margin:24px 0 20px 0; }
+  .chips { display:flex; gap:10px; flex-wrap:wrap; }
+  .chip { border:1px solid #d7dee8; border-radius:20px; padding:5px 14px; font-size:9pt; font-weight:700; color:#33475f; }
+  .chip::before{content:'● ';font-size:8pt;} .chip.b::before{color:#2b6cb0}.chip.g::before{color:#1c8b74}.chip.p::before{color:#6b46c1}
+  .cover-foot { margin-top:28px; border-top:1px solid #e3e9f0; padding-top:10px; display:flex; justify-content:space-between; font-size:8.5pt; color:#5a6b82; }
+  .cover-foot b { color:#22324a; }
+  .secnum { display:inline-flex; width:28px;height:28px;border-radius:7px;background:#16324f;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:11.5pt;margin-right:11px;vertical-align:middle; }
+  h2.sec { font-size:17pt; font-weight:800; color:#16324f; margin:6px 0 4px 0; break-before:page; padding-top:4px; page-break-after:avoid; }
+  h2.first { break-before:auto; }
+  .sec-intro { color:#5a6b82; border-bottom:1px solid #e3e9f0; padding-bottom:9px; margin-bottom:12px; }
+  h3 { font-size:12pt; color:#16324f; margin:14px 0 6px 0; page-break-after:avoid; }
+  h4 { font-size:10.3pt; color:#16324f; margin:10px 0 4px 0; page-break-after:avoid; }
+  p { margin:5px 0; } ul,ol{margin:4px 0 4px 20px;} li{margin:2px 0;}
+  code { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.4pt; background:#f1f4f8; border:1px solid #e3e9f0; border-radius:4px; padding:1px 5px; color:#1f3a56; }
+  pre { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:8.2pt; background:#f7f9fb; border:1px solid #e3e9f0; border-radius:8px; padding:9px 11px; margin:7px 0; white-space:pre-wrap; line-height:1.42; page-break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; margin:7px 0 11px 0; font-size:8.9pt; }
+  th { text-align:left; font-size:7.7pt; letter-spacing:1px; text-transform:uppercase; color:#5a6b82; background:#f1f4f8; padding:5px 8px; border-bottom:2px solid #d7dee8; }
+  td { padding:5px 8px; border-bottom:1px solid #e9eef4; vertical-align:top; }
+  tr { page-break-inside:avoid; }
+  .callout { border-radius:8px; padding:9px 13px; margin:9px 0; page-break-inside:avoid; border-left:4px solid; }
+  .callout .ct { font-size:7.7pt; letter-spacing:1.5px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+  .info { background:#eef4fb; border-color:#2b6cb0; } .info .ct{color:#2b6cb0}
+  .warn { background:#fdf3e7; border-color:#c05621; } .warn .ct{color:#c05621}
+  .ok   { background:#ebf7f1; border-color:#1c8b74; } .ok .ct{color:#1c8b74}
+  .dark { background:#16324f; color:#e8eef5; border-color:#1c8b74; } .dark .ct{color:#7fd1bd} .dark code{background:#22456b;border-color:#2d5580;color:#cfe3f5}
+  /* test case block */
+  .tc { border:1px solid #d7dee8; border-radius:9px; margin:11px 0; page-break-inside:avoid; overflow:hidden; }
+  .tc-head { background:#16324f; color:#fff; padding:7px 12px; display:flex; justify-content:space-between; align-items:baseline; }
+  .tc-id { font-weight:800; font-size:10.5pt; } .tc-id .t{ font-weight:700; color:#cfe3f5; margin-left:8px; font-size:10pt;}
+  .tc-ref { font-size:8pt; color:#7fd1bd; font-weight:700; letter-spacing:.5px; }
+  .tc-body { padding:8px 12px 4px 12px; }
+  .tc-row { display:flex; gap:10px; margin:4px 0; }
+  .tc-lab { flex:0 0 92px; font-size:7.7pt; letter-spacing:.8px; font-weight:800; text-transform:uppercase; color:#5a6b82; padding-top:2px; }
+  .tc-val { flex:1; }
+  .tc-val ol { margin-left:16px; } .tc-val ul { margin-left:16px; list-style:none; }
+  .tc-val ul li::before { content:'✔ '; color:#1c8b74; font-weight:800; }
+  .tc-result { background:#f7f9fb; border-top:1px solid #e3e9f0; padding:6px 12px; font-size:8.6pt; color:#5a6b82; }
+  .toc-title { font-size:21pt; font-weight:800; color:#16324f; margin:10px 0 16px 0; }
+  .toc-kicker { letter-spacing:3px; font-size:8.5pt; font-weight:700; color:#5a6b82; margin-top:24px; text-transform:uppercase; }
+  .toc-row { display:flex; align-items:baseline; gap:12px; margin:9px 0; }
+  .toc-row .tn { flex-shrink:0; width:25px;height:25px;border-radius:6px;background:#16324f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10pt; }
+  .toc-row .tt { font-weight:700; color:#16324f; font-size:11pt; }
+  .toc-row .td2 { color:#8494a8; font-size:8.8pt; }
+  .sign { border:1px solid #d7dee8; border-radius:8px; padding:12px 16px; margin:10px 0; }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+
+<!-- COVER -->
+<div class="page">
+  <div class="brand"><div class="mark">🚀</div><div class="name">Career<span>Launch</span></div></div>
+  <div class="kicker">End-to-End Test Document</div>
+  <h1 class="cover">CareerLaunch</h1>
+  <div class="cover-sub">End-to-end acceptance testing —<br>every user story, proven against its acceptance criteria.</div>
+  <p class="cover-blurb">The formal test document for the CareerLaunch platform: environment and data
+  preparation, forty-six scripted end-to-end test cases across twelve suites (core enrolment engine,
+  automation, console, invoicing, payments, certificates, currency &amp; language, error logging, the
+  student portal, and release quality), a full traceability matrix mapping every acceptance criterion
+  to the cases that prove it, and the sign-off record.</p>
+  <div class="rule"></div>
+  <div class="chips">
+    <span class="chip b">Core engine &amp; automation</span>
+    <span class="chip g">Payments · certificates · portal</span>
+    <span class="chip p">Traceability &amp; sign-off</span>
+  </div>
+  <div class="cover-foot">
+    <div><b>CareerLaunch Platform</b><br>Enrolments · Invoicing · Certificates · Payments · Portal</div>
+    <div style="text-align:right"><b>E2E Test Document · Rev. August 2026</b><br>QA &amp; UAT reference · Oxfordable Careers</div>
+  </div>
+</div>
+
+<!-- CONTENTS -->
+<div class="page">
+  <div class="toc-kicker">Contents</div>
+  <div class="toc-title">What's in this document</div>
+  <div class="toc-row"><div class="tn">1</div><div><div class="tt">Introduction &amp; test approach</div><div class="td2">Purpose · scope · references · entry &amp; exit criteria · defect recording · how to run a case</div></div></div>
+  <div class="toc-row"><div class="tn">2</div><div><div class="tt">Environment, roles &amp; test data preparation</div><div class="td2">Org prerequisites · the three test users · the seed data script (TD-01…TD-08)</div></div></div>
+  <div class="toc-row"><div class="tn">3</div><div><div class="tt">Suite A — Catalogue &amp; data model</div><div class="td2">US-01 · US-03 · validation rules (E2E-01…04)</div></div></div>
+  <div class="toc-row"><div class="tn">4</div><div><div class="tt">Suite B — Enrolment business rules</div><div class="td2">US-02 · US-04 · US-05 · NFR-01 (E2E-05…09)</div></div></div>
+  <div class="toc-row"><div class="tn">5</div><div><div class="tt">Suite C — Automation</div><div class="td2">US-06 · US-07 · US-08 · US-09 · US-13 (E2E-10…15)</div></div></div>
+  <div class="toc-row"><div class="tn">6</div><div><div class="tt">Suite D — Enrolment Console</div><div class="td2">US-10 · NFR-04 (E2E-16…18)</div></div></div>
+  <div class="toc-row"><div class="tn">7</div><div><div class="tt">Suite E — Agentforce agent (conditional)</div><div class="td2">US-11 · US-12 (E2E-19…21)</div></div></div>
+  <div class="toc-row"><div class="tn">8</div><div><div class="tt">Suite F — Invoicing</div><div class="td2">Auto-creation · idempotency · free courses · paid-requires-reference · re-issue (E2E-22…26)</div></div></div>
+  <div class="toc-row"><div class="tn">9</div><div><div class="tt">Suite G — Payments</div><div class="td2">Success · declined · double-pay · roll-up (E2E-27…30)</div></div></div>
+  <div class="toc-row"><div class="tn">10</div><div><div class="tt">Suite H — Certificates</div><div class="td2">Issue on completion · once-only · content (E2E-31…33)</div></div></div>
+  <div class="toc-row"><div class="tn">11</div><div><div class="tt">Suite I — Currency &amp; language</div><div class="td2">Conversion · frozen rate · French UI &amp; certificate (E2E-34…36)</div></div></div>
+  <div class="toc-row"><div class="tn">12</div><div><div class="tt">Suite J — Error logging</div><div class="td2">Apex · flow faults · rollback survival (E2E-37…39)</div></div></div>
+  <div class="toc-row"><div class="tn">13</div><div><div class="tt">Suite K — Student portal, end to end</div><div class="td2">Login · privacy · pay · certificate · access control (E2E-40…44)</div></div></div>
+  <div class="toc-row"><div class="tn">14</div><div><div class="tt">Suite L — Release quality</div><div class="td2">Unit tests ≥75% · deployment validation (E2E-45…46)</div></div></div>
+  <div class="toc-row"><div class="tn">15</div><div><div class="tt">Traceability matrix &amp; sign-off</div><div class="td2">Every acceptance criterion → its proving cases · execution summary · signatures</div></div></div>
+</div>
+
+<!-- CH 1 INTRO -->
+<h2 class="sec first"><span class="secnum">1</span>Introduction &amp; test approach</h2>
+<p class="sec-intro">What this document is for, what it covers, and the rules for executing it.</p>
+
+<h3>1.1 Purpose</h3>
+<p>This document proves, end to end and against written acceptance criteria, that the CareerLaunch
+platform behaves as specified — the core enrolment engine (user stories US-01…US-14) and the Extension
+Pack features (invoicing, payments, certificates, currency &amp; language, error logging, and the
+Experience Cloud student portal). It is written so that a tester who has never seen the org can execute
+every case unaided.</p>
+
+<h3>1.2 References</h3>
+<table>
+<tr><th>Document</th><th>Used for</th></tr>
+<tr><td>Week 2 Participant Workbook v2.0 — Section 1</td><td>User stories US-01…US-13 and their acceptance criteria; NFR-01…06</td></tr>
+<tr><td>Week 3 Participant Workbook — “The three stories we deliver today”</td><td>US-10…US-12, US-14 acceptance criteria</td></tr>
+<tr><td>CareerLaunch Complete Build Guide</td><td>Extension feature behaviour (Chapters 7–12) and release procedure (Chapter 14)</td></tr>
+<tr><td>User Guide / Technical Guide</td><td>Expected day-to-day behaviour and architecture reference</td></tr>
+</table>
+
+<h3>1.3 Scope</h3>
+<table>
+<tr><th>In scope</th><th>Out of scope</th></tr>
+<tr><td>All functional acceptance criteria of the core system and Extension Pack, tested through the real UI, real flows, real Apex and the real (stubbed) gateway in a Developer/QA org</td><td>Performance/load testing beyond the 200-record bulk case · penetration testing · real payment-provider integration (the gateway runs the deterministic stub) · email deliverability beyond the org's own send</td></tr>
+</table>
+
+<h3>1.4 Entry criteria</h3>
+<ul>
+<li>The full application is deployed to the test org and <b>all unit tests pass</b> (verified formally again in E2E-45).</li>
+<li>Both permission sets exist and are assigned per Section 2.2.</li>
+<li>Email deliverability is <i>All Email</i>; all flows are <b>Active</b>; the Experience Cloud site is <b>published</b>.</li>
+<li>The seed data of Section 2.3 has been created exactly as written.</li>
+</ul>
+
+<h3>1.5 Exit criteria</h3>
+<ul>
+<li>100% of applicable cases executed; <b>every Must-priority case passed</b>; no open Critical or High defect.</li>
+<li>Suite E (agent) may be marked N/A if Agentforce is unavailable in the org — record N/A, not Fail.</li>
+<li>The traceability matrix (Section 15) shows every acceptance criterion covered by at least one passed case.</li>
+</ul>
+
+<h3>1.6 Defect recording</h3>
+<p>Raise every failure with: the test case ID, the step number that failed, expected vs actual, a
+screenshot, and — where the failure produced one — the <b>Error Log number</b> (<code>ERR-xxxxx</code>
+from the Error Logs tab), which carries the stack trace the developer needs. Severity scale:
+<b>Critical</b> (money wrong, data loss, security breach) · <b>High</b> (acceptance criterion fails) ·
+<b>Medium</b> (workaround exists) · <b>Low</b> (cosmetic).</p>
+
+<h3>1.7 How to execute a case</h3>
+<div class="steps"></div>
+<ul>
+<li>Run cases <b>in order within a suite</b> — later cases reuse earlier state (e.g. G-suite pays the invoice F-suite created).</li>
+<li>Perform every step exactly; do not substitute data. Where a step says “as <i>Staff Tester</i>”, log in as that user (Section 2.2).</li>
+<li>Tick each expected result individually. A case passes only when <b>all</b> its expected results hold.</li>
+<li>Record Pass / Fail / N/A, tester initials and date in the result strip of each case.</li>
+</ul>
+<div class="callout warn"><div class="ct">Reset rule</div>
+If you must re-run a suite, create fresh records rather than editing used ones — auto-numbers and
+error logs are audit evidence. Never delete Error Log records during the test cycle.</div>
+<!-- CH 2 ENV & DATA -->
+<h2 class="sec"><span class="secnum">2</span>Environment, roles &amp; test data preparation</h2>
+<p class="sec-intro">Complete this chapter once, before Suite A. Every case assumes this exact starting state.</p>
+
+<h3>2.1 Environment record</h3>
+<table>
+<tr><th>Item</th><th>Value (fill in)</th></tr>
+<tr><td>Org URL / alias</td><td>____________________________________________</td></tr>
+<tr><td>Org type</td><td>Developer Edition ☐ &nbsp; Sandbox ☐ &nbsp; Other: ________</td></tr>
+<tr><td>Deployment commit / tag under test</td><td>____________________________________________</td></tr>
+<tr><td>Test cycle start date</td><td>____________________________________________</td></tr>
+<tr><td>Agentforce available in this org?</td><td>Yes ☐ &nbsp; No ☐ (if No, Suite E = N/A)</td></tr>
+</table>
+
+<h3>2.2 Test users (three roles)</h3>
+<table>
+<tr><th>Alias in this document</th><th>User</th><th>Access</th></tr>
+<tr><td><b>Admin Tester</b></td><td>System Administrator profile</td><td>Both permission sets assigned (<code>Enrolment_Console_User</code> + <code>Student_Portal_User</code>) — required for field-level security after a fresh deploy</td></tr>
+<tr><td><b>Staff Tester</b></td><td>A standard internal user (or the admin acting as staff)</td><td><code>Enrolment_Console_User</code> permission set</td></tr>
+<tr><td><b>Student A / Student B</b></td><td>Two Experience Cloud users (Customer Community User profile), created via <b>Enable Customer User</b> on their Contacts</td><td><code>Student_Portal_User</code> permission set each · known passwords · site membership per Build Guide §12.4</td></tr>
+</table>
+
+<h3>2.3 Seed data script (TD-01 … TD-08)</h3>
+<table>
+<tr><th>ID</th><th>Create (as Admin Tester)</th><th>Values</th></tr>
+<tr><td>TD-01</td><td>Course</td><td><code>E2E Developer Course</code> · Level Introductory · 5 weeks · <b>Fee 500</b> · Active</td></tr>
+<tr><td>TD-02</td><td>Course</td><td><code>E2E Free Taster</code> · Level Introductory · 1 week · <b>Fee 0</b> · Active</td></tr>
+<tr><td>TD-03</td><td>Cohort</td><td>On TD-01 · starts today + 14 · ends today + 49 · Online · <b>Capacity 3</b> · Status Open &nbsp;(“the small cohort”)</td></tr>
+<tr><td>TD-04</td><td>Cohort</td><td>On TD-01 · starts today + 30 · Online · Capacity 200 · Status Open &nbsp;(“the big cohort”)</td></tr>
+<tr><td>TD-05</td><td>Cohort</td><td>On TD-02 · starts today + 14 · Online · Capacity 10 · Status Open &nbsp;(“the free cohort”)</td></tr>
+<tr><td>TD-06</td><td>Account + Contacts</td><td>Account <code>E2E Students</code>; under it Contacts <b>Student A</b> (<code>e2e.student.a@oxfordable.test</code>), <b>Student B</b> (<code>e2e.student.b@oxfordable.test</code>), <b>Student C</b> (<code>e2e.declined@oxfordable.test</code> — the word “declined” in the email is deliberate: it drives the gateway stub's failure path), plus <b>Students D and E</b> (any test emails)</td></tr>
+<tr><td>TD-07</td><td>Portal users</td><td>Enable Customer User for <b>Student A</b> and <b>Student B</b> (Build Guide §12.5): Customer Community User profile, unique usernames, your inbox as Email, passwords set, permission set assigned</td></tr>
+<tr><td>TD-08</td><td>Nothing else</td><td>Do <b>not</b> pre-create Enrolments or Invoices — the suites create them so the automation is what gets tested</td></tr>
+</table>
+<div class="callout ok"><div class="ct">Preparation checkpoint</div>
+Tabs visible: Courses, Cohorts, Enrolments, Invoices, Error Logs. TD-03 shows Seats Remaining = 3.
+Both portal users can reach the site login page. Error Logs tab is empty (or note existing count:
+______ — later suites assert on <i>new</i> records).</div>
+
+<!-- SUITE A -->
+<h2 class="sec"><span class="secnum">3</span>Suite A — Catalogue &amp; data model</h2>
+<p class="sec-intro">Proves US-01 (catalogue in one place), US-03 (seat visibility with no manual entry) and the data-quality validation rules. Run as <b>Staff Tester</b> unless stated.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-01<span class="t">Course and cohort creation</span></div><div class="tc-ref">US-01 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">Seed data TD-01…TD-05 exists.</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Open the <b>Courses</b> tab and open <i>E2E Developer Course</i>.</li>
+<li>Check its <b>Cohorts</b> related list.</li>
+<li>Open the small cohort (TD-03).</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The course record shows level, duration, fee and active flag.</li>
+<li>The related list shows both cohorts of TD-01 — the catalogue lives in one place.</li>
+<li>The cohort shows its Course, start date, delivery mode, capacity and status, and an auto-number like <code>CO-0001</code>.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-02<span class="t">Cohort date validation</span></div><div class="tc-ref">US-01 · VR End_Date_After_Start_Date · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit the small cohort: set End Date to a date <b>before</b> its Start Date → Save.</li>
+<li>Restore the correct End Date → Save.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Step 1 is blocked with <i>“End Date cannot be earlier than Start Date.”</i></li>
+<li>Step 2 saves normally.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-03<span class="t">Seat counters compute themselves</span></div><div class="tc-ref">US-03 AC: “both without manual entry” · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>On the small cohort note Enrolled Count and Seats Remaining (expect 0 / 3).</li>
+<li>Create an Enrolment: Cohort = small cohort, Student = <b>Student D</b>, leave Status blank → Save.</li>
+<li>Refresh the cohort.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Enrolled Count = 1, Seats Remaining = 2 — no field was typed by hand.</li>
+<li>The Cohort Label formula reads “E2E Developer Course - &lt;start date&gt;”.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-04<span class="t">Cancelled enrolments release their seat</span></div><div class="tc-ref">US-03 AC: “excluding cancelled” · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit Student D's enrolment from E2E-03: Status = <b>Cancelled</b> → Save.</li>
+<li>Refresh the small cohort.</li>
+<li>Set the enrolment back to <b>Applied</b> → Save (it is reused later).</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>After step 1: Enrolled Count = 0, Seats Remaining = 3 (roll-up filter excludes Cancelled).</li>
+<li>After step 3: counts return to 1 / 2.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE B -->
+<h2 class="sec"><span class="secnum">4</span>Suite B — Enrolment business rules</h2>
+<p class="sec-intro">Proves US-02 (defaults), US-04 (capacity, including the 200-record bulk criterion NFR-01), US-05 (duplicates) and the payment validation rule. Run as <b>Staff Tester</b>; E2E-07 needs Admin Tester.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-05<span class="t">Defaults applied on create</span></div><div class="tc-ref">US-02 AC: date defaults today · status defaults Applied · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Create an Enrolment: Cohort = small cohort, Student = <b>Student E</b>; leave Status and Enrolment Date <b>blank</b> → Save.</li>
+<li>Open the saved record.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Status = <b>Applied</b> · Enrolment Date = <b>today</b> · Amount Paid = <b>0</b>.</li>
+<li>Enrolment Key is populated in the form <i>CohortId-StudentId</i>.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-06<span class="t">Capacity enforced — single record</span></div><div class="tc-ref">US-04 AC: “fails with a clear error” · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">Small cohort (capacity 3) holds 2 live enrolments (Students D and E). Add a third — <b>Student A</b>, Status Applied — so the cohort is full.</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Attempt a fourth Enrolment on the small cohort with <b>Student B</b> → Save.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The save is blocked with the message <i>“This cohort is full. Please choose another cohort or add the student to the waiting list.”</i> — a sentence, not a stack trace (NFR-04).</li>
+<li>The cohort still shows exactly 3 enrolments.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-07<span class="t">Capacity holds under a 200-record bulk load</span></div><div class="tc-ref">US-04 AC: “the rule holds when 200 records are loaded at once” · NFR-01 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">As <b>Admin Tester</b>. The big cohort (TD-04, capacity 200) has 0 enrolments. This case runs the platform's own bulk path via Execute Anonymous — equivalent to a Data Loader insert.</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Developer Console → Debug → Execute Anonymous. Run a script that: creates 205 test Contacts, builds 205 Enrolments against the big cohort (Status Confirmed), and inserts them with <code>Database.insert(list, false)</code>, then debugs the success count. (Your instructor's seed script <code>scripts/apex/e2e_bulk.apex</code> contains this verbatim.)</li>
+<li>Open the big cohort.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Exactly <b>200</b> inserts succeed; <b>5</b> fail with the capacity message.</li>
+<li>Cohort: Enrolled Count = 200, Seats Remaining = 0 — and no <code>Too many SOQL queries</code> error occurred (bulk-safe).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-08<span class="t">Duplicate enrolment rejected</span></div><div class="tc-ref">US-05 AC: “a second enrolment for the same Contact and Cohort is rejected” · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Attempt a second Enrolment for <b>Student E</b> on the small cohort → Save.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The save is rejected (duplicate/unique-key error referencing the Enrolment Key).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-09<span class="t">Payment cannot exceed the fee</span></div><div class="tc-ref">VR Payment_Not_Above_Fee (cross-object) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit Student E's enrolment: Amount Paid = <b>600</b> (fee is 500) → Save.</li>
+<li>Set Amount Paid back to 0 → Save.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Step 1 blocked: <i>“Amount Paid cannot exceed the course fee.”</i></li>
+<li>Step 2 saves.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE C -->
+<h2 class="sec"><span class="secnum">5</span>Suite C — Automation</h2>
+<p class="sec-intro">Proves US-06, US-07, US-08, US-09 and US-13. Run as <b>Staff Tester</b>. Note: confirming an enrolment also raises an invoice (Suite F asserts on those — do not delete them).</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-10<span class="t">Confirmation sends the welcome email and creates the task</span></div><div class="tc-ref">US-06 both ACs · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit <b>Student D's</b> enrolment on the small cohort: Status = <b>Confirmed</b> → Save.</li>
+<li>Check the enrolment's Activity/Tasks area, and the inbox of Student D's email (your test inbox).</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A Task exists: subject “Send welcome pack to Student D”, due today, priority High, owned by the record owner.</li>
+<li>The welcome email arrived with the cohort label in the subject.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-11<span class="t">Cohort flips itself to Full on the last seat</span></div><div class="tc-ref">US-07 AC: “without manual intervention” · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Confirm the remaining two enrolments on the small cohort (Students E and A), one at a time.</li>
+<li>Refresh the cohort after the last confirmation.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>When Seats Remaining reaches 0, Cohort Status = <b>Full</b> — nobody edited the cohort.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-12<span class="t">Quick Enrol wizard — happy path</span></div><div class="tc-ref">US-08 AC part 1 · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Launch <b>Quick Enrol Student</b> (App Launcher or the Quick Enrol button).</li>
+<li>Course = E2E Developer Course → cohort = <b>the big cohort</b> → student = <b>Student B</b> → continue to the end.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The confirmation screen shows the new enrolment number.</li>
+<li>The enrolment exists with Status Confirmed.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-13<span class="t">Quick Enrol wizard — full cohort path</span></div><div class="tc-ref">US-08 AC part 2: “showing an error if the cohort is full” · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Run the wizard again and choose the (now Full) <b>small cohort</b>, any remaining student.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Either the full cohort is not offered (Status ≠ Open) or the “that cohort just filled up” screen appears — no enrolment is created either way, and no raw fault text is shown.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-14<span class="t">Pre-start reminder targets the right records</span></div><div class="tc-ref">US-09 AC: “three days before Start Date, for confirmed enrolments only” · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">As Admin Tester. Create a throwaway cohort on TD-01 starting <b>today + 3</b>, capacity 5, Open; add one <b>Confirmed</b> and one <b>Applied</b> enrolment (any spare test contacts).</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Setup → Flows → <code>Cohort_Start_Reminder</code> → open the latest version → <b>Debug</b> → Run (or wait for the 07:00 scheduled run).</li>
+<li>Check Tasks/emails for both enrolments.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The <b>Confirmed</b> enrolment received the reminder; the <b>Applied</b> one did not.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-15<span class="t">Contact shows its live enrolment count</span></div><div class="tc-ref">US-13 AC: “updated automatically after enrolment changes” · Could</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Open <b>Student B's</b> Contact record (they hold one enrolment from E2E-12) and note <b>Total Enrolments</b>.</li>
+<li>Cancel that enrolment (Status = Cancelled), wait a few seconds, refresh the Contact.</li>
+<li>Restore it to Confirmed, refresh again.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Count reads 1 → drops to 0 after cancellation → returns to 1 after restore (asynchronous — allow a few seconds each time).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+<!-- SUITE D -->
+<h2 class="sec"><span class="secnum">6</span>Suite D — Enrolment Console</h2>
+<p class="sec-intro">Proves US-10 and NFR-04 through the staff UI. Run as <b>Staff Tester</b>.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-16<span class="t">Console lists and filters open cohorts</span></div><div class="tc-ref">US-10 AC part 1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>App Launcher → <b>Enrolment Console</b>.</li>
+<li>Observe the Open Cohorts table, then filter by course = E2E Developer Course, then back to All courses.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Only <b>Open</b>, future-dated cohorts appear, each showing <b>seats remaining</b>; the Full small cohort is absent.</li>
+<li>Filtering narrows and restores the list reactively, with no page reload.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-17<span class="t">Enrol from the console — toast, refresh, navigation</span></div><div class="tc-ref">US-10 AC part 2 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Select the <b>big cohort</b> row; in the Enrol panel pick <b>Student D</b> → <b>Enrol student</b>.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A success toast shows the new enrolment number.</li>
+<li>The table's seat count for that cohort <b>drops by one</b> without a manual refresh.</li>
+<li>The browser navigates to the new enrolment record.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-18<span class="t">Console errors are sentences, not stack traces</span></div><div class="tc-ref">NFR-04 · US-04/05 through the UI · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>In the console, attempt to enrol <b>Student D</b> onto the big cohort <b>again</b> (duplicate).</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>An error toast reads <i>“That student is already enrolled on this cohort.”</i> — no ids, no exception class names, no stack trace.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE E -->
+<h2 class="sec"><span class="secnum">7</span>Suite E — Agentforce agent <span style="font-size:10pt;color:#8494a8">(conditional)</span></h2>
+<p class="sec-intro">Proves US-11 and US-12. <b>If Agentforce is unavailable in this org, mark all three cases N/A</b> (§2.1) — the invocable Apex they exercise is already covered by unit tests in Suite L.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-19<span class="t">Availability question answered from live data</span></div><div class="tc-ref">US-11 AC · Must*</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Open the agent's conversation preview and ask: <i>“Do you have any Developer cohorts with space?”</i></li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The reply lists real open cohorts with start dates and seats remaining that match the Cohorts tab — nothing invented.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-20<span class="t">Enrolment status by email</span></div><div class="tc-ref">US-12 AC · Must*</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Ask: <i>“What is the status of my enrolment?”</i> — the agent should ask for the booking email.</li>
+<li>Reply with <code>e2e.student.a@oxfordable.test</code>.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The reply names Student A's cohort, start date and status, matching the org.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-21<span class="t">Out-of-scope question declined gracefully</span></div><div class="tc-ref">Agent topic scope · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol><li>Ask: <i>“How much does parking cost at your office?”</i></li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul><li>A polite out-of-scope answer offering to pass it to the team; nothing invented.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE F -->
+<h2 class="sec"><span class="secnum">8</span>Suite F — Invoicing</h2>
+<p class="sec-intro">Acceptance criteria: one Sent invoice per confirmed enrolment at the course fee, due in 14 days; re-saves never duplicate; free courses produce nothing; Paid requires a gateway reference; cancelling allows a re-issue. Run as <b>Staff Tester</b>.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-22<span class="t">Invoice raises itself on confirmation</span></div><div class="tc-ref">EXT-INV-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">Student D's big-cohort enrolment from E2E-17 exists at Status Confirmed (if E2E-17 created it as Confirmed, its invoice already exists — use it).</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Open that enrolment's <b>Invoices</b> related list and open the invoice.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Exactly one invoice: auto-number <code>INV-xxxxx</code> · Status <b>Sent</b> · Amount (GBP) = <b>500</b> (the fee) · Currency GBP · Exchange Rate 1.000000 · Amount (Invoice Currency) 500.00 · Due Date = <b>creation date + 14</b>.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-23<span class="t">Re-saving a confirmed enrolment never duplicates the invoice</span></div><div class="tc-ref">EXT-INV-2 (idempotency) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit the same enrolment: set Attendance % = 10 → Save. Repeat with 20 → Save.</li>
+<li>Re-open the Invoices related list.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Still exactly <b>one</b> invoice.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-24<span class="t">Free courses are never invoiced</span></div><div class="tc-ref">EXT-INV-3 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Create an Enrolment on the <b>free cohort</b> (TD-05, fee 0): Student = any spare contact, Status = <b>Confirmed</b> → Save.</li>
+<li>Check its Invoices related list.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>No invoice exists.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-25<span class="t">Paid requires a gateway reference</span></div><div class="tc-ref">VR Paid_Requires_Reference · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit Student D's invoice: Status = <b>Paid</b>, leave Payment Reference blank → Save.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Blocked: <i>“An invoice cannot be marked Paid without the gateway payment reference.”</i> The invoice remains Sent.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-26<span class="t">Cancelling an invoice allows a fresh one</span></div><div class="tc-ref">EXT-INV-4 · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit Student D's invoice: Status = <b>Cancelled</b> → Save.</li>
+<li>Edit the enrolment (any field, e.g. Attendance % = 30) → Save.</li>
+<li>Check the Invoices related list.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A <b>new</b> Sent invoice exists alongside the Cancelled one (cancelled invoices don't count as live).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE G -->
+<h2 class="sec"><span class="secnum">9</span>Suite G — Payments</h2>
+<p class="sec-intro">Acceptance criteria: a successful charge marks the invoice Paid with the gateway reference and date, and rolls the amount onto the enrolment; a declined card changes nothing; a paid invoice can never be paid again. The org runs the deterministic stub — an email containing “declined” simulates a failed card. Run as <b>Admin Tester</b> (Execute Anonymous); the portal path is re-proven in Suite K.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-27<span class="t">Successful payment settles the invoice</span></div><div class="tc-ref">EXT-PAY-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Copy the Id of Student D's <b>new Sent invoice</b> (from E2E-26) out of its URL.</li>
+<li>Execute Anonymous: <code>System.debug(JSON.serialize(PaymentService.payInvoice('&lt;invoiceId&gt;')));</code></li>
+<li>Refresh the invoice and its enrolment.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Debug shows <code>"success":true</code> and a transaction id of the form <b>STUB-INV-xxxxx-GBP</b>.</li>
+<li>Invoice: Status <b>Paid</b> · Paid Date = today · Payment Reference = that STUB id.</li>
+<li>Enrolment: <b>Amount Paid = 500</b> (and the Suite B fee-cap rule accepted it).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-28<span class="t">Declined card leaves everything untouched</span></div><div class="tc-ref">EXT-PAY-2 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Preconditions</div><div class="tc-val">Enrol <b>Student C</b> (<code>e2e.declined@…</code>) on the big cohort, Status Confirmed → their invoice auto-raises.</div></div>
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Pay Student C's invoice via Execute Anonymous as in E2E-27.</li>
+<li>Refresh the invoice and enrolment.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Debug shows <code>"success":false</code> with a simulated-decline message.</li>
+<li>Invoice remains <b>Sent</b>, no reference, no paid date; enrolment Amount Paid remains 0.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-29<span class="t">A paid invoice cannot be paid twice</span></div><div class="tc-ref">EXT-PAY-3 (idempotent settlement) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Re-run the E2E-27 payment against the <b>same, now Paid</b> invoice id.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A handled exception stating the invoice is <b>already paid</b>; Amount Paid on the enrolment is unchanged (still 500, not 1000).</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-30<span class="t">Payment audit trail is complete</span></div><div class="tc-ref">EXT-PAY-4 · Should</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>On Student D's paid invoice, verify every audit field in one pass.</li>
+<li>Open the <b>Error Logs</b> tab.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Status Paid + Paid Date + Payment Reference are all populated and mutually consistent.</li>
+<li>No new Error Log rows were produced by the successful payment path.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+<!-- SUITE H -->
+<h2 class="sec"><span class="secnum">10</span>Suite H — Certificates</h2>
+<p class="sec-intro">Acceptance criteria: completing an enrolment produces a PDF certificate filed on the record with the flag ticked — exactly once — and the PDF carries the student's real details. Run as <b>Staff Tester</b>.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-31<span class="t">Certificate issues on completion</span></div><div class="tc-ref">EXT-CERT-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Edit <b>Student D's</b> big-cohort enrolment: Status = <b>Completed</b> → Save.</li>
+<li>Wait ~10 seconds (the render is asynchronous), refresh the record.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li><b>Certificate Issued</b> is ticked.</li>
+<li>The Files related list holds <code>Certificate ENR-xxxxx</code>.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-32<span class="t">A certificate is only ever issued once</span></div><div class="tc-ref">EXT-CERT-2 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Set the same enrolment's Status to Confirmed → Save, then back to <b>Completed</b> → Save.</li>
+<li>Wait, refresh, count the files.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Still exactly <b>one</b> certificate file.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-33<span class="t">The PDF content is correct</span></div><div class="tc-ref">EXT-CERT-3 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Open the certificate file and inspect it.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A real PDF (A4 landscape, designed layout), showing: the student's <b>name</b>, the <b>course name and level</b>, the cohort label, the issue date, and the enrolment number — all matching the records.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE I -->
+<h2 class="sec"><span class="secnum">11</span>Suite I — Currency &amp; language</h2>
+<p class="sec-intro">Acceptance criteria: conversions follow the configured rates; the rate is frozen on each invoice at issue time; the UI and certificate follow the user's language. E2E-34/35 as <b>Admin Tester</b>; E2E-36 uses Student A.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-34<span class="t">Conversion follows the configured rate</span></div><div class="tc-ref">EXT-CCY-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Setup → Custom Metadata Types → Exchange Rate → Manage Records → note the USD rate (default 1.27).</li>
+<li>Execute Anonymous: <code>System.debug(CurrencyService.convertFromGBP(100, 'USD'));</code> and <code>System.debug(CurrencyService.format(1250, 'GBP'));</code></li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>First debug = 100 × the USD rate, to 2 dp (127.00 at default) · second = <b>£1,250</b> formatted with symbol and separator.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-35<span class="t">Rates are frozen on existing invoices</span></div><div class="tc-ref">EXT-CCY-2 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Note Amount (Invoice Currency) on Student D's <b>Paid</b> invoice.</li>
+<li>Edit the <b>GBP</b> Exchange Rate record: Rate From GBP = 2.0 → Save.</li>
+<li>Refresh the invoice, then create a brand-new Confirmed enrolment (any spare student, big cohort) and open its fresh invoice.</li>
+<li><b>Restore the GBP rate to 1.0</b> and cancel/clean the throwaway enrolment.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The existing invoice is <b>unchanged</b> (its stored rate stays 1.000000).</li>
+<li>The new invoice was stamped with the <b>new</b> rate (2.000000 · Amount In Currency = 1000.00) — future invoices only.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-36<span class="t">French user sees a French application</span></div><div class="tc-ref">EXT-I18N-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Setup → Users → <b>Student A's portal user</b> → Edit → Language = <code>Français</code> → Save.</li>
+<li>Log in to the portal as Student A (private window) and read the two cards.</li>
+<li>Restore the language to English afterwards.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Cards read <b>Mes inscriptions</b> / <b>Mes factures</b>; a payable invoice's button reads <b>Payer maintenant</b>.</li>
+<li>(If a certificate is issued while French is active, its headings render in French too.)</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE J -->
+<h2 class="sec"><span class="secnum">12</span>Suite J — Error logging</h2>
+<p class="sec-intro">Acceptance criteria: every failure — Apex, flow fault, integration — becomes a permanent Error Log record with source, message, stack trace and severity, even when the failing transaction rolls back. Run as <b>Admin Tester</b>.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-37<span class="t">Apex exceptions are logged</span></div><div class="tc-ref">EXT-ERR-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Execute Anonymous:<br><code>try { Integer boom = 1/0; } catch (Exception e) { ErrorLogger.log(e, 'E2E-37'); }</code></li>
+<li>Open the Error Logs tab.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A new <code>ERR-</code> record: Source Type <b>Apex</b>, Source Name <b>E2E-37</b>, message containing “Divide by 0”, a populated stack trace, Severity Error.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-38<span class="t">Flow faults are logged</span></div><div class="tc-ref">EXT-ERR-2 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Force a fault in <code>Quick_Enrol_Student</code> — e.g. run it against the Full small cohort so the Create element fails (or temporarily deactivate a referenced field per your instructor).</li>
+<li>Check the Error Logs tab.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A new record: Source Type <b>Flow</b>, Source Name = the flow's name, message = the platform fault text.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-39<span class="t">Logs survive a transaction rollback</span></div><div class="tc-ref">EXT-ERR-3 (the whole point of the design) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Execute Anonymous — note this logs, <b>then deliberately crashes the same transaction</b>:<br>
+<code>ErrorLogger.log('Apex','E2E-39','before the crash',null,null,'Critical');<br>
+insert new Course__c(); // missing required Name → the whole transaction rolls back</code></li>
+<li>Confirm the Execute Anonymous run <b>failed</b> (that is the test).</li>
+<li>Open the Error Logs tab.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The <b>E2E-39</b> record exists with Severity <b>Critical</b> — the platform event escaped the rollback that destroyed everything else in that transaction.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE K -->
+<h2 class="sec"><span class="secnum">13</span>Suite K — Student portal, end to end</h2>
+<p class="sec-intro">The customer journey plus its security boundaries. Uses <b>Student A</b> and <b>Student B</b> in private/incognito windows. Preconditions: Student A holds a Confirmed enrolment with a Sent invoice; Student B holds at least one enrolment (from earlier suites — create any missing state as Staff Tester first).</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-40<span class="t">Portal login and dashboard</span></div><div class="tc-ref">EXT-POR-1 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Private window → site URL + <code>/login</code> → sign in as <b>Student A</b>.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Login succeeds; <b>My Enrolments</b> shows their course, cohort, start date and status badge; <b>My Invoices</b> shows their invoice with amount, currency, due date and status.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-41<span class="t">A student sees only their own records</span></div><div class="tc-ref">EXT-POR-2 (privacy) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Still as Student A: count the rows in both cards.</li>
+<li>In a second private window, log in as <b>Student B</b> and compare.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Student A sees only A's records; Student B sees only B's. Neither sees the other's enrolments or invoices anywhere.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-42<span class="t">Pay now, end to end</span></div><div class="tc-ref">EXT-POR-3 + EXT-PAY-1 through the UI · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>As Student A, press <b>Pay now</b> on the Sent invoice.</li>
+<li>As Admin Tester, verify the invoice and enrolment records.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>Toast <i>“Payment received - thank you!”</i> with a STUB reference; the badge flips to <b>Paid</b>; the button disappears; the list refreshes without a manual reload.</li>
+<li>Back end: Status Paid, reference + date stored, enrolment Amount Paid = fee, no new Error Logs.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-43<span class="t">Certificate download from the portal</span></div><div class="tc-ref">EXT-POR-4 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>As Staff Tester, set Student A's enrolment to <b>Completed</b>; wait for the certificate (Suite H behaviour).</li>
+<li>As Student A, refresh the portal.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>A <b>Download certificate</b> link appears under the completed course and downloads the correct PDF.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-44<span class="t">Access control — guests and cross-student payment</span></div><div class="tc-ref">EXT-POR-5 (security) · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>In a fresh private window, open a portal page URL <b>without logging in</b>.</li>
+<li>Cross-student server check: this is proven by the automated test <code>StudentPortalControllerTest.payInvoiceRejectsSomeoneElsesInvoice</code> — confirm it passed in the E2E-45 run and record its name here.</li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The guest is redirected to login (or shown no data) — never records.</li>
+<li>The named unit test is green: the server rejects paying another student's invoice even with a valid record id.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- SUITE L -->
+<h2 class="sec"><span class="secnum">14</span>Suite L — Release quality</h2>
+<p class="sec-intro">US-14: covered by automated tests and deployable to another org. Run as <b>Admin Tester</b>.</p>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-45<span class="t">Full unit-test run at ≥75% coverage</span></div><div class="tc-ref">US-14 AC part 1 · NFR-03 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Terminal: <code>sf apex run test --code-coverage --result-format human --wait 10 -o &lt;org&gt;</code></li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li><b>All tests pass</b> (reference build: 37/37) and overall coverage ≥ <b>75%</b>. Record: passed ____/____ · coverage ____%.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<div class="tc"><div class="tc-head"><div class="tc-id">E2E-46<span class="t">Deployment validates against a clean org</span></div><div class="tc-ref">US-14 AC part 2 · NFR-06 · Must</div></div>
+<div class="tc-body">
+<div class="tc-row"><div class="tc-lab">Steps</div><div class="tc-val"><ol>
+<li>Terminal: <code>sf project deploy start --source-dir force-app -o &lt;secondOrg&gt; -l RunLocalTests --dry-run</code></li></ol></div></div>
+<div class="tc-row"><div class="tc-lab">Expected</div><div class="tc-val"><ul>
+<li>The validate-only run <b>succeeds</b> with all tests passing — the release is deployable on demand.</li></ul></div></div>
+</div><div class="tc-result">Result: Pass ☐ Fail ☐ N/A ☐ · Tester: ______ · Date: ________ · Defect #: ________</div></div>
+
+<!-- CH 15 MATRIX + SIGNOFF -->
+<h2 class="sec"><span class="secnum">15</span>Traceability matrix &amp; sign-off</h2>
+<p class="sec-intro">Every acceptance criterion, mapped to the case(s) that prove it. Exit criteria (§1.5) require a Pass in every row.</p>
+
+<h3>15.1 Traceability — core user stories</h3>
+<table>
+<tr><th>Story</th><th>Acceptance criterion (abridged)</th><th>Proven by</th><th>Pass?</th></tr>
+<tr><td>US-01</td><td>Catalogue objects, cohort belongs to course, cohort attributes</td><td>E2E-01, E2E-02</td><td>☐</td></tr>
+<tr><td>US-02</td><td>Enrolment links Contact+Cohort; date/status defaults</td><td>E2E-05</td><td>☐</td></tr>
+<tr><td>US-03</td><td>Enrolled Count (excl. cancelled) &amp; Seats Remaining, no manual entry</td><td>E2E-03, E2E-04</td><td>☐</td></tr>
+<tr><td>US-04</td><td>Overbooking blocked with clear error; holds at 200 records</td><td>E2E-06, E2E-07, E2E-18</td><td>☐</td></tr>
+<tr><td>US-05</td><td>Duplicate enrolment rejected</td><td>E2E-08, E2E-18</td><td>☐</td></tr>
+<tr><td>US-06</td><td>Confirmation email + follow-up task</td><td>E2E-10</td><td>☐</td></tr>
+<tr><td>US-07</td><td>Cohort auto-Full at zero seats</td><td>E2E-11</td><td>☐</td></tr>
+<tr><td>US-08</td><td>Guided wizard; error if full</td><td>E2E-12, E2E-13</td><td>☐</td></tr>
+<tr><td>US-09</td><td>Reminder T-3 days, confirmed only</td><td>E2E-14</td><td>☐</td></tr>
+<tr><td>US-10</td><td>Console: list, filter, seats, enrol, toast</td><td>E2E-16, E2E-17</td><td>☐</td></tr>
+<tr><td>US-11 / US-12</td><td>Agent answers availability / status from live data</td><td>E2E-19, E2E-20 (else N/A + Suite L)</td><td>☐</td></tr>
+<tr><td>US-13</td><td>Contact Total Enrolments auto-updated</td><td>E2E-15</td><td>☐</td></tr>
+<tr><td>US-14</td><td>75%+ tested; deployable to another org</td><td>E2E-45, E2E-46</td><td>☐</td></tr>
+<tr><td>NFR-01/02</td><td>Bulk-safe, no SOQL/DML in loops</td><td>E2E-07 (behavioural) + code review</td><td>☐</td></tr>
+<tr><td>NFR-04</td><td>Human-readable errors</td><td>E2E-06, E2E-13, E2E-18</td><td>☐</td></tr>
+</table>
+
+<h3>15.2 Traceability — extension features</h3>
+<table>
+<tr><th>Criterion</th><th>Proven by</th><th>Pass?</th></tr>
+<tr><td>EXT-INV-1…4 — auto-invoice at fee/+14d · idempotent · free courses excluded · re-issue after cancel · Paid needs reference</td><td>E2E-22…26</td><td>☐</td></tr>
+<tr><td>EXT-PAY-1…4 — settle with reference &amp; roll-up · declined unchanged · no double pay · audit complete</td><td>E2E-27…30, E2E-42</td><td>☐</td></tr>
+<tr><td>EXT-CERT-1…3 — issue on completion · once only · correct PDF content</td><td>E2E-31…33, E2E-43</td><td>☐</td></tr>
+<tr><td>EXT-CCY / I18N — configured rates · frozen at issue · French UI &amp; certificate</td><td>E2E-34…36</td><td>☐</td></tr>
+<tr><td>EXT-ERR-1…3 — Apex, flow, and rollback-surviving logs</td><td>E2E-37…39</td><td>☐</td></tr>
+<tr><td>EXT-POR-1…5 — login · privacy · pay · certificate · access control</td><td>E2E-40…44</td><td>☐</td></tr>
+</table>
+
+<h3>15.3 Execution summary</h3>
+<table>
+<tr><th>Metric</th><th>Count</th></tr>
+<tr><td>Cases executed / total</td><td>________ / 46</td></tr>
+<tr><td>Passed · Failed · N/A</td><td>________ · ________ · ________</td></tr>
+<tr><td>Defects raised (Critical / High / Medium / Low)</td><td>____ / ____ / ____ / ____</td></tr>
+<tr><td>Unit test result &amp; coverage (from E2E-45)</td><td>________ passed · ________ %</td></tr>
+</table>
+
+<h3>15.4 Sign-off</h3>
+<div class="sign">
+<p><b>Test outcome:</b> &nbsp; Accepted ☐ &nbsp;&nbsp; Accepted with conditions ☐ &nbsp;&nbsp; Rejected ☐</p>
+<p style="margin-top:8px">Conditions / notes: ______________________________________________________________________________</p>
+<p style="margin-top:14px"><b>Lead tester:</b> ____________________  Signature: ____________________  Date: ____________</p>
+<p style="margin-top:8px"><b>Product owner / client:</b> ____________________  Signature: ____________________  Date: ____________</p>
+</div>
+<p class="footer-note" style="color:#8494a8;font-size:8.5pt;border-top:1px solid #e3e9f0;margin-top:22px;padding-top:8px">
+CareerLaunch — End-to-End Test Document · Rev. August 2026 · Companion documents: Complete Build Guide ·
+User Guide · Technical Guide · Week 1–3 Participant Workbooks · Extension Workbooks A–C.</p>
+</body>
+</html>
