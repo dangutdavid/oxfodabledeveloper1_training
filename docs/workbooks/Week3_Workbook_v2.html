@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
+  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.3</span></div>
   <h1 class="cov">Build, Test,<br>Deploy &amp; Demo</h1>
   <div class="cov-sub">User Interface, AI, Testing and Release</div>
   <div class="cov-rule"></div>
@@ -71,7 +71,7 @@
   </div>
   <div class="cov-foot">
     Salesforce Developer Introductory Programme · Labs 5, 6, 7 and 8 · UAT and demo ·
-    <b>Version 2.0 — Extension Pack update + complete AI Build Prompt series</b><br>
+    <b>Version 2.3 — Lab 6 rewritten: fully manual, click-by-click Agentforce build (no AI assistant)</b><br>
     This is the workbook you keep. It contains your acceptance test script, your deployment commands and your portfolio write-up.
   </div>
 </div>
@@ -158,34 +158,118 @@ the same principle carries a whole student portal — see Appendix E, prompt P10
 
 <!-- LAB 6 -->
 <h2 class="sec">Lab 6 — Agentforce Agent</h2>
-<div class="lab"><div class="lk">LAB 6 · 30 MINUTES · HANDS-ON</div><div class="lt">Agentforce Agent</div>
+<div class="lab"><div class="lk">LAB 6 · 30–40 MINUTES · HANDS-ON · CLICKS ONLY, NO AI ASSISTANT</div><div class="lt">Agentforce Agent</div>
 <div class="ld">Give the Apex you wrote in Week 2 to an AI agent, and watch it answer real questions from live org data.</div></div>
 <p><b>The concept, in one paragraph.</b> An agent is made of <b>topics</b> (what it can help with),
 <b>instructions</b> (how it should behave), and <b>actions</b> (what it can actually do). Your
 <code>CohortAvailabilityService</code> from Lab 4 becomes an agent action <b>with no rewriting whatsoever</b>.</p>
+
+<div class="callout warn"><div class="ct">This lab is built entirely by hand, in Setup — on purpose</div>
+Every other lab in this programme can be reproduced by an AI coding assistant from a prompt (see Appendix E).
+<b>This one cannot, reliably.</b> Underneath the clicks, an agent is built from very new metadata
+(<code>GenAiFunction</code>, <code>GenAiPlugin</code>, <code>GenAiPlannerBundle</code>) whose exact validation
+rules are not yet publicly documented well enough for an AI assistant to author correctly from scratch — we
+proved this ourselves: five attempts to deploy a working action via generated metadata all failed against the
+same unexplained server error. <b>Agent Builder in Setup is the only reliable way to build this today</b>, and
+that makes this lab a genuine, undiluted test of whether you can follow a precise set of instructions without
+an AI in the loop. Do it slowly, tick every box, and if a screen does not match what is described here, stop
+and ask rather than guessing.</div>
+
 <h3>Prerequisites — check these first</h3>
-<div class="tick">Agentforce / Einstein Setup is enabled (Setup → Einstein Setup → turn on).</div>
-<div class="tick"><code>CohortAvailabilityService</code> and <code>EnrolmentStatusService</code> are deployed and compile.</div>
-<div class="tick">Sample Courses and Cohorts exist with genuinely available seats.</div>
-<div class="tick">My user has the required Agentforce permission set assigned.</div>
+<div class="tick">My org has an active Agentforce licence. Setup → Quick Find <code>Permission Set Licenses</code> should list <b>Agentforce (Default)</b> or <b>Agentforce Service Agent Builder</b> as <i>Active</i>. If neither appears, see the callout below.</div>
+<div class="tick"><code>CohortAvailabilityService</code> and <code>EnrolmentStatusService</code> (Appendix A.3) are deployed and compile with no errors.</div>
+<div class="tick">Sample Courses and Cohorts exist with genuinely available seats, and at least one Contact has a real enrolment (Week 2 sample data).</div>
+<div class="tick">My user is assigned a permission set containing the Agentforce licence — ask the instructor if unsure.</div>
 <div class="callout info"><div class="ct">If Agentforce is unavailable in your org</div>
-Some Developer Edition orgs do not offer it. That is not a failure on your part: the instructor
-demonstrates from the reference org, you follow the build sheet as written homework, and the learning
-objective survives — the important idea is the <code>@InvocableMethod</code> bridge, and you already own that.</div>
-<h3>Build sheet</h3>
+Some Developer Edition orgs are not provisioned with it. That is not a failure on your part: the instructor
+demonstrates from the reference org, you follow this build sheet as written homework the moment your own org
+is provisioned, and the learning objective survives — the important idea is the <code>@InvocableMethod</code>
+bridge, and you already own that from Week 2.</div>
+
+<h3>Part 1 — Create the second Apex action (10 minutes)</h3>
 <div class="steps">
-<div class="step"><b>Create the second action class.</b> <code>EnrolmentStatusService</code> (Appendix A.3) returns a student's enrolment status from an email address.</div>
-<div class="step"><b>Create the agent.</b> Setup → Agentforce → Agents → New Agent. Name <code>Oxfordable Student Assistant</code>; type Employee/internal; role “Answers questions about our courses, cohort availability and a student's own enrolment status”; company “Oxfordable Careers, a technology training provider”; tone “Warm, concise, professional. Never invent dates, prices or seat numbers.”</div>
-<div class="step"><b>Create two agent actions</b> from your invocables: <b>Find Available Cohorts</b> (input Course Name; outputs Answer, Available Cohorts, Seats Available) and <b>Check Enrolment Status</b> (input Student Email; outputs Answer, Found).</div>
-<div class="step"><b>Write the descriptions properly.</b> Every input and output needs a clear description — the agent reads these to decide what to pass and how to answer. Write them <b>for a colleague who has never seen your org</b>: thin descriptions are the number one reason agents misbehave.</div>
-<div class="step"><b>Create the topic</b> <code>Course Enrolment Enquiries</code>. Classification: “Use this topic when someone asks about our courses, when a cohort starts, whether seats are available, how to join, or the status of an enrolment they already hold.” Scope: answer only from the assigned actions; never speculate. Instructions: ask which course if unclear; always state start date and seats; offer the next cohort if none; ask for the booking email for status questions; never share one student's details with another; pass anything else to the team. Assign both actions.</div>
-<div class="step"><b>Test in the conversation preview</b> — the five scripted questions in the UAT table (availability, start dates, status flow, out-of-scope), then <b>read the reasoning trace</b> after each: which topic fired, which action ran. An agent that answers badly is nearly always choosing the wrong action, and the trace tells you so.</div>
-<div class="step"><b>Activate</b> the agent.</div>
+<div class="step">Type <code>EnrolmentStatusService</code> (Appendix A.3) into a new Apex class. It takes a student's email address and returns their enrolment status — the second of your two agent actions. Save, confirm it compiles with no red underlines.</div>
+<div class="step">Deploy it: <code>sf project deploy start -d force-app/main/default/classes/EnrolmentStatusService.cls -d force-app/main/default/classes/EnrolmentStatusService.cls-meta.xml -o devorg</code>.</div>
 </div>
+
+<h3>Part 2 — Create the Agent (10 minutes)</h3>
+<div class="steps">
+<div class="step">Click the <b>gear icon</b> (top right) → <b>Setup</b>. In Quick Find, type <code>Agents</code>. Click the <b>Agents</b> item under Agentforce (on some releases this is under <b>Agentforce Studio</b> — the Quick Find search finds it either way).</div>
+<div class="step">Click <b>New Agent</b> (top right of the Agents list).</div>
+<div class="step">A short wizard opens. Fill in each field exactly as below, then click <b>Next</b> after each screen:
+<table>
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td>Agent name</td><td><code>Oxfordable Student Assistant</code></td></tr>
+<tr><td>Agent type</td><td><b>Employee</b> (or "Internal" — whichever wording your release uses; this is the simplest to enable in a Developer org)</td></tr>
+<tr><td>Company name</td><td>Oxfordable Careers, a technology training provider</td></tr>
+<tr><td>Role</td><td>Answers questions about our courses, cohort availability and a student's own enrolment status</td></tr>
+<tr><td>Company description / about</td><td>Oxfordable Careers runs technology training courses delivered in cohorts with fixed start dates and limited seats</td></tr>
+</table></div>
+<div class="step">If the wizard offers to <b>auto-generate topics</b> from your description, decline or delete anything it creates — you are building the one topic below by hand so you understand every piece of it.</div>
+<div class="step">Finish the wizard. You land on the agent's <b>Builder</b> page — three tabs or panels: Topics, Actions (sometimes bundled inside Topics) and a conversation preview panel on the right. Leave everything empty for now.</div>
+</div>
+
+<h3>Part 3 — Create the two Actions (10 minutes)</h3>
+<p>An Action wraps one of your <code>@InvocableMethod</code> classes so the agent can call it. Repeat this block twice — once per action.</p>
+<div class="steps">
+<div class="step">On the agent's Builder page, find <b>Actions</b> (a tab, or a "+ Add Action" control inside a topic — the exact placement varies by release, but the label "Action" or "New Action" is always present somewhere on this page). Click <b>New Action</b> / <b>+ Add Action</b>.</div>
+<div class="step">Choose action type <b>Apex</b> (sometimes listed as "Apex Class" or "Invocable Action"). A search box appears — type <code>CohortAvailabilityService</code> and select it.</div>
+<div class="step">The wizard reads your <code>@InvocableMethod</code> annotation and shows the method's label, <b>Find Available Cohorts</b>, already filled in — this is the exact string from your Apex, proof the bridge from Week 2 is working. Confirm the input (<b>Course Name</b>) and outputs (<b>Answer</b>, <b>Available Cohorts</b>, <b>Seats Available</b>) appear with the descriptions you wrote in the <code>@InvocableVariable</code> annotations. If a description box is empty, copy it in from Appendix A.4 — <b>never leave one blank</b>, this is the single biggest cause of an agent choosing the wrong action later.</div>
+<div class="step">Save. Repeat the whole block for <code>EnrolmentStatusService</code> — action type Apex → search and select the class → confirm the method label <b>Check Enrolment Status</b>, input <b>Student Email</b>, outputs <b>Answer</b> and <b>Found</b>, descriptions present → Save.</div>
+</div>
+<div class="callout amber"><div class="ct">Checkpoint</div>
+Your Actions list now shows exactly two items: <b>Find Available Cohorts</b> and <b>Check Enrolment Status</b>.
+Both show a green "Apex" or "Active" badge, not a warning icon. If either shows an error, open it and re-check
+that the underlying Apex class is deployed and the method really is marked <code>@InvocableMethod</code>.</div>
+
+<h3>Part 4 — Create the Topic (5 minutes)</h3>
+<div class="steps">
+<div class="step">Find <b>Topics</b> on the Builder page → <b>New Topic</b>.</div>
+<div class="step">Fill in the fields exactly as below:
+<table>
+<tr><th>Field</th><th>Content</th></tr>
+<tr><td>Topic label</td><td><code>Course Enrolment Enquiries</code></td></tr>
+<tr><td>Classification description</td><td>Use this topic when someone asks about our courses, when a cohort starts, whether seats are available, how to join, or the status of an enrolment they already hold.</td></tr>
+<tr><td>Scope</td><td>Answer only using the assigned actions and the data they return. Do not speculate about dates, fees or availability.</td></tr>
+<tr><td>Instructions</td><td>1. If the course is not clear, ask which course they mean before searching.<br>2. Always state the start date and how many seats remain.<br>3. If nothing is available, offer the next cohort and invite them to join the waiting list.<br>4. For enrolment status questions, ask for the email address used at booking.<br>5. Never share one student's details with another.<br>6. If the question is outside courses and enrolments, say so and offer to pass it to the team.</td></tr>
+</table></div>
+<div class="step">In the <b>Actions</b> section of this same topic screen, click <b>Add Action</b> (or a checkbox list) and tick <b>both</b> Find Available Cohorts and Check Enrolment Status. A topic with no actions assigned can talk but can never actually look anything up.</div>
+<div class="step">Save the topic.</div>
+</div>
+
+<h3>Part 5 — Test and Activate (5–10 minutes)</h3>
+<div class="steps">
+<div class="step">Use the <b>conversation preview</b> panel on the right of the Builder page (sometimes reached via a "Preview" or "Test" button top-right) to try each row of the table below, one at a time. Type exactly what is shown.</div>
+</div>
+<table>
+<tr><th>#</th><th>Say this</th><th>Expect</th></tr>
+<tr><td>1</td><td>“Do you have any Advanced cohorts with space?”</td><td>A live cohort list with start dates and seats remaining</td></tr>
+<tr><td>2</td><td>“When does the introductory course start?”</td><td>Start dates drawn from your actual Cohort records</td></tr>
+<tr><td>3</td><td>“What is the status of my enrolment?”</td><td>The agent asks for the booking email address first</td></tr>
+<tr><td>4</td><td>(reply with a real seeded student's email)</td><td>Cohort, start date and status returned</td></tr>
+<tr><td>5</td><td>“How much does parking cost at your office?”</td><td>A graceful out-of-scope response, with nothing invented</td></tr>
+</table>
+<div class="steps">
+<div class="step"><b>Read the reasoning trace</b> after each answer — usually a small "i" icon or "Show reasoning" link next to the response. It names the topic that was selected and the action that ran. This is how agents are debugged: an agent that answers badly is nearly always choosing the wrong action or no action at all, and the trace tells you which.</div>
+<div class="step">Once all five behave as expected, find the <b>Activate</b> toggle or button (top right of the Builder page) and switch it on. An inactive agent, like an inactive Flow, does nothing for real users.</div>
+</div>
+
+<h3>Troubleshooting this lab specifically</h3>
+<table>
+<tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>"Agents" does not appear in Setup at all</td><td>No Agentforce licence provisioned</td><td>Follow along with the instructor's reference org; revisit once your org is provisioned</td></tr>
+<tr><td>Apex class does not appear when adding an Action</td><td>Not deployed, or no method carries <code>@InvocableMethod</code></td><td>Redeploy the class; confirm the annotation is present and the class has no compile errors</td></tr>
+<tr><td>Action shows correct label but a blank input/output description</td><td>The <code>@InvocableVariable</code> annotation on that variable has no <code>description</code></td><td>Add the description in Apex and redeploy — do not type it only in the UI, or it will be lost on the next deploy</td></tr>
+<tr><td>Agent never calls an action, just talks generically</td><td>The action was never assigned to the topic in Part 4</td><td>Open the topic, add both actions, save</td></tr>
+<tr><td>Agent answers the wrong topic's question, or ignores your instructions</td><td>Thin or vague classification description</td><td>Rewrite it in plain, specific English — say exactly when the topic should and should not fire</td></tr>
+<tr><td>Test question about a real cohort gets "no seats available"</td><td>Your sample data's cohorts are full, past their start date, or not Status = Open</td><td>Check Cohort records directly; seed a fresh Open cohort with a future date</td></tr>
+</table>
+
 <div class="callout dark"><div class="ct">The point of this lab</div>
 The agent is not magic. It is a language model given <b>your</b> topic definition and <b>your</b> Apex.
 Everything it can truthfully say about seat availability comes from the SOQL query you wrote last week.
-That is the honest, sellable version of “I have built with AI”.</div>
+That is the honest, sellable version of “I have built with AI” — and building it by hand, click by click, with
+no AI assistant writing the metadata for you, is exactly what proves you actually understand it.</div>
 
 <!-- LAB 7 -->
 <h2 class="sec">Lab 7 — Testing and Debugging</h2>
@@ -1599,6 +1683,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.2 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.3 (August 2026). Companion documents: Week 1 and Week 2 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>
