@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.3</span></div>
+  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.4</span></div>
   <h1 class="cov">Build, Test,<br>Deploy &amp; Demo</h1>
   <div class="cov-sub">User Interface, AI, Testing and Release</div>
   <div class="cov-rule"></div>
@@ -71,7 +71,7 @@
   </div>
   <div class="cov-foot">
     Salesforce Developer Introductory Programme · Labs 5, 6, 7 and 8 · UAT and demo ·
-    <b>Version 2.3 — Lab 6 rewritten: fully manual, click-by-click Agentforce build (no AI assistant)</b><br>
+    <b>Version 2.4 — Lab 6: added an experimental "build with AI" option alongside the manual path</b><br>
     This is the workbook you keep. It contains your acceptance test script, your deployment commands and your portfolio write-up.
   </div>
 </div>
@@ -253,6 +253,74 @@ that the underlying Apex class is deployed and the method really is marked <code
 <div class="step"><b>Read the reasoning trace</b> after each answer — usually a small "i" icon or "Show reasoning" link next to the response. It names the topic that was selected and the action that ran. This is how agents are debugged: an agent that answers badly is nearly always choosing the wrong action or no action at all, and the trace tells you which.</div>
 <div class="step">Once all five behave as expected, find the <b>Activate</b> toggle or button (top right of the Builder page) and switch it on. An inactive agent, like an inactive Flow, does nothing for real users.</div>
 </div>
+
+<h3>Option — build it with an AI assistant instead (experimental)</h3>
+<p>Everything above is written to be done entirely by hand, and that is still the reliable path. If you would
+like to see whether an AI coding assistant can do it for you, the prompt below is honest about what we already
+know: it may not work, and the prompt itself tells the assistant what to do if it does not.</p>
+<div class="callout warn"><div class="ct">Set expectations before you try this</div>
+We tested this ourselves while building this workbook. Agentforce agents are built from very new metadata
+(<code>GenAiFunction</code>, <code>GenAiPlugin</code>, <code>GenAiPlannerBundle</code>) whose validation rules
+are not yet fully documented. Five separate attempts to deploy a working action this way all failed with the
+same unexplained error, <i>"Specify a valid invocationTarget and invocationTargetType"</i>, regardless of the
+values tried. <b>This may have been fixed since, or your org's release may behave differently — that is exactly
+why this is worth trying as an experiment, not why you should skip it.</b> The prompt is written so that a
+capable assistant either succeeds cleanly, or notices the same failure quickly and hands you back to Parts 2–5
+above with your field values already written out, instead of burning your session guessing at an undocumented
+schema.</div>
+<div class="callout info"><div class="ct">How to use this</div>
+Open your AI coding assistant inside your <code>careerlaunch</code> project, connected to your org exactly as
+in Appendix E. Paste the prompt below as-is. Watch what it does before approving any deploy, same as every
+other lab.</div>
+<pre>I want to build an Agentforce agent for the CareerLaunch project using metadata, if that is reliably
+possible in this org - and to hand back to clean manual instructions if it is not. Do not guess
+repeatedly against an undocumented schema.
+
+Agent to build:
+- Name: Oxfordable Student Assistant. Type: Employee/internal. Company: "Oxfordable Careers, a
+  technology training provider". Role: "Answers questions about our courses, cohort availability
+  and a student's own enrolment status". Tone: warm, concise, professional, never invent dates,
+  prices or seat numbers.
+- Action 1, wrapping the existing @InvocableMethod on CohortAvailabilityService
+  (label "Find Available Cohorts"): input Course Name, outputs Answer / Available Cohorts /
+  Seats Available - all descriptions already exist in the Apex @InvocableVariable annotations,
+  reuse them verbatim, do not rewrite them.
+- Action 2, wrapping the existing @InvocableMethod on EnrolmentStatusService
+  (label "Check Enrolment Status"): input Student Email, outputs Answer / Found - same rule,
+  reuse the existing descriptions.
+- One topic, "Course Enrolment Enquiries". Classification: "Use this topic when someone asks
+  about our courses, when a cohort starts, whether seats are available, how to join, or the
+  status of an enrolment they already hold." Scope: "Answer only using the assigned actions and
+  the data they return. Do not speculate about dates, fees or availability." Instructions: ask
+  which course if unclear; always state start date and seats remaining; offer the next cohort if
+  none available; ask for the booking email before answering a status question; never share one
+  student's details with another; pass anything out of scope to the team. Assign both actions to
+  this topic.
+
+Do this:
+1) Confirm CohortAvailabilityService and EnrolmentStatusService are already deployed and their
+   invocable methods compile - do not touch or redeploy them.
+2) Attempt to build this via GenAiFunction, GenAiPlugin and GenAiPlannerBundle source metadata,
+   deploying one small piece at a time (one function first) so a failure is cheap and clear.
+3) HARD LIMIT: if the very first GenAiFunction deploy fails, try at most ONE reasonable variation
+   of the failing field (for example a different invocationTargetType value) and no more. Do not
+   keep guessing beyond that.
+4) If it still fails, STOP attempting metadata entirely. Do not fall back to clicking through the
+   org yourself. Instead, print a short, personalised manual checklist - reusing the exact field
+   values above - matching Lab 6 Parts 2 to 5 of this workbook, so I can build it by hand in
+   Setup -> Agents -> New Agent. Tell me plainly that the AI-metadata path did not work and why.
+5) If it succeeds, tell me exactly what you deployed, then walk me through testing it with these
+   five questions and tell me what each answer should look like:
+   "Do you have any Advanced cohorts with space?" · "When does the introductory course start?" ·
+   "What is the status of my enrolment?" · (a real seeded student email) · "How much does parking
+   cost at your office?" (expect a graceful out-of-scope answer).
+6) Either way, do not activate the agent for me - tell me where the Activate control is and let
+   me click it myself, so I have seen the Builder page at least once.</pre>
+<div class="callout amber"><div class="ct">Whichever way it goes</div>
+If the AI succeeds, still run the same five test questions from Part 5 above and read the reasoning trace
+yourself - a fast build is not the same as a correct one. If it fails and hands you the manual checklist, that
+checklist should match Parts 2–5 word for word; if it does not, trust this workbook and follow Parts 2–5 as
+written.</div>
 
 <h3>Troubleshooting this lab specifically</h3>
 <table>
@@ -1683,6 +1751,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.3 (August 2026). Companion documents: Week 1 and Week 2 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.4 (August 2026). Companion documents: Week 1 and Week 2 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>
