@@ -59,7 +59,7 @@
 <div class="page">
 <div class="coverwrap">
   <div class="cov-kicker">O X F O R D A B L E &nbsp; C A R E E R S</div>
-  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.1</span></div>
+  <div class="cov-week">WEEK 3 OF 3 &nbsp;·&nbsp; PARTICIPANT WORKBOOK <span class="rev">v2.0</span></div>
   <h1 class="cov">Build, Test,<br>Deploy &amp; Demo</h1>
   <div class="cov-sub">User Interface, AI, Testing and Release</div>
   <div class="cov-rule"></div>
@@ -71,7 +71,7 @@
   </div>
   <div class="cov-foot">
     Salesforce Developer Introductory Programme · Labs 5, 6, 7 and 8 · UAT and demo ·
-    <b>Version 2.1 — Fixed: App Page → App Launcher requires an explicit Tab (Lab 5 / Appendix E, P5)</b><br>
+    <b>Version 2.0 — Extension Pack update + complete AI Build Prompt series</b><br>
     This is the workbook you keep. It contains your acceptance test script, your deployment commands and your portfolio write-up.
   </div>
 </div>
@@ -1158,6 +1158,7 @@ export default class EnrolmentConsole extends LightningElement {
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
 <tr><td>LWC not available in App Builder</td><td><code>isExposed</code> false, or wrong target</td><td><code>&lt;isExposed&gt;true&lt;/isExposed&gt;</code> + <code>lightning__AppPage</code></td></tr>
 <tr><td>App Page (e.g. Enrolment Console) missing from App Launcher</td><td>Activating an App Page does not create a Tab - they are separate steps</td><td>Setup → Tabs → <b>Lightning Page Tabs</b> → New → select the page; then grant it <b>Visible</b> in your permission set</td></tr>
+<tr><td>A Flow-created email/Task subject or body is silently blank where a name should be</td><td>Two causes, often together: a plain text field with <code>{!...}</code> typed into it is never merged - only a <b>Text Template</b> resource is; and <code>Contact.Name</code> is a compound field that will not merge through a relationship even inside a Text Template</td><td>Build a Text Template resource and reference it; merge <code>FirstName</code> and <code>LastName</code> separately instead of <code>Name</code></td></tr>
 <tr><td>LWC shows “no access” errors</td><td>Missing Apex class access</td><td>Add the class to the permission set</td></tr>
 <tr><td><code>refreshApex</code> does nothing</td><td>The wired result object was not stored</td><td>Assign the <i>whole</i> wire result to a property, not just <code>result.data</code></td></tr>
 <tr><td>Agentforce menu missing in Setup</td><td>Not enabled, or unavailable in that org type</td><td>Setup → Einstein Setup → enable; else use the reference org</td></tr>
@@ -1330,10 +1331,14 @@ verify there.
 
 1) Enrolment_Confirmed_Actions - record-triggered on Enrolment__c, create-or-update, entry
    Status__c='Confirmed', only when updated to meet the condition, after-save: Get_Cohort (first
-   Cohort__c where Id = $Record.Cohort__c); Send Email to $Record.Student__r.Email, subject
-   "Your place is confirmed - " + $Record.Cohort__r.Cohort_Label__c; Create Task ("Send welcome
-   pack to " + $Record.Student__r.Name, WhatId=$Record.Id, OwnerId=$Record.OwnerId, due today,
-   High); Decision Seats_Remaining &lt;= 0 -&gt; Update cohort Status__c='Full'.
+   Cohort__c where Id = $Record.Cohort__c); Send Email to $Record.Student__r.Email, subject via a
+   Text Template resource "Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}"; Create
+   Task with Subject via a SEPARATE Text Template resource "Send welcome pack to
+   {!$Record.Student__r.FirstName} {!$Record.Student__r.LastName}" - use FirstName/LastName, NOT
+   Student__r.Name (Contact.Name is a compound field and silently renders blank when merged
+   through a relationship - this is a real bug we hit and fixed), WhatId=$Record.Id,
+   OwnerId=$Record.OwnerId, due today, High; Decision Seats_Remaining &lt;= 0 -&gt; Update cohort
+   Status__c='Full'.
 2) Quick_Enrol_Student - screen flow: course picklist choice set (active courses); get open cohorts
    of the choice sorted by start date; cohort radio choice (label + seats in help text); Contact
    lookup; Apex action Find Available Cohorts re-checking seats; Decision; Create Enrolment__c
@@ -1594,6 +1599,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.1 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 3 Participant Workbook · Version 2.2 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>

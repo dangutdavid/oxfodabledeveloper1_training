@@ -408,7 +408,13 @@ automation at all.</div>
 <div class="steps">
 <div class="step"><b>Get Records</b> — label <code>Get_Cohort</code>. Object <code>Cohort__c</code>, condition Id Equals <code>{!$Record.Cohort__c}</code>. Store only the first record; fields <code>Seats_Remaining__c</code>, <code>Status__c</code>, <code>Start_Date__c</code>.</div>
 <div class="step"><b>Action → Send Email.</b> Recipient <code>{!$Record.Student__r.Email}</code> · Subject <code>Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}</code> · Body: welcome text, start date, joining instructions.</div>
-<div class="step"><b>Create Records</b> — a Task. Subject <code>Send welcome pack to {!$Record.Student__r.Name}</code> · <code>WhatId = {!$Record.Id}</code> · <code>OwnerId = {!$Record.OwnerId}</code> · <code>ActivityDate = {!$Flow.CurrentDate}</code> · Priority High.</div>
+<div class="step"><b>Create Records</b> — a Task. Subject — build a <b>Text Template</b> resource (not a plain string) with text <code>Send welcome pack to {!$Record.Student__r.FirstName} {!$Record.Student__r.LastName}</code>, then reference that resource in the Subject field · <code>WhatId = {!$Record.Id}</code> · <code>OwnerId = {!$Record.OwnerId}</code> · <code>ActivityDate = {!$Flow.CurrentDate}</code> · Priority High.</div>
+<div class="callout warn"><div class="ct">Two things that trip everyone up here</div>
+1) A plain text field with <code>{!...}</code> typed into it is <b>not</b> merged at runtime — only a genuine
+<b>Text Template</b> resource is. 2) <code>Contact.Name</code> is a compound field and will not merge through
+a relationship even inside a Text Template — use <code>FirstName</code> and <code>LastName</code> separately,
+exactly as the Subject above does. Both mistakes silently produce a blank instead of an error, so they are
+easy to miss - check the Task after your first test.</div>
 <div class="step"><b>Decision</b> — <code>Is_Cohort_Now_Full</code>. Outcome “Yes”: <code>{!Get_Cohort.Seats_Remaining__c}</code> less than or equal to 0.</div>
 <div class="step"><b>Update Records</b> on Yes — update the Cohort from <code>Get_Cohort</code>, set <code>Status__c = Full</code>.</div>
 <div class="step"><b>Save</b> as <code>Enrolment Confirmed Actions</code>, then <b>Activate</b>. A saved flow that is not activated does nothing at all.</div>
@@ -994,10 +1000,14 @@ verify there.
 
 1) Enrolment_Confirmed_Actions - record-triggered on Enrolment__c, create-or-update, entry
    Status__c='Confirmed', only when updated to meet the condition, after-save: Get_Cohort (first
-   Cohort__c where Id = $Record.Cohort__c); Send Email to $Record.Student__r.Email, subject
-   "Your place is confirmed - " + $Record.Cohort__r.Cohort_Label__c; Create Task ("Send welcome
-   pack to " + $Record.Student__r.Name, WhatId=$Record.Id, OwnerId=$Record.OwnerId, due today,
-   High); Decision Seats_Remaining &lt;= 0 -&gt; Update cohort Status__c='Full'.
+   Cohort__c where Id = $Record.Cohort__c); Send Email to $Record.Student__r.Email, subject via a
+   Text Template resource "Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}"; Create
+   Task with Subject via a SEPARATE Text Template resource "Send welcome pack to
+   {!$Record.Student__r.FirstName} {!$Record.Student__r.LastName}" - use FirstName/LastName, NOT
+   Student__r.Name (Contact.Name is a compound field and silently renders blank when merged
+   through a relationship - this is a real bug we hit and fixed), WhatId=$Record.Id,
+   OwnerId=$Record.OwnerId, due today, High; Decision Seats_Remaining &lt;= 0 -&gt; Update cohort
+   Status__c='Full'.
 2) Quick_Enrol_Student - screen flow: course picklist choice set (active courses); get open cohorts
    of the choice sorted by start date; cohort radio choice (label + seats in help text); Contact
    lookup; Apex action Find Available Cohorts re-checking seats; Decision; Create Enrolment__c
@@ -1258,6 +1268,6 @@ Fresh org, whole system: P1 → P12, one at a time, deploying and running the ma
 each. Resist merging them into one mega-prompt — layer-by-layer surfaces errors where they happen, and
 reviewing twelve small diffs teaches you more than approving one huge one. The Complete Build Guide
 remains the source of truth: its Code Pack items are the reference implementation your generated code
-should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook · Version 3.1 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
+should match.</div><p class="footer-note">Oxfordable Careers — Salesforce Developer Introductory Programme · Week 2 Participant Workbook · Version 3.2 (August 2026). Companion documents: Week 1 and Week 3 workbooks · Extension Workbooks A–C · Complete Build Guide · E2E Test Document · User Guide · Technical Guide.</p>
 </body>
 </html>

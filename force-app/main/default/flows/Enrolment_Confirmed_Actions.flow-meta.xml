@@ -23,7 +23,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}</stringValue>
+                <elementReference>EmailSubjectTemplate</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -102,7 +102,7 @@
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <stringValue>Send welcome pack to {!$Record.Student__r.Name}</stringValue>
+                <elementReference>TaskSubjectTemplate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -180,6 +180,16 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>EmailSubjectTemplate</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Your place is confirmed - {!$Record.Cohort__r.Cohort_Label__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>TaskSubjectTemplate</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Send welcome pack to {!$Record.Student__r.FirstName} {!$Record.Student__r.LastName}</text>
+    </textTemplates>
     <textTemplates>
         <name>WelcomeEmailBody</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
